@@ -1,0 +1,22 @@
+#-------------------------------------------------
+#
+# Project created by QtCreator 2012-12-06T23:14:38
+#
+#-------------------------------------------------
+
+QT       -= core gui
+
+TARGET = AudioCommsInclude
+TEMPLATE = lib
+
+SOURCES +=
+
+HEADERS += \
+    AudioBand.h
+
+OTHER_FILES += \
+    Android.mk \
+
+
+
+
