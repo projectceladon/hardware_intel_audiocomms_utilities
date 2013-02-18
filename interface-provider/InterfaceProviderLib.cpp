@@ -1,6 +1,6 @@
 /* InterfaceProviderLib.cpp
  **
- ** Copyright 2012 Intel Corporation
+ ** Copyright 2013 Intel Corporation
  **
  ** Licensed under the Apache License, Version 2.0 (the "License");
  ** you may not use this file except in compliance with the License.
@@ -45,7 +45,7 @@ NInterfaceProvider::IInterfaceProvider* getInterfaceProvider(const char* pcLibra
     // Clear any existing error
     dlerror();
     // Find getInterfaceProvider() library entry point
-    // Refer to http://linux.die.net/man/3/dlsym for the void ** cast workaround
+    // Refer to dlsym man pages about the void ** cast workaround
     *(void **) (&fGetInterfaceProvider) = dlsym(pHandle, "getInterfaceProvider");
 
     // Did we find the symbol ?
@@ -59,14 +59,14 @@ NInterfaceProvider::IInterfaceProvider* getInterfaceProvider(const char* pcLibra
     // Try to retreive the interface provider
     pInterfaceProvider = fGetInterfaceProvider != NULL ? fGetInterfaceProvider() : NULL;
 
-    if (pInterfaceProvider != NULL) {
-
-        ALOGD("%s Interface provider retrieved. Provides:\n%s", __FUNCTION__, pInterfaceProvider->getInterfaceList().c_str());
-    } else {
+    if (pInterfaceProvider == NULL) {
 
         ALOGE("%s Failed to retrieve the interface provider", __FUNCTION__);
+
         dlclose(pHandle);
+        return NULL;
     }
 
+    ALOGD("%s Interface provider retrieved. Provides:\n%s", __FUNCTION__, pInterfaceProvider->getInterfaceList().c_str());
     return pInterfaceProvider;
 }

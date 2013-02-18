@@ -1,6 +1,6 @@
 /* InterfaceProviderImpl.cpp
  **
- ** Copyright 2012 Intel Corporation
+ ** Copyright 2013 Intel Corporation
  **
  ** Licensed under the Apache License, Version 2.0 (the "License");
  ** you may not use this file except in compliance with the License.
@@ -14,10 +14,12 @@
  ** See the License for the specific language governing permissions and
  ** limitations under the License.
  */
+#define LOG_TAG "INTERFACE_PROVIDER_IMPL"
+
+#include <utils/Log.h>
 #include "InterfaceProvider.h"
 #include "InterfaceImplementer.h"
 #include "InterfaceProviderImpl.h"
-#include <assert.h>
 
 using namespace std;
 
@@ -38,10 +40,13 @@ void CInterfaceProviderImpl::addImplementedInterfaces(IInterfaceImplementer &int
 // Interface populate
 void CInterfaceProviderImpl::addInterface(IInterface* pInterface)
 {
-    // Check for second insertion
-    assert(_interfaceMap.find(pInterface->getInterfaceType()) == _interfaceMap.end());
+    if (_interfaceMap.find(pInterface->getInterfaceType()) == _interfaceMap.end()) {
 
-    _interfaceMap[pInterface->getInterfaceType()] = pInterface;
+        _interfaceMap[pInterface->getInterfaceType()] = pInterface;
+    } else {
+
+        LOG_FATAL_IF(true, "%s Interface already declared: %s", __FUNCTION__, pInterface->getInterfaceType().c_str());
+    }
 }
 
 // Interface query

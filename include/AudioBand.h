@@ -16,14 +16,14 @@
  */
 #pragma once
 
-#include <cassert>
-
 class CAudioBand
 {
 public:
     enum Type {
+        // First enum element
         // Unknown band
         EUnknown,
+
         // 4KHz bandwidth
         ENarrow,
         // 8KHz bandwidth
@@ -31,6 +31,7 @@ public:
         // 16KHz bandwidth
         ESuperWide,
 
+        // Last enum element
         ENBAudioBands
     };
 
@@ -43,8 +44,12 @@ public:
             "Super Wide"
         };
 
-        assert(eAudioBand < ENBAudioBands && eAudioBand >= 0);
+        if (eAudioBand < ENBAudioBands && eAudioBand >= EUnknown) {
 
-        return apcAudioBandStr[eAudioBand];
+            return apcAudioBandStr[eAudioBand];
+        } else {
+
+            return "Invalid value";
+        }
     }
 };

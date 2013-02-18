@@ -1,6 +1,6 @@
 /* InterfaceImplementer.h
  **
- ** Copyright 2012 Intel Corporation
+ ** Copyright 2013 Intel Corporation
  **
  ** Licensed under the Apache License, Version 2.0 (the "License");
  ** you may not use this file except in compliance with the License.
@@ -23,7 +23,7 @@ class CInterfaceProviderImpl;
 
 struct IInterfaceImplementer
 {
-    // Interface populate
+    // Populate the implemented Interface(s) to the interfaceProvider
     virtual void getImplementedInterfaces(CInterfaceProviderImpl& interfaceProvider) = 0;
 };
 
