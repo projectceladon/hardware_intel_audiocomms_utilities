@@ -6,7 +6,7 @@
 
 QT       -= core gui
 
-TARGET = AudioCommsInclude
+TARGET = include
 TEMPLATE = lib
 
 SOURCES +=

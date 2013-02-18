@@ -20,5 +20,8 @@ HEADERS += \
     InterfaceImplementer.h \
     InterfaceProviderLib.h
 
+OTHER_FILES += \
+    Android.mk
+
 
 
