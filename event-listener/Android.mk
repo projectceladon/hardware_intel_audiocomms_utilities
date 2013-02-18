@@ -5,14 +5,6 @@ LOCAL_COPY_HEADERS_TO := event-listener
 LOCAL_COPY_HEADERS := \
     EventListener.h \
     EventThread.h
-include $(BUILD_COPY_HEADERS)
-include $(CLEAR_VARS)
-LOCAL_COPY_HEADERS_TO := event-listener
-LOCAL_COPY_HEADERS := \
-    EventListener.h \
-    EventThread.h
-include $(BUILD_COPY_HEADERS)
-include $(CLEAR_VARS)
 
 LOCAL_CFLAGS := \
         -DDEBUG
@@ -27,11 +19,6 @@ LOCAL_C_INCLUDES += \
         external/stlport/stlport/ \
         bionic/libstdc++ \
         bionic/
-
-LOCAL_COPY_HEADERS_TO := event-listener
-
-LOCAL_COPY_HEADERS := \
-        EventListener.h
 
 LOCAL_SHARED_LIBRARIES := libstlport libcutils
 
