@@ -22,7 +22,7 @@ public:
     virtual bool onEvent(int iFd) = 0; // return true if Fd sets has changed
     virtual bool onError(int iFd) = 0; // return true if Fd sets has changed
     virtual bool onHangup(int iFd) = 0; // return true if Fd sets has changed
-    virtual void onTimeout() = 0;
+    virtual void onAlarm() = 0;
     virtual void onPollError() = 0;
     virtual bool onProcess(uint16_t uiEventId) = 0; // return true if Fd sets has changed
 };
