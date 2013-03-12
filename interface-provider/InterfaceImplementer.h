@@ -25,6 +25,9 @@ struct IInterfaceImplementer
 {
     // Populate the implemented Interface(s) to the interfaceProvider
     virtual void getImplementedInterfaces(CInterfaceProviderImpl& interfaceProvider) = 0;
+
+protected:
+    virtual ~IInterfaceImplementer() {}
 };
 
 }

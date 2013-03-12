@@ -24,6 +24,9 @@ namespace NInterfaceProvider
 struct IInterface
 {
     virtual std::string getInterfaceType() const = 0;
+
+protected:
+    virtual ~IInterface() {}
 };
 
 }

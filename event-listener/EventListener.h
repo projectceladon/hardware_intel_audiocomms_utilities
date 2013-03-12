@@ -27,5 +27,8 @@ public:
     virtual void onAlarm() = 0;
     virtual void onPollError() = 0;
     virtual bool onProcess(uint16_t uiEventId) = 0; // return true if Fd sets has changed
+
+protected:
+    virtual ~IEventListener() {}
 };
 

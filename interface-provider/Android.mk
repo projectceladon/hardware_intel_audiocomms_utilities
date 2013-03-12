@@ -40,8 +40,6 @@ LOCAL_SHARED_LIBRARIES := libstlport libcutils libdl
 LOCAL_MODULE := libinterface-provider
 LOCAL_MODULE_TAGS := optional
 
-TARGET_ERROR_FLAGS += -Wno-non-virtual-dtor
-
 include $(BUILD_SHARED_LIBRARY)
 
 # Interface provider library
@@ -65,7 +63,5 @@ LOCAL_SHARED_LIBRARIES := libstlport libcutils libdl
 
 LOCAL_MODULE := libinterface-provider-lib
 LOCAL_MODULE_TAGS := optional
-
-TARGET_ERROR_FLAGS += -Wno-non-virtual-dtor
 
 include $(BUILD_SHARED_LIBRARY)

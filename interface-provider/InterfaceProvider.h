@@ -28,6 +28,9 @@ struct IInterfaceProvider
 
     // Interface list
     virtual std::string getInterfaceList() const = 0;
+
+protected:
+    virtual ~IInterfaceProvider() {}
 };
 
 }

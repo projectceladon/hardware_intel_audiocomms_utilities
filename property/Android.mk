@@ -33,8 +33,6 @@ LOCAL_SHARED_LIBRARIES := libstlport libcutils
 LOCAL_MODULE := libproperty
 LOCAL_MODULE_TAGS := optional
 
-TARGET_ERROR_FLAGS += -Wno-non-virtual-dtor
-
 include $(BUILD_SHARED_LIBRARY)
 
 
