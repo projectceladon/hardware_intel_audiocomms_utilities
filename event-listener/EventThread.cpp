@@ -19,6 +19,7 @@
 #include <strings.h>
 #include <string.h>
 #include <time.h>
+#include <assert.h>
 
 #define LOG_TAG "EVENT_THREAD"
 #include <utils/Log.h>

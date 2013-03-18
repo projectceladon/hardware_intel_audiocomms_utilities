@@ -16,6 +16,8 @@
  */
 #pragma once
 
+#include <stdint.h>
+
 class IEventListener
 {
 public:
