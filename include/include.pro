@@ -12,11 +12,9 @@ TEMPLATE = lib
 SOURCES +=
 
 HEADERS += \
-    AudioBand.h
+    AudioBand.h \
+    audioCommsAssert.h
 
 OTHER_FILES += \
-    Android.mk \
-
-
-
+    Android.mk
 
