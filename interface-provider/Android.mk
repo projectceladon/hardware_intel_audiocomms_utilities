@@ -1,21 +1,15 @@
 LOCAL_PATH := $(call my-dir)
 
-# Interface provider headers export
-include $(CLEAR_VARS)
-LOCAL_COPY_HEADERS_TO := interface-provider
-LOCAL_COPY_HEADERS := \
-    Interface.h \
-    InterfaceImplementer.h \
-    InterfaceProvider.h \
-    InterfaceProviderImpl.h
-include $(BUILD_COPY_HEADERS)
+# Common variables
+##################
+interface_provider_src_files := \
+        InterfaceProviderImpl.cpp \
+        InterfaceProviderLib.cpp
 
-# Interface provider library headers export
-include $(CLEAR_VARS)
-LOCAL_COPY_HEADERS_TO := interface-provider-lib
-LOCAL_COPY_HEADERS := \
-    InterfaceProviderLib.h
-include $(BUILD_COPY_HEADERS)
+interface_provider_includes_target := \
+        external/stlport/stlport/ \
+        bionic/libstdc++ \
+        bionic/
 
 # Interface provider
 include $(CLEAR_VARS)
@@ -23,17 +17,16 @@ include $(CLEAR_VARS)
 LOCAL_CFLAGS := \
         -DDEBUG
 
+LOCAL_EXPORT_C_INCLUDE_DIRS := $(LOCAL_PATH)
+
 LOCAL_SRC_FILES := \
-        InterfaceProviderImpl.cpp \
-        InterfaceProviderLib.cpp
+        $(interface_provider_src_files)
 
 LOCAL_C_INCLUDES += \
         system/core/include/cutils
 
 LOCAL_C_INCLUDES += \
-        external/stlport/stlport/ \
-        bionic/libstdc++ \
-        bionic/
+        $(interface_provider_includes_target)
 
 LOCAL_SHARED_LIBRARIES := libstlport libcutils libdl
 
@@ -48,6 +41,8 @@ include $(CLEAR_VARS)
 LOCAL_CFLAGS := \
         -DDEBUG
 
+LOCAL_EXPORT_C_INCLUDE_DIRS := $(LOCAL_PATH)
+
 LOCAL_SRC_FILES := \
         InterfaceProviderLib.cpp
 
@@ -55,9 +50,7 @@ LOCAL_C_INCLUDES += \
         system/core/include/cutils
 
 LOCAL_C_INCLUDES += \
-        external/stlport/stlport/ \
-        bionic/libstdc++ \
-        bionic/
+        $(interface_provider_includes_target)
 
 LOCAL_SHARED_LIBRARIES := libstlport libcutils libdl
 
@@ -65,3 +58,48 @@ LOCAL_MODULE := libinterface-provider-lib
 LOCAL_MODULE_TAGS := optional
 
 include $(BUILD_SHARED_LIBRARY)
+
+# Build for host test
+###########################
+# Interface provider
+include $(CLEAR_VARS)
+LOCAL_EXPORT_C_INCLUDE_DIRS := $(LOCAL_PATH)
+LOCAL_SRC_FILES := \
+        $(interface_provider_src_files)
+LOCAL_MODULE := libinterface-provider_static_host
+LOCAL_MODULE_TAGS := optional
+include $(BUILD_HOST_STATIC_LIBRARY)
+
+# Interface provider lib
+include $(CLEAR_VARS)
+LOCAL_EXPORT_C_INCLUDE_DIRS := $(LOCAL_PATH)
+LOCAL_SRC_FILES := \
+        InterfaceProviderLib.cpp
+LOCAL_MODULE := libinterface-provider-lib_static_host
+LOCAL_MODULE_TAGS := optional
+include $(BUILD_HOST_STATIC_LIBRARY)
+
+# Build static lib
+###########################
+# Interface provider
+include $(CLEAR_VARS)
+LOCAL_EXPORT_C_INCLUDE_DIRS := $(LOCAL_PATH)
+LOCAL_SRC_FILES := \
+        $(interface_provider_src_files)
+LOCAL_C_INCLUDES += \
+        $(interface_provider_includes_target)
+LOCAL_MODULE := libinterface-provider_static
+LOCAL_MODULE_TAGS := optional
+include $(BUILD_STATIC_LIBRARY)
+
+# Interface provider lib
+include $(CLEAR_VARS)
+LOCAL_EXPORT_C_INCLUDE_DIRS := $(LOCAL_PATH)
+LOCAL_SRC_FILES := \
+        InterfaceProviderLib.cpp
+LOCAL_C_INCLUDES += \
+        $(interface_provider_includes_target)
+LOCAL_MODULE := libinterface-provider-lib_static
+LOCAL_MODULE_TAGS := optional
+include $(BUILD_STATIC_LIBRARY)
+

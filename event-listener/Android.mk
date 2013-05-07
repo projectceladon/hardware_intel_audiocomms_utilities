@@ -3,13 +3,12 @@ LOCAL_PATH := $(call my-dir)
 # Common variables
 ##################
 
-event_thread_exported_includes_folder := event-listener
-event_thread_exported_includes_files := \
-    EventListener.h \
-    EventThread.h
-
 event_thread_src_files := \
     EventThread.cpp
+
+event_thread_includes_target := \
+        external/stlport/stlport \
+        bionic
 
 event_thread_cflags := -DDEBUG
 
@@ -17,14 +16,11 @@ event_thread_cflags := -DDEBUG
 ##################
 
 include $(CLEAR_VARS)
-LOCAL_COPY_HEADERS_TO := $(event_thread_exported_includes_folder)
-LOCAL_COPY_HEADERS := $(event_thread_exported_includes_files)
+LOCAL_EXPORT_C_INCLUDE_DIRS := $(LOCAL_PATH)
 
 LOCAL_SRC_FILES := $(event_thread_src_files)
 
-LOCAL_C_INCLUDES += \
-        external/stlport/stlport \
-        bionic
+LOCAL_C_INCLUDES += $(event_thread_includes_target)
 
 LOCAL_CFLAGS := $(event_thread_cflags)
 TARGET_ERROR_FLAGS += -Wno-non-virtual-dtor
@@ -41,8 +37,7 @@ include $(BUILD_SHARED_LIBRARY)
 
 include $(CLEAR_VARS)
 
-LOCAL_COPY_HEADERS_TO := $(event_thread_exported_includes_folder)
-LOCAL_COPY_HEADERS := $(event_thread_exported_includes_files)
+LOCAL_EXPORT_C_INCLUDE_DIRS := $(LOCAL_PATH)
 
 LOCAL_SRC_FILES := $(event_thread_src_files)
 
@@ -50,4 +45,20 @@ LOCAL_MODULE := libevent-listener_static_host
 LOCAL_MODULE_TAGS := optional
 
 include $(BUILD_HOST_STATIC_LIBRARY)
+
+# Build static lib
+###########################
+
+include $(CLEAR_VARS)
+
+LOCAL_EXPORT_C_INCLUDE_DIRS := $(LOCAL_PATH)
+
+LOCAL_SRC_FILES := $(event_thread_src_files)
+
+LOCAL_C_INCLUDES += $(event_thread_includes_target)
+
+LOCAL_MODULE := libevent-listener_static
+LOCAL_MODULE_TAGS := optional
+
+include $(BUILD_STATIC_LIBRARY)
 

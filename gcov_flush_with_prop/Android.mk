@@ -22,17 +22,17 @@ LOCAL_PATH := $(call my-dir)
 
 include $(CLEAR_VARS)
 
-LOCAL_COPY_HEADERS_TO := gcov_flush_with_prop
-LOCAL_COPY_HEADERS := GcovFlushWithProp.h
+LOCAL_EXPORT_C_INCLUDE_DIRS := $(LOCAL_PATH)
 
 LOCAL_SRC_FILES := GcovFlushWithProp.cpp
 LOCAL_C_INCLUDES := \
-    $(TARGET_OUT_HEADERS)/property \
     external/stlport/stlport \
     bionic
 
 LOCAL_MODULE := gcov_flush_with_prop
 LOCAL_MODULE_TAGS := optional
+
+LOCAL_IMPORT_C_INCLUDE_DIRS_FROM_SHARED_LIBRARIES := libproperty
 
 include $(BUILD_STATIC_LIBRARY)
 

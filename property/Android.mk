@@ -3,11 +3,6 @@ LOCAL_PATH := $(call my-dir)
 # common variables
 ##################
 
-property_exported_includes_folder := property
-property_exported_includes_files := \
-    PropertyBase.h \
-    Property.h
-
 property_src_files := \
     PropertyBase.cpp \
     Property.cpp
@@ -17,8 +12,7 @@ property_src_files := \
 ##################
 include $(CLEAR_VARS)
 
-LOCAL_COPY_HEADERS_TO := $(property_exported_includes_folder)
-LOCAL_COPY_HEADERS := $(property_exported_includes_files)
+LOCAL_EXPORT_C_INCLUDE_DIRS := $(LOCAL_PATH)/
 
 LOCAL_CFLAGS := -DDEBUG
 
@@ -41,8 +35,7 @@ include $(BUILD_SHARED_LIBRARY)
 
 include $(CLEAR_VARS)
 
-LOCAL_COPY_HEADERS_TO := $(property_exported_includes_folder)
-LOCAL_COPY_HEADERS := $(property_exported_includes_files)
+LOCAL_EXPORT_C_INCLUDE_DIRS := $(LOCAL_PATH)/
 
 LOCAL_SRC_FILES := $(property_src_files)
 
@@ -57,8 +50,7 @@ include $(BUILD_HOST_STATIC_LIBRARY)
 
 include $(CLEAR_VARS)
 
-LOCAL_COPY_HEADERS_TO := $(property_exported_includes_folder)
-LOCAL_COPY_HEADERS := $(property_exported_includes_files)
+LOCAL_EXPORT_C_INCLUDE_DIRS := $(LOCAL_PATH)/
 
 LOCAL_SRC_FILES := $(property_src_files)
 
