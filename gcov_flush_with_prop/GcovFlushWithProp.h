@@ -207,5 +207,5 @@ private:
  * code, just by adding the cflag <tt>-include %GcovFlushWithProp.h</tt> and link
  * with this static lib.
  */
-GcovFlushWithProp *gcovFlushWithPropInstance = &(GcovFlushWithProp::getInstance());
+static GcovFlushWithProp *gcovFlushWithPropInstance = &(GcovFlushWithProp::getInstance());
 
