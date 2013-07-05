@@ -7,7 +7,7 @@ event_thread_src_files := \
     EventThread.cpp
 
 event_thread_includes_target := \
-        external/stlport/stlport \
+        $(call include-path-for, stlport) \
         bionic
 
 event_thread_cflags := -DDEBUG

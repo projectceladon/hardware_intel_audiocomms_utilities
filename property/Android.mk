@@ -19,7 +19,7 @@ LOCAL_CFLAGS := -DDEBUG
 LOCAL_SRC_FILES := $(property_src_files)
 
 LOCAL_C_INCLUDES += \
-    external/stlport/stlport \
+    $(call include-path-for, stlport) \
     bionic
 
 LOCAL_SHARED_LIBRARIES := libstlport libcutils
@@ -55,7 +55,7 @@ LOCAL_EXPORT_C_INCLUDE_DIRS := $(LOCAL_PATH)/
 LOCAL_SRC_FILES := $(property_src_files)
 
 LOCAL_C_INCLUDES += \
-    external/stlport/stlport \
+    $(call include-path-for, stlport) \
     bionic
 
 LOCAL_SHARED_LIBRARIES := libstlport libcutils

@@ -7,8 +7,7 @@ interface_provider_src_files := \
         InterfaceProviderLib.cpp
 
 interface_provider_includes_target := \
-        external/stlport/stlport/ \
-        bionic/libstdc++ \
+        $(call include-path-for, stlport) \
         bionic/
 
 # Interface provider
@@ -21,9 +20,6 @@ LOCAL_EXPORT_C_INCLUDE_DIRS := $(LOCAL_PATH)
 
 LOCAL_SRC_FILES := \
         $(interface_provider_src_files)
-
-LOCAL_C_INCLUDES += \
-        system/core/include/cutils
 
 LOCAL_C_INCLUDES += \
         $(interface_provider_includes_target)
@@ -45,9 +41,6 @@ LOCAL_EXPORT_C_INCLUDE_DIRS := $(LOCAL_PATH)
 
 LOCAL_SRC_FILES := \
         InterfaceProviderLib.cpp
-
-LOCAL_C_INCLUDES += \
-        system/core/include/cutils
 
 LOCAL_C_INCLUDES += \
         $(interface_provider_includes_target)

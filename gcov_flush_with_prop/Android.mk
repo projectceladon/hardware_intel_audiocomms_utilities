@@ -21,7 +21,7 @@ LOCAL_EXPORT_C_INCLUDE_DIRS := $(LOCAL_PATH)
 
 LOCAL_SRC_FILES := GcovFlushWithProp.cpp
 LOCAL_C_INCLUDES := \
-    external/stlport/stlport \
+    $(call include-path-for, stlport) \
     bionic
 
 LOCAL_MODULE := gcov_flush_with_prop
