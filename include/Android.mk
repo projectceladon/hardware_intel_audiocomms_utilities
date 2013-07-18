@@ -4,5 +4,6 @@ LOCAL_PATH := $(call my-dir)
 include $(CLEAR_VARS)
 LOCAL_COPY_HEADERS_TO := audiocomms-include
 LOCAL_COPY_HEADERS := \
-    AudioBand.h
+    AudioBand.h \
+    AudioThrottle.h
 include $(BUILD_COPY_HEADERS)

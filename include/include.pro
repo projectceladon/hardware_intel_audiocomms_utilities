@@ -13,7 +13,8 @@ SOURCES +=
 
 HEADERS += \
     AudioBand.h \
-    audioCommsAssert.h
+    audioCommsAssert.h \
+    AudioThrottle.h
 
 OTHER_FILES += \
     Android.mk
