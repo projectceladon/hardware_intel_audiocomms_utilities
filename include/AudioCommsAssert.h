@@ -1,6 +1,6 @@
 /*
  * @file
- * audio comms assert facilities.
+ * audio comms assert facilities for C files.
  *
  * @section License
  *
@@ -18,8 +18,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#ifndef AUDIOCOMMS_ASSERT_H
-#define AUDIOCOMMS_ASSERT_H
+
+#pragma once
 
 /**
  * Macro to wrap gcc builtin function to specify that a condition is unlikely
@@ -27,61 +27,8 @@
 #define audio_comms_unlikely(cond) __builtin_expect((cond), 0)
 
 #ifdef __cplusplus
-
-/**
- * This AUDIOCOMMS_COMPILE_TIME_ASSERT MACRO will fail to compile if the condition is false.
- * Currently it only works in functions
- * Example:
- *     Put "AUDIOCOMMS_COMPILE_TIME_ASSERT(1==0)" your C++ source.
- * On compilation you will get error that looks like:
- * error: 'compileTimeAssertFailure<false>::compileTimeAssertFailure()' is private
- *      YOUR_SOURCE_FILE.cpp:YOUR_ASSERT_LINE: error: within this context
- */
-#define AUDIOCOMMS_COMPILE_TIME_ASSERT(c) audio_comms::utilities::compileTimeAssertFailure<c>()
-
-namespace audio_comms
-{
-
-namespace utilities
-{
-
-template <bool condition>
-class compileTimeAssertFailure;
-
-// If true do nothing
-template <>
-class compileTimeAssertFailure<true> {};
-
-// If false instanciate with private constructor
-template <>
-class compileTimeAssertFailure<false>
-{
-    compileTimeAssertFailure();
-};
-
-} // namespace utilities
-
-} // namespace audio_comms
-
-#include <iostream>
-/**
- * Checks a condition and abort if it is not met.
- * This assert is ALWAYS activated (even in release mode), thus it must be used
- * wisely.
- *
- * @param[in] cond   the condition to check
- * @param[in] iostr  an iostream giving some details about the error
- */
-#define AUDIOCOMMS_ASSERT(cond, iostr) \
- do { \
-   if (audio_comms_unlikely(!(cond))) { \
-       std::cerr << __BASE_FILE__ ":" << __LINE__ << ": Assertion " #cond " failed: " \
-                 << iostr << std::endl; \
-       abort(); \
-   } \
- } while (false)
-
-#else // __cplusplus
+#error "This header is not intended to be used in C++ files, use the hpp version instead."
+#endif // __cplusplus
 
 /**
   *  This AUDIOCOMMS_COMPILE_TIME_ASSERT MACRO will fail to compile if the condition is false.
@@ -150,8 +97,4 @@ class compileTimeAssertFailure<false>
        abort(); \
    } \
  } while (0)
-
-#endif // __cplusplus
-
-#endif // AUDIOCOMMS_ASSERT_H
 
