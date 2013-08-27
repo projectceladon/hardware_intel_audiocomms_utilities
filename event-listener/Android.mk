@@ -23,7 +23,6 @@ LOCAL_SRC_FILES := $(event_thread_src_files)
 LOCAL_C_INCLUDES += $(event_thread_includes_target)
 
 LOCAL_CFLAGS := $(event_thread_cflags)
-TARGET_ERROR_FLAGS += -Wno-non-virtual-dtor
 
 LOCAL_SHARED_LIBRARIES := libstlport libcutils
 
