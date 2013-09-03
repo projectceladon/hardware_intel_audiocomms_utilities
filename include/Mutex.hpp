@@ -21,7 +21,7 @@
 
 #pragma once
 
-#include "AudioCommsAssert.h"
+#include "AudioCommsAssert.hpp"
 
 #include <pthread.h>
 #include <cerrno>
@@ -38,14 +38,16 @@ namespace utilities
 class Mutex
 {
 public:
-    Mutex() : _mutex(PTHREAD_MUTEX_INITIALIZER)
-    {}
+    Mutex()
+    {
+        pthread_mutex_init(&_mutex, NULL);
+    }
 
     ~Mutex()
     {
         int err = pthread_mutex_destroy(&_mutex);
-        AUDIOCOMMS_ASSERT(err == 0, "Unable to destroy mutex @" << _mutex
-                                    << ": " << strerror(err) << "(" << err << ")");
+        AUDIOCOMMS_ASSERT(err == 0, "Unable to destroy mutex @" << static_cast<const void*>(&_mutex)
+                          << ": " << strerror(err) << "(" << err << ")");
     }
 
     /**
@@ -54,8 +56,8 @@ public:
     void lock()
     {
         int err = pthread_mutex_lock(&_mutex);
-        AUDIOCOMMS_ASSERT(err == 0, "Unable to lock mutex @" << _mutex << ": "
-                                    << strerror(err) << "(" << err << ")");
+        AUDIOCOMMS_ASSERT(err == 0, "Unable to lock mutex @" << static_cast<const void*>(&_mutex)
+                          << ": " << strerror(err) << "(" << err << ")");
     }
 
     /**
@@ -64,8 +66,8 @@ public:
     void unlock()
     {
         int err = pthread_mutex_unlock(&_mutex);
-        AUDIOCOMMS_ASSERT(err == 0, "Unable to unlock mutex @" << _mutex << ": "
-                                    << strerror(err) << "(" << err << ")");
+        AUDIOCOMMS_ASSERT(err == 0, "Unable to unlock mutex @" << static_cast<const void*>(&_mutex)
+                          << ": " << strerror(err) << "(" << err << ")");
     }
 
     /**
