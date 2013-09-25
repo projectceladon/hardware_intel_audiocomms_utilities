@@ -55,6 +55,8 @@ template<> struct ConvertionAllowed<float> {};
  * The function does not allow to have white spaces around the value to parse
  * and tries to parse the whole string, which means that if some bytes were not
  * read in the string, the function fails.
+ * Hexadecimal representation (ie numbers starting with 0x) is supported only
+ * for integral types conversions.
  * Result may be modified, even in case of failure.
  *
  * @param[in]  str    the string to parse.
@@ -83,7 +85,20 @@ static inline bool convertTo(const std::string &str, T &result)
     }
 
     std::stringstream ss(str);
-    ss >> result;
+
+    /* Sadly, the stream conversion does not handle hexadecimal format, thus
+     * check is done manually */
+    if (str.substr(0, 2) == "0x") {
+        if (std::numeric_limits<T>::is_integer) {
+            ss >> std::hex >> result;
+        }
+        else {
+            /* Conversion undefined for non integers */
+            return false;
+        }
+    } else {
+        ss >> result;
+    }
 
     return ss.eof() && !ss.fail() && !ss.bad();
 }
