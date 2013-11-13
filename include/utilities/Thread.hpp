@@ -43,11 +43,6 @@ public:
     virtual ~Thread() {}
 
     /**
-     * The processing function which will repeatedly be called by the thread.
-     */
-    virtual void processing() = 0;
-
-    /**
      * Start the thread.
      * Calling this function on an already started thread will return false.
      *
@@ -70,6 +65,11 @@ protected:
     bool isStopRequested() { return _stopRequested; }
 
 private:
+    /**
+     * The processing function which will repeatedly be called by the thread.
+     */
+    virtual void processing() = 0;
+
     void loop()
     {
         while (!_stopRequested) {
