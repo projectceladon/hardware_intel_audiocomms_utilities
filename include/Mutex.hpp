@@ -4,7 +4,7 @@
  *
  * @section License
  *
- * Copyright 2013 Intel Corporation
+ * Copyright 2013-2015 Intel Corporation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -102,6 +102,8 @@ public:
     };
 
 private:
+    friend class ConditionVariable;
+
     pthread_mutex_t _mutex; /**< internal mutex */
 };
 
