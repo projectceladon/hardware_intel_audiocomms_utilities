@@ -25,6 +25,7 @@
 
 #include <pthread.h>
 #include <cerrno>
+#include <string.h>
 
 namespace audio_comms
 {
@@ -46,8 +47,10 @@ public:
     ~Mutex()
     {
         int err = pthread_mutex_destroy(&_mutex);
-        AUDIOCOMMS_ASSERT(err == 0, "Unable to destroy mutex @" << static_cast<const void*>(&_mutex)
-                          << ": " << strerror(err) << "(" << err << ")");
+        AUDIOCOMMS_ASSERT(err == 0,
+                          "Unable to destroy mutex @" << static_cast<const void *>(&_mutex)
+                                                      << ": " << strerror(
+                              err) << "(" << err << ")");
     }
 
     /**
@@ -56,8 +59,9 @@ public:
     void lock()
     {
         int err = pthread_mutex_lock(&_mutex);
-        AUDIOCOMMS_ASSERT(err == 0, "Unable to lock mutex @" << static_cast<const void*>(&_mutex)
-                          << ": " << strerror(err) << "(" << err << ")");
+        AUDIOCOMMS_ASSERT(err == 0, "Unable to lock mutex @" << static_cast<const void *>(&_mutex)
+                                                             << ": " << strerror(
+                              err) << "(" << err << ")");
     }
 
     /**
@@ -66,8 +70,9 @@ public:
     void unlock()
     {
         int err = pthread_mutex_unlock(&_mutex);
-        AUDIOCOMMS_ASSERT(err == 0, "Unable to unlock mutex @" << static_cast<const void*>(&_mutex)
-                          << ": " << strerror(err) << "(" << err << ")");
+        AUDIOCOMMS_ASSERT(err == 0, "Unable to unlock mutex @" << static_cast<const void *>(&_mutex)
+                                                               << ": " << strerror(
+                              err) << "(" << err << ")");
     }
 
     /**
@@ -79,7 +84,7 @@ public:
         /**
          * @param[in] mutex  mutex to lock
          */
-        Locker(Mutex &mutex): _mutex(mutex)
+        Locker(Mutex &mutex) : _mutex(mutex)
         {
             _mutex.lock();
         }
@@ -103,4 +108,3 @@ private:
 } // namespace utilities
 
 } // namespace audio_comms
-
