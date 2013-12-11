@@ -22,9 +22,10 @@
 
 #pragma once
 
-#include <pthread.h>
-
 #include <NonCopyable.hpp>
+#include <AudioCommsAssert.hpp>
+
+#include <pthread.h>
 
 namespace audio_comms
 {
@@ -40,7 +41,10 @@ class Thread : private audio_comms::utilities::NonCopyable
 {
 public:
     Thread() : _stopRequested(false), _thread(0) {}
-    virtual ~Thread() {}
+    virtual ~Thread()
+    {
+        AUDIOCOMMS_ASSERT(_thread == 0, "Can not destroy a running thread");
+    }
 
     /**
      * Start the thread.
