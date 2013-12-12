@@ -58,6 +58,7 @@ bool Thread::start()
 void Thread::stop()
 {
     _stopRequested = true;
+    shutdown();
     /* You may notice that there is no pthread_cancel() in here. This is done
      * on purpose and expects the processing function to be non blocking. */
     pthread_join(_thread, NULL);

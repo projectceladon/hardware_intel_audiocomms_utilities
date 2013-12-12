@@ -70,6 +70,11 @@ private:
      */
     virtual void processing() = 0;
 
+    /**
+     * This method can be overloaded to perform shutdown stuff
+     */
+    virtual void shutdown() {}
+
     void loop()
     {
         while (!_stopRequested) {
