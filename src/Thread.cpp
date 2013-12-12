@@ -63,6 +63,7 @@ void Thread::stop()
      * on purpose and expects the processing function to be non blocking. */
     pthread_join(_thread, NULL);
     _thread = 0;
+    _stopRequested = false;
 }
 
 
