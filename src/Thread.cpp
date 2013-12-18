@@ -66,6 +66,10 @@ void Thread::stop()
     _stopRequested = false;
 }
 
+void Thread::selfAbort()
+{
+    _stopRequested = true;
+}
 
 } // namespace audio_comms
 } // namespace cme

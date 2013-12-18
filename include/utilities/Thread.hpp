@@ -62,9 +62,9 @@ public:
     virtual void stop();
 
     /**
-     * @return true is the thread is running
+     * @return true is the thread has been started
      */
-    bool isRunning() { return _thread != 0; }
+    bool isStarted() { return _thread != 0; }
 
 protected:
     /** Tells if the thread is requested to stop
@@ -72,6 +72,15 @@ protected:
      * guaranteed to be stopped only when stop() returns.
      * @return true if the thread was requested to stop.*/
     bool isStopRequested() { return _stopRequested; }
+
+    /**
+     * This method allows the Thread to terminate itself.
+     * The subclasse can call this method from its processing() method in order
+     * to abort its execution. Once selfAbort() is called, the processing() will
+     * never be recalled as soon as it returns.
+     * The Thread user can safely call the stop() method while the thread has aborted itself.
+     */
+    void selfAbort();
 
 private:
     /**

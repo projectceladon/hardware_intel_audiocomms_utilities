@@ -62,7 +62,26 @@ TEST(Thread, stopRequested)
     thr.stop();
 }
 
-TEST(Thread, isRunning)
+TEST(Thread, abort)
+{
+    class TestThread : public Thread
+    {
+    public:
+        TestThread() : Thread() { EXPECT_FALSE(isStopRequested()); }
+        void processing() { selfAbort(); }
+        /* Have isStopRequested to be public */
+        bool isStopRequested() { return Thread::isStopRequested(); }
+    };
+
+    TestThread thr;
+    EXPECT_FALSE(thr.isStopRequested());
+    EXPECT_TRUE(thr.start());
+    usleep(1000);
+    EXPECT_TRUE(thr.isStopRequested());
+    thr.stop();
+}
+
+TEST(Thread, isStarted)
 {
     class TestThread : public Thread
     {
@@ -71,13 +90,13 @@ TEST(Thread, isRunning)
         void processing() { usleep(10); }
     };
     TestThread thr;
-    EXPECT_FALSE(thr.isRunning());
+    EXPECT_FALSE(thr.isStarted());
     EXPECT_TRUE(thr.start());
-    EXPECT_TRUE(thr.isRunning());
+    EXPECT_TRUE(thr.isStarted());
     usleep(100);
-    EXPECT_TRUE(thr.isRunning());
+    EXPECT_TRUE(thr.isStarted());
     thr.stop();
-    EXPECT_FALSE(thr.isRunning());
+    EXPECT_FALSE(thr.isStarted());
 }
 
 TEST(Thread, startAlreadyStarted)
