@@ -29,6 +29,7 @@ common_library_src_files := \
 common_library_test_src_files := \
     test/ConvertToStringUnitTest.cpp \
     test/HelpersUnitTest.cpp \
+    test/framework/SerializerUnitTest.cpp \
 
 common_base_name := cmeserializer
 common_library_local_module := lib$(common_base_name)
@@ -37,14 +38,17 @@ common_static_libs := \
     libcmeresult \
 
 common_static_libs_host := \
+    libtinyxml \
     libcmeresult_host \
 
 common_shared_libs := \
     libstlport \
+    libtinyxml \
 
 common_shared_libs_host := \
 
 common_library_c_includes := \
+    external/tinyxml/ \
     $(LOCAL_PATH)/include \
     $(LOCAL_PATH)/src \
 
