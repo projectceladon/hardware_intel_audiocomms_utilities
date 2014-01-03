@@ -33,8 +33,10 @@ common_base_name := cmeserializer
 common_library_local_module := lib$(common_base_name)
 
 common_static_libs := \
+    libcmeresult \
 
 common_static_libs_host := \
+    libcmeresult_host \
 
 common_shared_libs := \
     libstlport \
