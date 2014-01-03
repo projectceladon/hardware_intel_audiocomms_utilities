@@ -22,7 +22,8 @@
  */
 #pragma once
 
-#include <result/Result.hpp>
+#include "serializer/framework/GetterHelper.hpp"
+#include "serializer/framework/SetterHelper.hpp"
 
 namespace audio_comms
 {
@@ -31,48 +32,17 @@ namespace cme
 namespace serializer
 {
 
-enum ResultCode
+/** Template used to describe a class child (member). */
+template <typename _ChildTrait,
+          typename _Getter, _Getter _getter,
+          typename _Setter, _Setter _setter, bool _takeOwnership>
+struct Child
 {
-    successCode = 66,
-    unknown,
-    wrongXmlNode,
-    childNotFound,
-    unexpectedNodeType,
-    conversionFailed
+    typedef _ChildTrait ChildTrait;
+    typedef GetterHelper<_Getter, _getter> Getter;
+    typedef SetterHelper<_Setter, _setter> Setter;
+    static const bool takeOwnership = _takeOwnership;
 };
-
-namespace detail
-{
-struct ResultTrait
-{
-    typedef ResultCode Code;
-    /** Enum coding the failures that can occur in the class methods. */
-    static const Code success = successCode;
-    static const Code defaultError = unknown;
-
-    static std::string codeToString(const Code &code)
-    {
-        switch (code) {
-        case successCode:
-            return "Success";
-        case unknown:
-            return "Unknown error";
-        case wrongXmlNode:
-            return "Wrong XML node";
-        case childNotFound:
-            return "Child not found";
-        case unexpectedNodeType:
-            return "Unexpected node type";
-        case conversionFailed:
-            return "Conversion failed";
-        }
-        /* Unreachable, prevents gcc to complain */
-        return "Invalid error (Unreachable)";
-    }
-};
-} // namespace detail
-
-typedef result::Result<detail::ResultTrait> Result;
 
 } // namespace serializer
 } // namespace cme
