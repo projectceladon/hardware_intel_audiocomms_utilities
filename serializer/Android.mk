@@ -28,6 +28,7 @@ common_library_src_files := \
 
 common_library_test_src_files := \
     test/ConvertToStringUnitTest.cpp \
+    test/HelpersUnitTest.cpp \
 
 common_base_name := cmeserializer
 common_library_local_module := lib$(common_base_name)
