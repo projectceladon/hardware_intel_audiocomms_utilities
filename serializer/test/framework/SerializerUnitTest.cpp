@@ -22,6 +22,7 @@
  */
 
 #include "serializer/framework/Serializer.hpp"
+#include "serializer/framework/TextNode.hpp"
 
 #include <gtest/gtest.h>
 
@@ -138,4 +139,148 @@ TEST_F(FromXml, NotSoEmptyElement)
 
     ASSERT_RESULT_SUCCESS(Serializer<NotSoEmptyElemTrait>::fromXml(*_xmlNode,
                                                                    emptyElem));
+}
+
+// Text node (de)serialisation
+struct IntElem {};
+
+typedef TextTrait<int> IntTrait;
+
+TEST_F(ToXml, textNode)
+{
+    ASSERT_RESULT_SUCCESS(Serializer<IntTrait>::toXml(10, _xmlNode));
+
+    _doc.LinkEndChild(_xmlNode);
+
+    _stream << _doc;
+    EXPECT_EQ(std::string("10"), _stream.c_str());
+}
+
+TEST_F(FromXml, textNode)
+{
+    int result;
+    ASSERT_RESULT_SUCCESS(Serializer<IntTrait>::fromXml(TiXmlText("10"), result));
+    ASSERT_EQ(10, result);
+}
+
+// Element node with one text node (de)serialisation
+struct Param
+{
+    explicit Param(int param) : _param(param) {}
+    Param() : _param(66) {}
+    const int &getValue() const { return _param; }
+    void setValue(int param) { _param = param; }
+    int _param;
+};
+
+char paramDefaultTag[] = "Param";
+template <char *_tag = paramDefaultTag>
+struct ParamTrait
+{
+    static const char *tag;
+    typedef Param Element;
+    typedef Child<IntTrait,
+                  typeof( &Element::getValue), &Element::getValue,
+                  typeof( &Element::setValue), &Element::setValue, false> Child1;
+    typedef TYPELIST1 (Child1) Children;
+};
+
+template <char *_tag>
+const char *ParamTrait<_tag>::tag = _tag;
+
+TEST_F(ToXml, Param)
+{
+    ASSERT_RESULT_SUCCESS(Serializer<ParamTrait<> >::toXml(Param(20), _xmlNode));
+
+    _doc.LinkEndChild(_xmlNode);
+
+    _stream << _doc;
+    EXPECT_EQ(std::string("<Param>20</Param>"), _stream.c_str());
+}
+
+TEST_F(FromXml, EmptyParam)
+{
+    _xmlNode = parseXml(_doc, "<Param></Param>");
+    ASSERT_TRUE(_xmlNode != NULL);
+
+    Param param;
+    ASSERT_RESULT_FAILURE(Serializer<ParamTrait<> >::fromXml(*_xmlNode, param));
+}
+
+TEST_F(FromXml, Param)
+{
+    _xmlNode = parseXml(_doc, "<Param>20</Param>");
+    ASSERT_TRUE(_xmlNode != NULL);
+
+    Param param;
+    ASSERT_RESULT_SUCCESS(Serializer<ParamTrait<> >::fromXml(*_xmlNode, param));
+    EXPECT_EQ(20, param.getValue());
+}
+
+// Tree (de)serialisation
+struct BigElem
+{
+    BigElem(Param param1, Param param2) : _param1(param1), _param2(param2) {}
+    BigElem() : _param1(66), _param2(99) {}
+    const Param &getParam1() const { return _param1; }
+    const Param &getParam2() const { return _param2; }
+    void setParam1(Param param) { _param1 = param; }
+    void setParam2(Param param) { _param2 = param; }
+    Param _param1;
+    Param _param2;
+};
+
+char param1Tag[] = "Param1";
+char param2Tag[] = "Param2";
+
+struct BigTrait
+{
+    static const char *tag;
+    typedef BigElem Element;
+    typedef Child<ParamTrait<param1Tag>,
+                  typeof( &Element::getParam1), &Element::getParam1,
+                  typeof( &Element::setParam1), &Element::setParam1, false> Child1;
+    // Use a function accessor instead of the method
+    static const Param &getChild2(const Element &elem) { return elem._param2; }
+    static bool setChild2(Element &elem, const Param &val)
+    {
+        elem.setParam2(val);
+        delete &val;
+        return true;
+    }
+    typedef Child<ParamTrait<param2Tag>,
+                  typeof( &getChild2), &getChild2,
+                  typeof( &setChild2), &setChild2, true> Child2;
+
+    typedef TYPELIST2 (Child1, Child2) Children;
+};
+const char *BigTrait::tag = "Big";
+
+TEST_F(ToXml, BigElem)
+{
+    const BigElem big(Param(20), Param(30));
+    ASSERT_RESULT_SUCCESS(Serializer<BigTrait>::toXml(big, _xmlNode));
+
+    _doc.LinkEndChild(_xmlNode);
+
+    _stream << _doc;
+    EXPECT_EQ(std::string("<Big>"
+                          "<Param1>20</Param1>"
+                          "<Param2>30</Param2>"
+                          "</Big>"),
+              _stream.c_str());
+}
+
+TEST_F(FromXml, BigElem)
+{
+    _xmlNode = parseXml(_doc, "<Big>"
+                              "<Param1>10</Param1>"
+                              "<Param2>20</Param2>"
+                              "</Big>");
+    ASSERT_TRUE(_xmlNode != NULL);
+
+    BigElem big;
+    ASSERT_RESULT_SUCCESS(Serializer<BigTrait>::fromXml(*_xmlNode, big));
+    EXPECT_EQ(10, big.getParam1().getValue());
+    EXPECT_EQ(20, big.getParam2().getValue());
 }
