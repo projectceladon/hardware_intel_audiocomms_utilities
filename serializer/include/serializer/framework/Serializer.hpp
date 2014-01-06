@@ -145,3 +145,5 @@ struct SerializerChilden<Parent, TypeList<H, T> >
 } // namespace serializer
 } // namespace cme
 } // namespace audio_comms
+
+#include "serializer/framework/TextNodeImplementation.hpp"
