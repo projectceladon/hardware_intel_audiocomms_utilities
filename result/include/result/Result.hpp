@@ -43,6 +43,7 @@ template <class ErrorTrait>
 class Result
 {
 public:
+    typedef ErrorTrait Trait;
     /** Result constructor
      *
      * this creates a Result object which holds the given error code.
@@ -82,7 +83,7 @@ public:
      *
      * @return the error code, undefined behaviour if the result is a success.
      */
-    typename ErrorTrait::Code getErrorCode() { return _errorCode; }
+    typename ErrorTrait::Code getErrorCode() const { return _errorCode; }
 
     /** Get the error message
      * @return the error message held by the class
@@ -179,6 +180,7 @@ public:
         _message = ss.str();
         return *this;
     }
+
 private:
     typename ErrorTrait::Code _errorCode; /*< result code held by class */
     std::string _message;                 /*< an error message explaining the error */
