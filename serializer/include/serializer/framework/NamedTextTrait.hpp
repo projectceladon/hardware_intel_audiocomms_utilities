@@ -24,6 +24,7 @@
 
 #include "serializer/framework/TextNode.hpp"
 #include "serializer/framework/Child.hpp"
+#include "common/TypeList.hpp"
 
 namespace audio_comms
 {

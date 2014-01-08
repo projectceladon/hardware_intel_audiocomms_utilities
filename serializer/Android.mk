@@ -44,8 +44,10 @@ common_static_libs_host := \
 common_shared_libs := \
     libstlport \
     libtinyxml \
+    libcmecommon
 
 common_shared_libs_host := \
+    libcmecommon_host
 
 common_library_c_includes := \
     external/tinyxml/ \
