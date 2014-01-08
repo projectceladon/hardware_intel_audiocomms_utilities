@@ -22,9 +22,9 @@
  */
 #pragma once
 
-#include "serializer/framework/TypeList.hpp"
 #include "serializer/framework/Result.hpp"
 #include "serializer/framework/Child.hpp"
+#include "common/TypeList.hpp"
 #include <tinyxml.h>
 
 namespace audio_comms
