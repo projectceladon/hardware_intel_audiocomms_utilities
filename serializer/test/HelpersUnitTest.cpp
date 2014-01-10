@@ -23,6 +23,7 @@
 
 #include "serializer/framework/GetterHelper.hpp"
 #include "serializer/framework/SetterHelper.hpp"
+#include <common/TypeTraits.hpp>
 #include <gtest/gtest.h>
 
 using namespace audio_comms::cme::serializer;
@@ -58,21 +59,11 @@ struct Cont
     T _val;
 };
 
-/** Check that 2 types are the same. */
-template <class A, class B>
-class is_same;
-
-template <class A>
-class is_same<A, A>
-{
-};
-
 /** Invoking this fonction will check if the 2 types F and T are the same*/
 template <class F, class T>
-void fis_same(T)
+bool fis_same(T)
 {
-    is_same<F, T> expected_same_types;
-    (void)expected_same_types;
+    return audio_comms::cme::common::is_same<F, T>::value;
 }
 
 /** Test that:
@@ -83,7 +74,8 @@ void fis_same(T)
 template <class F, class M, M m, class E>
 void getCheck(E e)
 {
-    fis_same<typename GetterHelper<M, m>::type>(GetterHelper<M, m>::function);
+    ASSERT_TRUE((fis_same<typename GetterHelper<M, m>::type>(
+                     GetterHelper<M, m>::function)));
     F get = GetterHelper<M, m>::function;
     Cont<E> cont(e);
     E val = get(cont);
@@ -206,7 +198,8 @@ TEST(FunctionGetter, Class)
 template <class F, class M, M m, class E>
 void setCheck(E e)
 {
-    fis_same<typename SetterHelper<M, m>::type>(SetterHelper<M, m>::function);
+    ASSERT_TRUE((fis_same<typename SetterHelper<M, m>::type>(
+                     SetterHelper<M, m>::function)));
     F set = SetterHelper<M, m>::function;
     // Build invalid objet
     Cont<E> cont;
