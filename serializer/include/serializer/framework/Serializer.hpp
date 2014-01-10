@@ -88,6 +88,14 @@ struct SerializerChilden<Parent, TYPELIST0>
 template <class ChildTrait>
 struct ChildAccess
 {
+    /** Get the xml child corresponding to the Child trait.
+     *
+     * @param[in] xmlParent the parent xml node.
+     * @param[out] xmlChild the found child xml node, NULL if an error occured.
+     *
+     * @return Result(childNotFound) if the xml node child could not be found.
+     *         success otherwise.
+     */
     static Result get(const TiXmlNode &xmlParent, const TiXmlNode * &xmlChild)
     {
         xmlChild = xmlParent.FirstChild(ChildTrait::tag);
@@ -100,8 +108,9 @@ struct ChildAccess
 };
 
 template <class Parent, class H, class T>
-struct SerializerChilden<Parent, TypeList<H, T> >
+class SerializerChilden<Parent, TypeList<H, T> >
 {
+public:
     static Result toXml(const Parent &parent, TiXmlNode *xmlParent)
     {
         TiXmlNode *xmlChild;
@@ -116,28 +125,49 @@ struct SerializerChilden<Parent, TypeList<H, T> >
 
     static Result fromXml(const TiXmlNode &xmlParent, Parent &parent)
     {
-        // Get the coresponding xml child
         const TiXmlNode *xmlChild;
+        bool optional = H::optional;
+
+        // Get the corresponding xml child
         Result res = ChildAccess<typename H::ChildTrait>::get(xmlParent, xmlChild);
+        if (res.isFailure()) {
+            if (not optional) {
+                return res;
+            }
+            xmlChild = NULL;
+        }
+
+        res = setChild(xmlChild, parent);
         if (res.isFailure()) {
             return res;
         }
 
+        // Deserialize sibling child
+        return SerializerChilden<Parent, T>::fromXml(xmlParent, parent);
+    }
+
+private:
+    /** Instanciate the head child, deserialize it, and set it in the parent. */
+    static Result setChild(const TiXmlNode *xmlChild, Parent &parent)
+    {
         typedef typename H::ChildTrait::Element ChildType;
         // Create a empty child
+        // @TODO: template specialize in case of H::takeOwnership == false
+        //        to instanciate the child on the stack.
         ChildType *child = new ChildType;
         // Fill it
-        res = Serializer<typename H::ChildTrait>::fromXml(*xmlChild, *child);
-        if (res.isFailure()) {
-            delete child;
-            return res;
+        if (xmlChild != NULL) {
+            Result res = Serializer<typename H::ChildTrait>::fromXml(*xmlChild, *child);
+            if (res.isFailure()) {
+                delete child;
+                return res;
+            }
         }
         H::Setter::function(parent, *child);
         if (not H::takeOwnership) {
             delete child;
         }
-        // Deserialize sibling child
-        return SerializerChilden<Parent, T>::fromXml(xmlParent, parent);
+        return Result::success();
     }
 };
 
