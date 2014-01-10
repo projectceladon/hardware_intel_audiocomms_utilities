@@ -40,7 +40,7 @@ namespace serializer
  *  - using a TextTrait<int> will be serialized to "20".
  *  - using a NamedTextTrait<int, "num"> will be serialized in "<num>20</num>"
  */
-template <typename T, const char *_tag,
+template <typename T, const char *_tag, bool optional = false,
           class Convertor = typename detail::TextNodeDefaultConvertor<T>::Type>
 struct NamedTextTrait
 {
@@ -56,11 +56,11 @@ struct NamedTextTrait
 
     typedef Child<TextTrait<T, Convertor>,
                   Get, &NamedTextTrait<T, _tag>::get,
-                  Set, &NamedTextTrait<T, _tag>::set, false> Child1;
+                  Set, &NamedTextTrait<T, _tag>::set, false, optional> Child1;
     typedef TYPELIST1 (Child1) Children;
 };
-template <typename T, const char *_tag, class C>
-const char *NamedTextTrait<T, _tag, C>::tag = _tag;
+template <typename T, const char *_tag, bool o, class C>
+const char *NamedTextTrait<T, _tag, o, C>::tag = _tag;
 
 } // namespace serializer
 } // namespace cme

@@ -23,8 +23,10 @@
 
 #include "serializer/framework/Serializer.hpp"
 #include "serializer/framework/TextNode.hpp"
+#include "serializer/framework/NamedTextTrait.hpp"
 
 #include <gtest/gtest.h>
+#include <string>
 
 using namespace audio_comms::cme::serializer;
 
@@ -40,9 +42,9 @@ void ASSERT_RESULT_FAILURE(Result res)
 }
 
 /** Parse a xml string and return a node to the root element */
-TiXmlNode *parseXml(TiXmlDocument &doc, const char *xml)
+TiXmlNode *parseXml(TiXmlDocument &doc, const std::string xml)
 {
-    doc.Parse(xml);
+    doc.Parse(xml.c_str());
     EXPECT_FALSE(doc.Error()) << doc.ErrorDesc();
     return doc.RootElement();
 }
@@ -283,4 +285,58 @@ TEST_F(FromXml, BigElem)
     ASSERT_RESULT_SUCCESS(Serializer<BigTrait>::fromXml(*_xmlNode, big));
     EXPECT_EQ(10, big.getParam1().getValue());
     EXPECT_EQ(20, big.getParam2().getValue());
+}
+
+template <class Trait>
+void dererializeString(const std::string &refStr, bool success = true)
+{
+    TiXmlDocument doc;
+    TiXmlNode *xmlNode = parseXml(doc, "<String>" + refStr + "</String>");
+    ASSERT_TRUE(xmlNode != NULL);
+
+    typename Trait::Element str;
+    Result res = Serializer<Trait>::fromXml(*xmlNode, str);
+    if (success) {
+        ASSERT_RESULT_SUCCESS(res);
+    } else {
+        ASSERT_RESULT_FAILURE(res);
+    }
+    EXPECT_EQ(refStr, str);
+}
+
+char StringTag[] = "String";
+typedef NamedTextTrait<std::string, StringTag> StringTrait;
+
+TEST_F(ToXml, String)
+{
+    const StringTrait::Element str(":/");
+    ASSERT_RESULT_SUCCESS(Serializer<StringTrait>::toXml(str, _xmlNode));
+
+    _doc.LinkEndChild(_xmlNode);
+
+    _stream << _doc;
+    EXPECT_EQ(std::string("<String>:/</String>"),
+              _stream.c_str());
+}
+
+TEST_F(FromXml, String)
+{
+    dererializeString<StringTrait>(":/");
+}
+
+TEST_F(FromXml, Empty_String)
+{
+    dererializeString<StringTrait>("", false);
+}
+
+typedef NamedTextTrait<std::string, StringTag, true> OptionalStringTrait;
+
+TEST_F(FromXml, Optional_String)
+{
+    dererializeString<OptionalStringTrait>(":/");
+}
+
+TEST_F(FromXml, Optional_Empty_String)
+{
+    dererializeString<OptionalStringTrait>("");
 }

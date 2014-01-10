@@ -35,13 +35,22 @@ namespace serializer
 /** Template used to describe a class child (member). */
 template <typename _ChildTrait,
           typename _Getter, _Getter _getter,
-          typename _Setter, _Setter _setter, bool _takeOwnership>
+          typename _Setter, _Setter _setter, bool _takeOwnership,
+          bool _optional = false>
 struct Child
 {
     typedef _ChildTrait ChildTrait;
     typedef GetterHelper<_Getter, _getter> Getter;
     typedef SetterHelper<_Setter, _setter> Setter;
     static const bool takeOwnership = _takeOwnership;
+    /** @fixme: It would be far better to be optional if the _ChildTrait had a
+     * specific base class (called Optional).
+     * Instead of writing : Child<myChildTrait, ... , true>
+     * you could write :    Child<Optional<myChildTrait, ...> >
+     * with Optional defined as such :
+     * template <class Base> struct Optional : Base {};
+     */
+    static const bool optional = _optional;
 };
 
 } // namespace serializer
