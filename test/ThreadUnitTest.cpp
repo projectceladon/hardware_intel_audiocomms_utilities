@@ -32,16 +32,18 @@ TEST(Thread, startStop)
     class TestThread : public Thread
     {
     public:
-        TestThread() : Thread(), _count(0) {}
-        void processing() { _count++; }
-        volatile int _count;
+        TestThread(volatile bool &done) : Thread(), _done(done) {}
+        void processing() { _done = true; }
+        volatile bool &_done;
     };
 
-    TestThread thr;
+    volatile bool done = false;
+    TestThread thr(done);
     EXPECT_TRUE(thr.start());
-    usleep(100);
+    while (!done) {
+        usleep(100);
+    }
     thr.stop();
-    EXPECT_GT(thr._count, 1);
 }
 
 TEST(Thread, stopRequested)
@@ -76,8 +78,9 @@ TEST(Thread, abort)
     TestThread thr;
     EXPECT_FALSE(thr.isStopRequested());
     EXPECT_TRUE(thr.start());
-    usleep(1000);
-    EXPECT_TRUE(thr.isStopRequested());
+    do {
+        usleep(1000);
+    } while (!thr.isStopRequested());
     thr.stop();
 }
 
