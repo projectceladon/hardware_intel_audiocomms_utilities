@@ -64,14 +64,14 @@ public:
     /**
      * @return true is the thread has been started
      */
-    bool isStarted() { return _thread != 0; }
+    bool isStarted() const { return _thread != 0; }
 
 protected:
     /** Tells if the thread is requested to stop
      * Note: This does NOT mean that the thread is stopped. The thread is
      * guaranteed to be stopped only when stop() returns.
      * @return true if the thread was requested to stop.*/
-    bool isStopRequested() { return _stopRequested; }
+    bool isStopRequested() const { return _stopRequested; }
 
     /**
      * This method allows the Thread to terminate itself.
