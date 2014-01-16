@@ -152,7 +152,7 @@ private:
     {
         typedef typename H::ChildTrait::Element ChildType;
         // Create a empty child
-        // @TODO: template specialize in case of H::takeOwnership == false
+        /** @todo: template specialize in case of H::takeOwnership == false */
         //        to instanciate the child on the stack.
         ChildType *child = new ChildType;
         // Fill it
