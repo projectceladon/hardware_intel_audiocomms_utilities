@@ -48,6 +48,7 @@ public:
         TiXmlDocument doc;
         doc.LinkEndChild(new TiXmlDeclaration("1.0", "", ""));
         TiXmlElement *root = new TiXmlElement("ACME");
+        root->SetAttribute("version", "0.0.1");
         TiXmlNode *xmlElement;
         Result res = Serializer<ClassSerializationTrait<Class> >::toXml(c, xmlElement);
         if (res != Result::success()) {
