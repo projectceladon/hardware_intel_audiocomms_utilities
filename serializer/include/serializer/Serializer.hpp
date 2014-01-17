@@ -22,7 +22,7 @@
  */
 #pragma once
 
-#include "serializer/framework/Serializer.hpp"
+#include <string>
 
 namespace audio_comms
 {
@@ -31,59 +31,22 @@ namespace cme
 namespace serializer
 {
 
-class SerializerGeneric
+/**
+ * This template class has to be specialized to describe the way the class
+ * Class has to be serialized
+ */
+template <class Class>
+class ClassSerializationTrait;
+
+template<class Result>
+class Serializer
 {
 public:
-    /**
-     * This template class has to be specialized to describe the way the class
-     * Class has to be serialized
-     */
     template <class Class>
-    class ClassSerializationTrait;
+    static Result serialize(const Class &c, std::string &serializedCmd);
 
     template <class Class>
-    static Result serialize(const Class &c, std::string &serializedCmd)
-    {
-        TiXmlOutStream stream;
-        TiXmlDocument doc;
-        doc.LinkEndChild(new TiXmlDeclaration("1.0", "", ""));
-        TiXmlElement *root = new TiXmlElement("ACME");
-        root->SetAttribute("version", "0.0.1");
-        TiXmlNode *xmlElement;
-        Result res = Serializer<ClassSerializationTrait<Class> >::toXml(c, xmlElement);
-        if (res != Result::success()) {
-            serializedCmd = "";
-            return res;
-        }
-
-        root->LinkEndChild(xmlElement);
-
-        doc.LinkEndChild(root);
-
-        stream << doc;
-        serializedCmd = stream.c_str();
-        return Result::success();
-    }
-
-    template <class Class>
-    static Result deserialize(const std::string &str, Class &c)
-    {
-        TiXmlDocument doc;
-        doc.Parse(str.c_str(), NULL);
-
-        const TiXmlNode *acmeTag = doc.FirstChild("ACME");
-        if (acmeTag == NULL) {
-            return Result(conversionFailed) << "No ACME root element.";
-        }
-
-        /* Sanity check, there should NOT be any other node after de command's
-         * one */
-        if (acmeTag->NextSiblingElement() != NULL) {
-            return Result(conversionFailed) << "No command tag found.";
-        }
-
-        return Serializer<ClassSerializationTrait<Class> >::fromXml(*acmeTag->FirstChild(), c);
-    }
+    static Result deserialize(const std::string &str, Class &c);
 };
 
 } // namespace serializer
