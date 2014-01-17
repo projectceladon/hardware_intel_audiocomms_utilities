@@ -50,7 +50,7 @@ struct TestResult
         case D:
             return "D";
         }
-        /* FIXME ASSERT? */
+        /** @fixme: ASSERT? */
         return "";
     }
 };
