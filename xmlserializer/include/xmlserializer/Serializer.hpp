@@ -37,6 +37,8 @@ namespace xmlserializer
 class XmlSerializer : public serializer::Serializer<Result>
 {
 public:
+    typedef xmlserializer::Result Result;
+
     template <class Class>
     static Result serialize(const Class &c, std::string &serializedCmd)
     {
