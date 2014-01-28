@@ -42,7 +42,10 @@ ssize_t full_read(int fd, void* buf, size_t count)
             errno = EIO;
             return -1;
         }
-        total_read += current_read;
+        if (current_read > 0) {
+
+            total_read += current_read;
+        }
     }
     return count;
 }
@@ -61,7 +64,10 @@ ssize_t full_write(int fd, const void* buf, size_t count)
 
             return -1;
         }
-        total_write += current_write;
+        if (current_write > 0) {
+
+            total_write += current_write;
+        }
     }
     return count;
 }
