@@ -73,7 +73,7 @@ public:
     {
         if (inputResult.isFailure()) {
             _errorCode = failureCode;
-            *this << inputResult.format();
+            *this << inputResult;
         } else {
             _errorCode = successCode;
         }
