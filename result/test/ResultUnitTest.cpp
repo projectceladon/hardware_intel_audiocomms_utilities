@@ -176,3 +176,12 @@ TEST(Result, constructFromSuccessRes)
     Result trans(Result::success(), TestResult::D, TestResult::C);
     EXPECT_EQ(TestResult::C, trans);
 }
+
+TEST(Result, resultStream)
+{
+    Result bResult(TestResult::B);
+    EXPECT_EQ("Code 667: B (gnii: Code 669: D (gnuu))",
+              (Result(TestResult::B) << "gnii"
+                                     << (Result(TestResult::D) << "gnuu")
+              ).format());
+}

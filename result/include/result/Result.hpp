@@ -166,6 +166,7 @@ public:
     /**
      * Appends any data to message
      * Careful: this function expects that T has a known conversion to ostream
+     *          or a Result
      *
      * @tparam T   type of the thing to append
      * @param[in]  aT  a T thing to append
@@ -175,13 +176,39 @@ public:
     template <class T>
     Result<ErrorTrait> operator<<(const T &aT)
     {
-        std::ostringstream ss;
-        ss << _message << aT;
-        _message = ss.str();
+        Append<T>::run(*this, aT);
         return *this;
     }
 
 private:
+    /** Artefact class to partial specialize operator<< */
+    template <class Data>
+    struct Append
+    {
+        /** Append a data to _message. @see Result::operator<< */
+        static void run(Result<ErrorTrait> &res, const Data &data)
+        {
+            std::ostringstream ss;
+            ss << data;
+            res._message += ss.str();
+        }
+    };
+    template <class Err>
+    struct Append<Result<Err> >
+    {
+        /** Append a Result to _message. @see Result::operator<< */
+        static void run(Result<ErrorTrait> &res, const Result<Err> &data)
+        {
+            if (not res._message.empty()) {
+                res._message += ": ";
+            }
+            res._message += data.format();
+        }
+    };
+    template <class>
+    template <class Data>
+    friend void Append<Data>::run();
+
     typename ErrorTrait::Code _errorCode; /*< result code held by class */
     std::string _message;                 /*< an error message explaining the error */
 };
