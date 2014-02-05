@@ -51,7 +51,7 @@ public:
     {
         xmlElement = new TiXmlElement(Trait::tag);
         return detail::SerializerChilden<typename Trait::Element, typename Trait::Children>
-               ::toXml(element, xmlElement) << " (While serializing " << Trait::tag << ")";
+               ::toXml(element, *xmlElement) << " (While serializing " << Trait::tag << ")";
     }
 
     static Result fromXml(const TiXmlNode &xmlElement, typename Trait::Element &element)
@@ -73,7 +73,7 @@ namespace detail
 template <class Parent>
 struct SerializerChilden<Parent, TYPELIST0>
 {
-    static Result toXml(const Parent &, TiXmlNode *)
+    static Result toXml(const Parent &, TiXmlNode &)
     {
         return Result::success();
     }
@@ -111,7 +111,7 @@ template <class Parent, class H, class T>
 class SerializerChilden<Parent, TypeList<H, T> >
 {
 public:
-    static Result toXml(const Parent &parent, TiXmlNode *xmlParent)
+    static Result toXml(const Parent &parent, TiXmlNode &xmlParent)
     {
         TiXmlNode *xmlChild;
         const typename H::ChildTrait::Element &child = H::Getter::function(parent);
@@ -119,7 +119,7 @@ public:
         if (res.isFailure()) {
             return res;
         }
-        xmlParent->LinkEndChild(xmlChild);
+        xmlParent.LinkEndChild(xmlChild);
         return SerializerChilden<Parent, T>::toXml(parent, xmlParent);
     }
 
