@@ -22,11 +22,10 @@
  */
 
 #include "xmlserializer/Serializer.hpp"
-#include "serializer/framework/TextNode.hpp"
-#include "serializer/framework/NamedTextTrait.hpp"
 
 #include <gtest/gtest.h>
 #include <string>
+#include <list>
 
 using namespace audio_comms::cme::xmlserializer;
 using namespace audio_comms::cme::serializer;
@@ -324,4 +323,59 @@ TEST_F(FromXml, Optional_String)
 TEST_F(FromXml, Optional_Empty_String)
 {
     dererializeString<OptionalStringTrait>("");
+}
+
+char CollectionTag[] = "IntColl";
+typedef CollectionTrait<CollectionTag, std::list<int>, IntTrait> IntCollectionTrait;
+
+TEST_F(ToXml, Collection)
+{
+    IntCollectionTrait::Element myList;
+    myList.push_back(10);
+    myList.push_back(-20);
+
+    toXml<IntCollectionTrait>(myList);
+
+    EXPECT_EQ("<IntColl>"
+              "<e1>10</e1>"
+              "<e2>-20</e2>"
+              "</IntColl>", _xml);
+}
+
+TEST_F(ToXml, EmptyCollection)
+{
+    IntCollectionTrait::Element myList;
+
+    toXml<IntCollectionTrait>(myList);
+
+    EXPECT_EQ("<IntColl />", _xml);
+}
+
+TEST_F(FromXml, Collection)
+{
+    parseXml("<IntColl>"
+             "<e1>10</e1>"
+             "<e2>20</e2>"
+             "<e3>-13</e3>"
+             "</IntColl>");
+
+    IntCollectionTrait::Element myList;
+    ASSERT_RESULT_SUCCESS(XmlTraitSerializer<IntCollectionTrait>::fromXml(*_xmlNode, myList));
+
+    IntCollectionTrait::Element myListRef;
+    myListRef.push_back(10);
+    myListRef.push_back(20);
+    myListRef.push_back(-13);
+
+    ASSERT_EQ(myListRef, myList);
+}
+
+TEST_F(FromXml, EmptyCollection)
+{
+    parseXml("<IntColl/>");
+
+    IntCollectionTrait::Element myList;
+    ASSERT_RESULT_SUCCESS(XmlTraitSerializer<IntCollectionTrait>::fromXml(*_xmlNode, myList));
+
+    ASSERT_TRUE(myList.empty());
 }

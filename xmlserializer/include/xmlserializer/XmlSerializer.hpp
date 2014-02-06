@@ -38,7 +38,10 @@ namespace detail
 {
 /** (De)Serialize element children. */
 template <class Parent, class ChildList>
-struct SerializerChilden;
+class SerializerChildList;
+
+template <class Trait>
+class SerializerChildren;
 } // namespace detail
 
 
@@ -46,32 +49,74 @@ template <class Trait>
 class XmlTraitSerializer
 {
 public:
-    static Result toXml(const typename Trait::Element &element,
-                        TiXmlNode * &xmlElement)
+    typedef typename Trait::Element Element;
+
+    /** A toXml version using Trait::tag as xml tag for the serialized element.
+     *
+     * Return toXml(element, xmlElement, Trait::tag)
+     */
+    static Result toXml(const Element &element, TiXmlNode * &xmlElement)
     {
-        xmlElement = new TiXmlElement(Trait::tag);
-        return detail::SerializerChilden<typename Trait::Element, typename Trait::Children>
-               ::toXml(element, *xmlElement) << " (While serializing " << Trait::tag << ")";
+        return toXml(element, xmlElement, Trait::tag);
     }
 
-    static Result fromXml(const TiXmlNode &xmlElement, typename Trait::Element &element)
+    /** Serialize to xml the given element according to Trait. */
+    static Result toXml(const Element &element, TiXmlNode * &xmlElement, const char *tag)
     {
-        if (strcmp(Trait::tag, xmlElement.Value()) != 0) {
+        xmlElement = new TiXmlElement(tag);
+
+        Result res = detail::SerializerChildren<Trait>::toXml(element, *xmlElement);
+        if (res.isFailure()) {
+            delete xmlElement;
+            return res << " (While serializing " << tag << ")";
+        }
+        return res;
+    }
+
+    /** A fromXml version using Trait::tag as xml tag for the serialized element.
+     * Return fromXml(xmlElement, element, Trait::tag)
+     */
+    static Result fromXml(const TiXmlNode &xmlElement, Element &element)
+    {
+        return fromXml(xmlElement, element, Trait::tag);
+    }
+
+    /** Deserialize from xml the given element according to Trait. */
+    static Result fromXml(const TiXmlNode &xmlElement, Element &element, const char *tag)
+    {
+        if (strcmp(tag, xmlElement.Value()) != 0) {
             return Result(wrongXmlNode)
                    << "Trying to deserialize the wrong element."
-                   << "Found " << xmlElement.Value() << " expected " << Trait::tag;
+                   << "Found " << xmlElement.Value() << " expected " << tag;
         }
-        return detail::SerializerChilden<typename Trait::Element, typename Trait::Children>::
-               fromXml(xmlElement, element) << " (While desserializing "
-                                            << Trait::tag << ")";
+        return detail::SerializerChildren<Trait>::fromXml(xmlElement, element)
+               << " (While desserializing " << tag << ")";
     }
 };
 
 namespace detail
 {
+template <class Trait>
+class SerializerChildren
+{
+public:
+    static Result toXml(const typename Trait::Element &element,
+                        TiXmlNode &xmlElement)
+    {
+        return detail::SerializerChildList<typename Trait::Element, typename Trait::Children>
+               ::toXml(element, xmlElement);
+    }
+
+    static Result fromXml(const TiXmlNode &xmlElement, typename Trait::Element &element)
+    {
+        return detail::SerializerChildList<typename Trait::Element, typename Trait::Children>::
+               fromXml(xmlElement, element);
+    }
+};
+
 /** Do nothing in case of empty list. */
 template <class Parent>
-struct SerializerChilden<Parent, TYPELIST0>
+struct SerializerChildList<Parent, TYPELIST0>
 {
     static Result toXml(const Parent &, TiXmlNode &)
     {
@@ -108,19 +153,19 @@ struct ChildAccess
 };
 
 template <class Parent, class H, class T>
-class SerializerChilden<Parent, TypeList<H, T> >
+class SerializerChildList<Parent, TypeList<H, T> >
 {
 public:
     static Result toXml(const Parent &parent, TiXmlNode &xmlParent)
     {
-        TiXmlNode *xmlChild;
+        TiXmlNode *xmlChild = NULL;
         const typename H::ChildTrait::Element &child = H::Getter::function(parent);
         Result res = XmlTraitSerializer<typename H::ChildTrait>::toXml(child, xmlChild);
         if (res.isFailure()) {
             return res;
         }
         xmlParent.LinkEndChild(xmlChild);
-        return SerializerChilden<Parent, T>::toXml(parent, xmlParent);
+        return SerializerChildList<Parent, T>::toXml(parent, xmlParent);
     }
 
     static Result fromXml(const TiXmlNode &xmlParent, Parent &parent)
@@ -143,7 +188,7 @@ public:
         }
 
         // Deserialize sibling child
-        return SerializerChilden<Parent, T>::fromXml(xmlParent, parent);
+        return SerializerChildList<Parent, T>::fromXml(xmlParent, parent);
     }
 
 private:
@@ -178,3 +223,4 @@ private:
 } // namespace audio_comms
 
 #include "xmlserializer/TextNodeImplementation.hpp"
+#include "xmlserializer/CollectionImplementation.hpp"
