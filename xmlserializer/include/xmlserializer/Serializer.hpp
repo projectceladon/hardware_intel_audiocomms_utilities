@@ -25,6 +25,9 @@
 #include "xmlserializer/Result.hpp"
 #include "xmlserializer/XmlSerializer.hpp"
 #include "serializer/Serializer.hpp"
+#include "serializer/framework/TextNode.hpp"
+#include "serializer/framework/NamedTextTrait.hpp"
+#include "serializer/framework/Collection.hpp"
 
 
 namespace audio_comms
