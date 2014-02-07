@@ -42,25 +42,53 @@ void ASSERT_RESULT_FAILURE(Result res)
     ASSERT_FALSE(res.isSuccess()) << res.format();
 }
 
-/** Parse a xml string and return a node to the root element */
-TiXmlNode *parseXml(TiXmlDocument &doc, const std::string xml)
-{
-    doc.Parse(xml.c_str());
-    EXPECT_FALSE(doc.Error()) << doc.ErrorDesc();
-    return doc.RootElement();
-}
-
 class ToXml : public testing::Test
 {
+public:
+    template <class Trait, typename Elem>
+    void toXml(Elem elem)
+    {
+        ASSERT_RESULT_SUCCESS(XmlTraitSerializer<Trait>::toXml(elem, _xmlNode));
+        _doc.LinkEndChild(_xmlNode);
+        _stream << _doc;
+        _xml = _stream.c_str();
+    }
+
 protected:
     TiXmlNode *_xmlNode;
     TiXmlDocument _doc;
     TiXmlOutStream _stream;
+    std::string _xml;
 };
 class FromXml : public ToXml
 {
 public:
     FromXml() : _handle(NULL) {}
+
+    /** Parse a xml string and return a node to the root element */
+    void parseXml(const std::string xml)
+    {
+        _doc.Parse(xml.c_str());
+        EXPECT_FALSE(_doc.Error()) << _doc.ErrorDesc() << " While parsing: " << xml;
+        _xmlNode = _doc.RootElement();
+        ASSERT_TRUE(_xmlNode != NULL);
+    }
+
+    template <class Trait>
+    void dererializeString(const std::string &refStr, bool success = true)
+    {
+        std::string tag = Trait::tag;
+        parseXml("<" + tag + ">" + refStr + "</" + tag + ">");
+
+        typename Trait::Element str;
+        Result res = XmlTraitSerializer<Trait>::fromXml(*_xmlNode, str);
+        if (success) {
+            ASSERT_RESULT_SUCCESS(res);
+        } else {
+            ASSERT_RESULT_FAILURE(res);
+        }
+        EXPECT_EQ(refStr, str);
+    }
 
 protected:
     TiXmlText *_textXml;
@@ -80,12 +108,9 @@ const char *EmptyElemTrait::tag = "Empty";
 
 TEST_F(ToXml, EmptyElement)
 {
-    ASSERT_RESULT_SUCCESS(XmlTraitSerializer<EmptyElemTrait>::toXml(EmptyElem(), _xmlNode));
+    toXml<EmptyElemTrait>(EmptyElem());
 
-    _doc.LinkEndChild(_xmlNode);
-
-    _stream << _doc;
-    EXPECT_EQ(std::string("<Empty />"), _stream.c_str());
+    EXPECT_EQ("<Empty />", _xml);
 }
 
 TEST_F(FromXml, EmptyElement)
@@ -126,19 +151,14 @@ const char *NotSoEmptyElemTrait::tag = "NotSoEmpty";
 
 TEST_F(ToXml, NotSoEmptyElement)
 {
-    ASSERT_RESULT_SUCCESS(XmlTraitSerializer<NotSoEmptyElemTrait>::toXml(NotSoEmptyElem(), _xmlNode));
-
-    _doc.LinkEndChild(_xmlNode);
-
-    _stream << _doc;
-    EXPECT_EQ(std::string("<NotSoEmpty><Empty /></NotSoEmpty>"), _stream.c_str());
+    toXml<NotSoEmptyElemTrait>(NotSoEmptyElem());
+    EXPECT_EQ("<NotSoEmpty><Empty /></NotSoEmpty>", _xml);
 }
 
 TEST_F(FromXml, NotSoEmptyElement)
 {
     NotSoEmptyElem emptyElem;
-    _xmlNode = parseXml(_doc, "<NotSoEmpty><Empty /></NotSoEmpty>");
-    ASSERT_TRUE(_xmlNode != NULL);
+    parseXml("<NotSoEmpty><Empty /></NotSoEmpty>");
 
     ASSERT_RESULT_SUCCESS(XmlTraitSerializer<NotSoEmptyElemTrait>::fromXml(*_xmlNode,
                                                                    emptyElem));
@@ -151,12 +171,8 @@ typedef TextTrait<int> IntTrait;
 
 TEST_F(ToXml, textNode)
 {
-    ASSERT_RESULT_SUCCESS(XmlTraitSerializer<IntTrait>::toXml(10, _xmlNode));
-
-    _doc.LinkEndChild(_xmlNode);
-
-    _stream << _doc;
-    EXPECT_EQ(std::string("10"), _stream.c_str());
+    toXml<IntTrait>(10);
+    EXPECT_EQ("10", _xml);
 }
 
 TEST_F(FromXml, textNode)
@@ -193,18 +209,13 @@ const char *ParamTrait<_tag>::tag = _tag;
 
 TEST_F(ToXml, Param)
 {
-    ASSERT_RESULT_SUCCESS(XmlTraitSerializer<ParamTrait<> >::toXml(Param(20), _xmlNode));
-
-    _doc.LinkEndChild(_xmlNode);
-
-    _stream << _doc;
-    EXPECT_EQ(std::string("<Param>20</Param>"), _stream.c_str());
+    toXml<ParamTrait<> >(Param(20));
+    EXPECT_EQ("<Param>20</Param>", _xml);
 }
 
 TEST_F(FromXml, EmptyParam)
 {
-    _xmlNode = parseXml(_doc, "<Param></Param>");
-    ASSERT_TRUE(_xmlNode != NULL);
+    parseXml("<Param></Param>");
 
     Param param;
     ASSERT_RESULT_FAILURE(XmlTraitSerializer<ParamTrait<> >::fromXml(*_xmlNode, param));
@@ -212,8 +223,7 @@ TEST_F(FromXml, EmptyParam)
 
 TEST_F(FromXml, Param)
 {
-    _xmlNode = parseXml(_doc, "<Param>20</Param>");
-    ASSERT_TRUE(_xmlNode != NULL);
+    parseXml("<Param>20</Param>");
 
     Param param;
     ASSERT_RESULT_SUCCESS(XmlTraitSerializer<ParamTrait<> >::fromXml(*_xmlNode, param));
@@ -262,47 +272,25 @@ const char *BigTrait::tag = "Big";
 TEST_F(ToXml, BigElem)
 {
     const BigElem big(Param(20), Param(30));
-    ASSERT_RESULT_SUCCESS(XmlTraitSerializer<BigTrait>::toXml(big, _xmlNode));
+    toXml<BigTrait>(big);
 
-    _doc.LinkEndChild(_xmlNode);
-
-    _stream << _doc;
-    EXPECT_EQ(std::string("<Big>"
-                          "<Param1>20</Param1>"
-                          "<Param2>30</Param2>"
-                          "</Big>"),
-              _stream.c_str());
+    EXPECT_EQ("<Big>"
+              "<Param1>20</Param1>"
+              "<Param2>30</Param2>"
+              "</Big>", _xml);
 }
 
 TEST_F(FromXml, BigElem)
 {
-    _xmlNode = parseXml(_doc, "<Big>"
-                              "<Param1>10</Param1>"
-                              "<Param2>20</Param2>"
-                              "</Big>");
-    ASSERT_TRUE(_xmlNode != NULL);
+    parseXml("<Big>"
+             "<Param1>10</Param1>"
+             "<Param2>20</Param2>"
+             "</Big>");
 
     BigElem big;
     ASSERT_RESULT_SUCCESS(XmlTraitSerializer<BigTrait>::fromXml(*_xmlNode, big));
     EXPECT_EQ(10, big.getParam1().getValue());
     EXPECT_EQ(20, big.getParam2().getValue());
-}
-
-template <class Trait>
-void dererializeString(const std::string &refStr, bool success = true)
-{
-    TiXmlDocument doc;
-    TiXmlNode *xmlNode = parseXml(doc, "<String>" + refStr + "</String>");
-    ASSERT_TRUE(xmlNode != NULL);
-
-    typename Trait::Element str;
-    Result res = XmlTraitSerializer<Trait>::fromXml(*xmlNode, str);
-    if (success) {
-        ASSERT_RESULT_SUCCESS(res);
-    } else {
-        ASSERT_RESULT_FAILURE(res);
-    }
-    EXPECT_EQ(refStr, str);
 }
 
 char StringTag[] = "String";
@@ -311,13 +299,9 @@ typedef NamedTextTrait<std::string, StringTag> StringTrait;
 TEST_F(ToXml, String)
 {
     const StringTrait::Element str(":/");
-    ASSERT_RESULT_SUCCESS(XmlTraitSerializer<StringTrait>::toXml(str, _xmlNode));
+    toXml<StringTrait>(str);
 
-    _doc.LinkEndChild(_xmlNode);
-
-    _stream << _doc;
-    EXPECT_EQ(std::string("<String>:/</String>"),
-              _stream.c_str());
+    EXPECT_EQ("<String>:/</String>", _xml);
 }
 
 TEST_F(FromXml, String)
