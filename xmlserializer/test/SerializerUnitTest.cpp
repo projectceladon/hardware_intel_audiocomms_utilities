@@ -1,7 +1,7 @@
 /*
  * INTEL CONFIDENTIAL
  *
- * Copyright 2013 Intel Corporation
+ * Copyright 2013-2014 Intel Corporation
  * All Rights Reserved.
  *
  * The source code contained or described herein and all documents related
@@ -116,14 +116,14 @@ TEST_F(FromXml, EmptyElement)
 {
     EmptyElem emptyElem;
     ASSERT_RESULT_SUCCESS(XmlTraitSerializer<EmptyElemTrait>::fromXml(TiXmlElement("Empty"),
-                                                              emptyElem));
+                                                                      emptyElem));
 }
 
 TEST_F(FromXml, WrongElement)
 {
     EmptyElem emptyElem;
     ASSERT_RESULT_FAILURE(XmlTraitSerializer<EmptyElemTrait>::fromXml(TiXmlElement("WrongTag"),
-                                                              emptyElem));
+                                                                      emptyElem));
 }
 
 // Empty node (de)serialisation
@@ -160,7 +160,7 @@ TEST_F(FromXml, NotSoEmptyElement)
     parseXml("<NotSoEmpty><Empty /></NotSoEmpty>");
 
     ASSERT_RESULT_SUCCESS(XmlTraitSerializer<NotSoEmptyElemTrait>::fromXml(*_xmlNode,
-                                                                   emptyElem));
+                                                                           emptyElem));
 }
 
 // Text node (de)serialisation

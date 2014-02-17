@@ -1,7 +1,7 @@
 /*
  * INTEL CONFIDENTIAL
  *
- * Copyright 2013 Intel Corporation
+ * Copyright 2013-2014 Intel Corporation
  * All Rights Reserved.
  *
  * The source code contained or described herein and all documents related
@@ -39,7 +39,7 @@ namespace detail
 
 template <const char *_tag, class Collection, class ItemTrait, bool takeOwnership>
 class SerializerChildren<serializer::CollectionTrait<_tag, Collection, ItemTrait,
-                                         takeOwnership> >
+                                                     takeOwnership> >
 {
 private:
     template <class A, class B>
@@ -74,7 +74,7 @@ public:
             TiXmlNode *xmlItemNb;
             // Serialize the ItemNb
             Result res = XmlTraitSerializer<ItemNbTrait>::toXml(itemNb, xmlItemNb,
-                                                        formatIndex(nb).c_str());
+                                                                formatIndex(nb).c_str());
             if (res.isFailure()) {
                 return res << " (While deserializing collection item << " << nb << ")";
             }
@@ -96,7 +96,7 @@ public:
             Item item;
             ItemNb itemNb(item);
             Result res = XmlTraitSerializer<ItemNbTrait>::fromXml(*xmlItemNb, itemNb,
-                                                          formatIndex(nb).c_str());
+                                                                  formatIndex(nb).c_str());
             if (res.isFailure()) {
                 return res << " (While deserializing collection item" << nb << ")";
             }
@@ -135,9 +135,9 @@ private:
     {
         typedef ItemNb Element;
         typedef serializer::Child<ItemTrait,
-                      typename Element::Get, &Element::get,
-                      typename Element::Set, &Element::set, takeOwnership
-                      > ItemChildTrait;
+                                  typename Element::Get, &Element::get,
+                                  typename Element::Set, &Element::set, takeOwnership
+                                  > ItemChildTrait;
         typedef TYPELIST1 (ItemChildTrait) Children;
     };
 };

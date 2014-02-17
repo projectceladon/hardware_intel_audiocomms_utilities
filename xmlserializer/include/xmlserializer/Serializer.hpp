@@ -1,7 +1,7 @@
 /*
  * INTEL CONFIDENTIAL
  *
- * Copyright 2013 Intel Corporation
+ * Copyright 2013-2014 Intel Corporation
  * All Rights Reserved.
  *
  * The source code contained or described herein and all documents related
@@ -51,7 +51,8 @@ public:
         TiXmlElement *root = new TiXmlElement("ACME");
         root->SetAttribute("version", "0.0.1");
         TiXmlNode *xmlElement;
-        Result res = XmlTraitSerializer<serializer::ClassSerializationTrait<Class> >::toXml(c, xmlElement);
+        Result res = XmlTraitSerializer<serializer::ClassSerializationTrait<Class> >::toXml(c,
+                                                                                            xmlElement);
         if (res != Result::success()) {
             serializedCmd = "";
             return res;
@@ -83,7 +84,9 @@ public:
             return Result(conversionFailed) << "No command tag found.";
         }
 
-        return XmlTraitSerializer<serializer::ClassSerializationTrait<Class> >::fromXml(*acmeTag->FirstChild(), c);
+        return XmlTraitSerializer<serializer::ClassSerializationTrait<Class> >::fromXml(
+            *acmeTag->FirstChild(),
+            c);
     }
 };
 
