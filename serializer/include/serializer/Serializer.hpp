@@ -1,7 +1,7 @@
 /*
  * INTEL CONFIDENTIAL
  *
- * Copyright 2013 Intel Corporation
+ * Copyright 2013-2014 Intel Corporation
  * All Rights Reserved.
  *
  * The source code contained or described herein and all documents related
@@ -38,7 +38,7 @@ namespace serializer
 template <class Class>
 class ClassSerializationTrait;
 
-template<class Result>
+template <class Result>
 class Serializer
 {
 public:
