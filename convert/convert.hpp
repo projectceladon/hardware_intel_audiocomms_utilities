@@ -45,6 +45,7 @@ template<> struct ConvertionAllowed<int32_t> {};
 template<> struct ConvertionAllowed<uint16_t> {};
 template<> struct ConvertionAllowed<int16_t> {};
 template<> struct ConvertionAllowed<float> {};
+template<> struct ConvertionAllowed<double> {};
 
 } // namespace details
 
