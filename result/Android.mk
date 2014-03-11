@@ -1,6 +1,6 @@
 ################################################################################
 #                              INTEL CONFIDENTIAL
-#   Copyright(C) 2013 Intel Corporation. All Rights Reserved.
+#   Copyright(C) 2013-2014 Intel Corporation. All Rights Reserved.
 #   The source code contained  or  described herein and all documents related to
 #   the source code ("Material") are owned by Intel Corporation or its suppliers
 #   or licensors.  Title to the  Material remains with  Intel Corporation or its
@@ -88,11 +88,11 @@ LOCAL_LDFLAGS := --coverage
 
 LOCAL_STRIP_MODULE := false
 
-$(LOCAL_MODULE) : MY_TOOL := $(common_ut_local_module)_host
-$(LOCAL_MODULE) :
-	$(MY_TOOL)
-
 include $(BUILD_HOST_NATIVE_TEST)
+
+EXECUTABLE_PATH := $(LOCAL_INSTALLED_MODULE)
+include $(CLEAR_VARS)
+include $(LOCAL_PATH)/../runExecutable.mk
 
 #======================================================================
 # target unit test
