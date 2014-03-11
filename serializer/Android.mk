@@ -1,6 +1,6 @@
 ################################################################################
 #                              INTEL CONFIDENTIAL
-#   Copyright(C) 2013 Intel Corporation. All Rights Reserved.
+#   Copyright(C) 2013-2014 Intel Corporation. All Rights Reserved.
 #   The source code contained  or  described herein and all documents related to
 #   the source code ("Material") are owned by Intel Corporation or its suppliers
 #   or licensors.  Title to the  Material remains with  Intel Corporation or its
@@ -165,8 +165,8 @@ LOCAL_SHARED_LIBRARIES := \
 
 LOCAL_IMPORT_C_INCLUDE_DIRS_FROM_STATIC_LIBRARIES := $(common_header_lib_host)
 
-$(LOCAL_MODULE): MY_TOOL := $(LOCAL_MODULE)
-$(LOCAL_MODULE):
-	$(MY_TOOL)
-
 include $(BUILD_HOST_NATIVE_TEST)
+
+EXECUTABLE_PATH := $(LOCAL_INSTALLED_MODULE)
+include $(CLEAR_VARS)
+include $(LOCAL_PATH)/../runExecutable.mk
