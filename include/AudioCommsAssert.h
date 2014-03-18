@@ -91,7 +91,7 @@
 #define AUDIOCOMMS_ASSERT(cond, fmt, args...) \
  do { \
    if (audio_comms_unlikely(!(cond))) { \
-       fprintf(stderr, __BASE_FILE__ ":" audio_comms_mkstr(__LINE__) \
+       fprintf(stderr, __BASE_FILE__ ":" AUDIO_COMMS_MKSTR(__LINE__) \
                ": Assertion " #cond " failed: " fmt, ## args); \
        fprintf(stderr, "\n"); \
        abort(); \
