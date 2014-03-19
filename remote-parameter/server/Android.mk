@@ -19,7 +19,10 @@ LOCAL_PATH := $(call my-dir)
 
 remote_param_server_src_files := \
     RemoteParameterServer.cpp \
-    RemoteParameterImpl.cpp
+    RemoteParameterImpl.cpp \
+    RemoteParameter.cpp \
+    RemoteParameterString.cpp
+
 
 remote_param_server_includes_dir := \
     $(LOCAL_PATH)/include \

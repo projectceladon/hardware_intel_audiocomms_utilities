@@ -15,11 +15,12 @@
  */
 #pragma once
 
+#include <NonCopyable.hpp>
 #include <string>
 #include <stdint.h>
 #include <sys/types.h>
 
-class RemoteParameterConnector
+class RemoteParameterConnector : private audio_comms::utilities::NonCopyable
 {
 public:
     static const uint32_t _communicationTimeoutMs = 5000; /**< Timeout. */
@@ -95,11 +96,10 @@ public:
     int acceptConnection();
 
 private:
-    std::string _parameterName; /**< Parameter Name. */
     uint32_t _size; /**< Parameter Size. */
     int _socketFd; /**< Socket ID (server or client). */
 
-    static const std::string _baseName; /**< Base string name of a parameter. */
+    static const char *const _baseName; /**< Base string name of a parameter. */
 
     static const uint32_t _msecPerSec = 1000; /**< milliseconds per second. */
     static const uint32_t _usecPerMsec = 1000; /**< microseconds per milliseconds. */

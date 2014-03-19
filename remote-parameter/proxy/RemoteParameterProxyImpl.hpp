@@ -38,8 +38,8 @@ public:
      *              Proxy Side Remote Parameter implementor sends the value of the parameter to set.
      *              Proxy Side Remote Parameter receives the status from the server.
      */
-    RemoteParameterProxyImpl(const std::string &parameterName, uint32_t size);
-    ~RemoteParameterProxyImpl();
+    RemoteParameterProxyImpl(const std::string &parameterName);
+    virtual ~RemoteParameterProxyImpl();
 
     /**
      * Write to socket accessor
@@ -50,40 +50,39 @@ public:
      *
      * @return true if success, false otherwise and error code is set.
      */
-    bool write(const uint8_t *data, uint32_t size, std::string &error);
+    bool write(const uint8_t *data, size_t size, std::string &error);
 
     /**
      * Read from socket accessor
      *
      * @param[out] data to read
-     * @param[in] size of the data to read
+     * @param[in|out] size of the data to read, updated with the real size retrieved from server.
      * @param[out] error human readable error, set if return code is false.
      *
      * @return true if success, false otherwise and error code is set.
      */
-    bool read(uint8_t *data, uint32_t size, std::string &error);
+    bool read(uint8_t *data, size_t &size, std::string &error);
 
 private:
     std::string _name; /**< Parameter Name. */
-    uint32_t _size; /**< Parameter Size. */
 
     static const uint32_t _communicationTimeoutMs = 5000; /**< Timeout. */
 
-    static const std::string _connectionError; /**< human readable connection error. */
+    static const char *const _connectionError; /**< human readable connection error. */
 
-    static const std::string _sendSizeProtocolError; /**< human readable send size error. */
+    static const char *const _sendSizeProtocolError; /**< human readable send size error. */
 
-    static const std::string _sendDataProtocolError; /**< human readable send data error. */
+    static const char *const _sendDataProtocolError; /**< human readable send data error. */
 
-    static const std::string _receiveProtocolError; /**< human readable receive error. */
+    static const char *const _receiveProtocolError; /**< human readable receive error. */
 
-    static const std::string _transactionRefusedError; /**< human readable transaction error. */
+    static const char *const _transactionRefusedError; /**< human readable transaction error. */
 
-    static const std::string _getCommandError; /**< human readable connection error. */
+    static const char *const _getCommandError; /**< human readable connection error. */
 
-    static const std::string _readSizeProtocolError; /**< human readable send size error. */
+    static const char *const _readSizeProtocolError; /**< human readable send size error. */
 
-    static const std::string _readDataProtocolError; /**< human readable send data error. */
+    static const char *const _readDataProtocolError; /**< human readable send data error. */
 
-    static const std::string _readProtocolError; /**< human readable receive error. */
+    static const char *const _readProtocolError; /**< human readable receive error. */
 };

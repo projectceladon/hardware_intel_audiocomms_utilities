@@ -16,7 +16,7 @@
 #pragma once
 
 #include "EventListener.h"
-
+#include <NonCopyable.hpp>
 #include <map>
 #include <string>
 #include <stdint.h>
@@ -26,10 +26,10 @@ class CEventThread;
 class RemoteParameterBase;
 class RemoteParameterImpl;
 
-class RemoteParameterServer : public IEventListener
+class RemoteParameterServer : public IEventListener, private audio_comms::utilities::NonCopyable
 {
 public:
-    RemoteParameterServer();
+    explicit RemoteParameterServer();
     ~RemoteParameterServer();
 
     /**
@@ -73,7 +73,10 @@ private:
     bool _started; /**< started attribute of the server. */
 
 protected:
-    typedef std::map<int, RemoteParameterImpl *>::const_iterator RemoteParameterImplMapIterator;
+    typedef std::map<int,
+                     RemoteParameterImpl *>::const_iterator RemoteParameterImplMapConstIterator;
+
+    typedef std::map<int, RemoteParameterImpl *>::iterator RemoteParameterImplMapIterator;
 
     std::map<int, RemoteParameterImpl *> _remoteParameterImplMap; /**< Parameter Collection. */
 };

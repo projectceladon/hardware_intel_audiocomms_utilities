@@ -16,6 +16,7 @@
 
 #pragma once
 
+#include <NonCopyable.hpp>
 #include <string>
 #include <stdint.h>
 #include <sys/types.h>
@@ -40,12 +41,12 @@ class IRemoteParameter;
  *              Server Side Remote Parameter callback the set function of the interface.
  *              Server Side Remote Parameter sends the status to the client.
  */
-class RemoteParameterImpl
+class RemoteParameterImpl : private audio_comms::utilities::NonCopyable
 {
 public:
     RemoteParameterImpl(IRemoteParameter *interface,
                         const std::string &parameterName,
-                        uint32_t size);
+                        size_t size);
 
     ~RemoteParameterImpl();
 
@@ -68,12 +69,12 @@ public:
      *
      * @return name of the parameter.
      */
-    const std::string getName() const { return _name; }
+    const std::string &getName() const { return _name; }
 
 private:
 
     std::string _name; /**< Parameter Name. */
-    uint32_t _size; /**< Parameter Size. */
+    size_t _size; /**< Parameter Size. */
 
     IRemoteParameter *_interface; /**< Interface for set/get operation. */
 
