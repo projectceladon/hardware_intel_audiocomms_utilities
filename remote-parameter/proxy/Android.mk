@@ -18,7 +18,10 @@ LOCAL_PATH := $(call my-dir)
 ##################
 
 remote_param_proxy_src_files := \
-    RemoteParameterProxyImpl.cpp
+    RemoteParameterProxyImpl.cpp \
+    RemoteParameterProxy.cpp \
+    RemoteParameterProxyString.cpp
+
 
 remote_param_proxy_includes_dir := \
     $(LOCAL_PATH)/include

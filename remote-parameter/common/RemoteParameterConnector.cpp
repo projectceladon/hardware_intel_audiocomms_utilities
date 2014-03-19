@@ -24,7 +24,7 @@
 #include <utils/Log.h>
 #include <cutils/sockets.h>
 
-const std::string RemoteParameterConnector::_baseName = "parameter.";
+const char *const RemoteParameterConnector::_baseName = "parameter.";
 
 RemoteParameterConnector::RemoteParameterConnector(int socketFd)
     : _socketFd(socketFd)
@@ -33,7 +33,10 @@ RemoteParameterConnector::RemoteParameterConnector(int socketFd)
 
 RemoteParameterConnector::~RemoteParameterConnector()
 {
-    close(_socketFd);
+    if (isConnected()) {
+        close(_socketFd);
+        _socketFd = -1;
+    }
 }
 
 bool RemoteParameterConnector::isConnected() const

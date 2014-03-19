@@ -34,7 +34,7 @@ RemoteParameterServer::RemoteParameterServer()
 
 RemoteParameterServer::~RemoteParameterServer()
 {
-    _started = false;
+    stop();
 
     // Destroy remote parameters
     RemoteParameterImplMapIterator it;
@@ -42,10 +42,12 @@ RemoteParameterServer::~RemoteParameterServer()
     for (it = _remoteParameterImplMap.begin(); it != _remoteParameterImplMap.end(); ++it) {
 
         delete it->second;
+        it->second = NULL;
     }
 
     // Event Thread
     delete _eventThread;
+    _eventThread = NULL;
 }
 
 bool RemoteParameterServer::addRemoteParameter(RemoteParameterBase *remoteParameter, string &error)
@@ -59,7 +61,7 @@ bool RemoteParameterServer::addRemoteParameter(RemoteParameterBase *remoteParame
 
     // Check if the parameter name has already been added (opening twice the file descriptor would
     // block any client to connect to the file descriptor of the socket
-    RemoteParameterImplMapIterator it;
+    RemoteParameterImplMapConstIterator it;
     for (it = _remoteParameterImplMap.begin(); it != _remoteParameterImplMap.end(); ++it) {
 
         RemoteParameterImpl *implementor = it->second;
@@ -78,6 +80,7 @@ bool RemoteParameterServer::addRemoteParameter(RemoteParameterBase *remoteParame
     if (_remoteParameterImplMap.find(implementor->getPollFd()) != _remoteParameterImplMap.end()) {
 
         error = "Poll Fd added twice";
+        delete implementor;
         return false;
     }
 
@@ -99,20 +102,20 @@ bool RemoteParameterServer::start()
 
 void RemoteParameterServer::stop()
 {
-    _started = false;
     _eventThread->stop();
+    _started = false;
 }
 
 bool RemoteParameterServer::onEvent(int fd)
 {
-    LOGD("%s", __FUNCTION__);
+    ALOGD("%s", __FUNCTION__);
 
     // Find appropriate server
-    RemoteParameterImplMapIterator it = _remoteParameterImplMap.find(fd);
+    RemoteParameterImplMapConstIterator it = _remoteParameterImplMap.find(fd);
 
     if (it == _remoteParameterImplMap.end()) {
 
-        LOGE("%s: remote parameter not found!", __FUNCTION__);
+        ALOGE("%s: remote parameter not found!", __FUNCTION__);
     } else {
 
         // Process request
@@ -138,12 +141,12 @@ bool RemoteParameterServer::onHangup(int fd)
 
 void RemoteParameterServer::onAlarm()
 {
-    LOGE("%s: server timeout!", __FUNCTION__);
+    ALOGE("%s: server timeout!", __FUNCTION__);
 }
 
 void RemoteParameterServer::onPollError()
 {
-    LOGE("%s: server poll error!", __FUNCTION__);
+    ALOGE("%s: server poll error!", __FUNCTION__);
 }
 
 bool RemoteParameterServer::onProcess(uint16_t eventId)

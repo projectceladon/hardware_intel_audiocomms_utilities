@@ -28,36 +28,36 @@
 
 using std::string;
 
-const std::string RemoteParameterProxyImpl::_connectionError = "Not connected";
+const char *const RemoteParameterProxyImpl::_connectionError = "Proxy: Not connected";
 
-const std::string RemoteParameterProxyImpl::_sendSizeProtocolError = "Send Size:Protocol error";
+const char *const RemoteParameterProxyImpl::_sendSizeProtocolError =
+    "Proxy: Send Size:Protocol error";
 
-const std::string RemoteParameterProxyImpl::_sendDataProtocolError = "Send Data:Protocol error";
+const char *const RemoteParameterProxyImpl::_sendDataProtocolError =
+    "Proxy: Send Data:Protocol error";
 
-const std::string RemoteParameterProxyImpl::_receiveProtocolError = "Receive:Protocol error";
+const char *const RemoteParameterProxyImpl::_receiveProtocolError = "Proxy: receive protocol error";
 
-const std::string RemoteParameterProxyImpl::_transactionRefusedError = "Transaction refused";
+const char *const RemoteParameterProxyImpl::_transactionRefusedError = "Proxy: Transaction refused";
 
-const std::string RemoteParameterProxyImpl::_getCommandError =
-    "Protocol error: get should start with empty size";
+const char *const RemoteParameterProxyImpl::_getCommandError =
+    "Proxy: protocol error: get should start with empty size";
 
-const std::string RemoteParameterProxyImpl::_readSizeProtocolError =
-    "Protocol error while trying to read the size";
+const char *const RemoteParameterProxyImpl::_readSizeProtocolError =
+    "Proxy: protocol error while trying to read the size";
 
-const std::string RemoteParameterProxyImpl::_readDataProtocolError =
-    "Protocol error: answered size does not meet the expected data size";
+const char *const RemoteParameterProxyImpl::_readDataProtocolError =
+    "Proxy: protocol error: answered size does not meet the expected data size";
 
-const std::string RemoteParameterProxyImpl::_readProtocolError =
-    "Protocol error in receiving the data";
+const char *const RemoteParameterProxyImpl::_readProtocolError =
+    "Proxy: protocol error in receiving the data";
 
 /**
  * Remote Parameter (Proxy Side) implementation based on socket
  *
  */
-RemoteParameterProxyImpl::RemoteParameterProxyImpl(const string &parameterName,
-                                                   uint32_t size)
-    : _name(parameterName),
-      _size(size)
+RemoteParameterProxyImpl::RemoteParameterProxyImpl(const string &parameterName)
+    : _name(parameterName)
 {
 }
 
@@ -65,9 +65,8 @@ RemoteParameterProxyImpl::~RemoteParameterProxyImpl()
 {
 }
 
-bool RemoteParameterProxyImpl::write(const uint8_t *data, uint32_t size, string &error)
+bool RemoteParameterProxyImpl::write(const uint8_t *data, size_t size, string &error)
 {
-    AUDIOCOMMS_ASSERT(size == _size, "write called with wrong size");
     AUDIOCOMMS_ASSERT(data != NULL, "NULL data pointer");
 
     RemoteParameterConnector connector(socket_local_client(
@@ -119,9 +118,8 @@ bool RemoteParameterProxyImpl::write(const uint8_t *data, uint32_t size, string 
     return true;
 }
 
-bool RemoteParameterProxyImpl::read(uint8_t *data, uint32_t size, string &error)
+bool RemoteParameterProxyImpl::read(uint8_t *data, size_t &size, string &error)
 {
-    AUDIOCOMMS_ASSERT(size == _size, "Read called with wrong size");
     AUDIOCOMMS_ASSERT(data != NULL, "NULL data pointer");
 
     RemoteParameterConnector connector(socket_local_client(
@@ -148,7 +146,7 @@ bool RemoteParameterProxyImpl::read(uint8_t *data, uint32_t size, string &error)
     }
 
     /// Read answer (status + data)
-    uint32_t answerSize;
+    size_t answerSize;
 
     // Size
     if (!connector.receive(static_cast<void *>(&answerSize), sizeof(answerSize))) {
@@ -157,14 +155,15 @@ bool RemoteParameterProxyImpl::read(uint8_t *data, uint32_t size, string &error)
         return false;
     }
 
-    if (answerSize != size) {
+    if (answerSize > size) {
 
         error = _readDataProtocolError;
         return false;
     }
+    size = answerSize;
 
     // Read data
-    if (!connector.receive(static_cast<void *>(data), size)) {
+    if (!connector.receive(static_cast<void *>(data), answerSize)) {
 
         error = _readProtocolError;
         return false;

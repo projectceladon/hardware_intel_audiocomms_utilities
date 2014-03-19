@@ -30,7 +30,7 @@ public:
      *
      * @return true if set is successful, false otherwise.
      */
-    virtual bool set(const uint8_t *data, uint32_t size) = 0;
+    virtual bool set(const uint8_t *data, size_t size) = 0;
 
     /**
      * Get parameter.
@@ -40,7 +40,7 @@ public:
      *
      * @return true if get is successful, false otherwise.
      */
-    virtual void get(uint8_t *data, uint32_t size) const = 0;
+    virtual void get(uint8_t *data, size_t &size) const = 0;
 
 protected:
     virtual ~IRemoteParameter() {}

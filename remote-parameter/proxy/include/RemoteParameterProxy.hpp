@@ -16,21 +16,21 @@
 
 #pragma once
 
-#include "RemoteParameterProxyImpl.hpp"
 #include <string>
 #include <stdint.h>
 #include <sys/types.h>
+#include <utils/Log.h>
 
 /**
  * Client side Remote Parameter template.
  * This class may be used if parameter handled as an typed parameter.
  */
 template <typename TypeParam>
-class RemoteParameterProxy : public RemoteParameterProxyImpl
+class RemoteParameterProxy
 {
 public:
     RemoteParameterProxy(const std::string &parameterName)
-        : RemoteParameterProxyImpl(parameterName, sizeof(TypeParam))
+        : _name(parameterName)
     {}
 
     /**
@@ -54,43 +54,7 @@ public:
      * @return true if success, false otherwise and error code is set.
      */
     bool get(TypeParam &data, std::string &error);
-};
 
-/**
- * Client side Remote Parameter template specialization.
- * This class may be used if parameter handled as an unsigned integer
- */
-template <>
-class RemoteParameterProxy<uint32_t>  : public RemoteParameterProxyImpl
-{
-public:
-    RemoteParameterProxy(const std::string &parameterName)
-        : RemoteParameterProxyImpl(parameterName, sizeof(uint32_t))
-    {}
-
-    /**
-     * Set as an integer Parameter accessor
-     *
-     * @param[in] data parameter value to set
-     * @param[out] error human readable error, set if return code is false.
-     *
-     * @return true if success, false otherwise and error code is set.
-     */
-    bool setInteger(const uint32_t &data, std::string &error)
-    {
-        return write(reinterpret_cast<const uint8_t *>(&data), sizeof(data), error);
-    }
-
-    /**
-     * Get as an integer Parameter accessor
-     *
-     * @param[out] data parameter value to get
-     * @param[out] error human readable error, set if return code is false.
-     *
-     * @return true if success, false otherwise and error code is set.
-     */
-    bool getInteger(uint32_t &data, std::string &error)
-    {
-        return read(reinterpret_cast<uint8_t *>(&data), sizeof(data), error);
-    }
+private:
+    std::string _name; /**< Parameter Name. */
 };

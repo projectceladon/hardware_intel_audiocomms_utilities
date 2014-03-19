@@ -26,6 +26,7 @@
 #include <utils/Log.h>
 #include <cutils/sockets.h>
 
+
 using std::string;
 
 /**
@@ -34,7 +35,7 @@ using std::string;
  */
 RemoteParameterImpl::RemoteParameterImpl(IRemoteParameter *interface,
                                          const string &parameterName,
-                                         uint32_t size)
+                                         size_t size)
     : _name(parameterName),
       _size(size),
       _interface(interface),
@@ -107,14 +108,6 @@ void RemoteParameterImpl::handleNewConnection()
             ALOGE("%s: send data: %s", __FUNCTION__, strerror(errno));
         }
     } else {
-
-        /// Set parameter
-        // Check size
-        if (size != _size) {
-
-            ALOGE("%s: size mismatch", __FUNCTION__);
-            return;
-        }
 
         // Read data
         uint8_t data[size];
