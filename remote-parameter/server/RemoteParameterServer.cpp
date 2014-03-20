@@ -26,9 +26,9 @@
 using std::string;
 
 RemoteParameterServer::RemoteParameterServer()
-    : _eventThread(new CEventThread(this)),
-      _fdClientId(0),
-      _started(false)
+    : mEventThread(new CEventThread(this)),
+      mFdClientId(0),
+      mStarted(false)
 {
 }
 
@@ -39,21 +39,21 @@ RemoteParameterServer::~RemoteParameterServer()
     // Destroy remote parameters
     RemoteParameterImplMapIterator it;
 
-    for (it = _remoteParameterImplMap.begin(); it != _remoteParameterImplMap.end(); ++it) {
+    for (it = mRemoteParameterImplMap.begin(); it != mRemoteParameterImplMap.end(); ++it) {
 
         delete it->second;
         it->second = NULL;
     }
 
     // Event Thread
-    delete _eventThread;
-    _eventThread = NULL;
+    delete mEventThread;
+    mEventThread = NULL;
 }
 
 bool RemoteParameterServer::addRemoteParameter(RemoteParameterBase *remoteParameter, string &error)
 {
     AUDIOCOMMS_ASSERT(remoteParameter != NULL, "invalid remote parameter");
-    if (_started || (_started && _eventThread->inThreadContext())) {
+    if (mStarted || (mStarted && mEventThread->inThreadContext())) {
 
         error = "Parameter added in not permitted context";
         return false;
@@ -62,7 +62,7 @@ bool RemoteParameterServer::addRemoteParameter(RemoteParameterBase *remoteParame
     // Check if the parameter name has already been added (opening twice the file descriptor would
     // block any client to connect to the file descriptor of the socket
     RemoteParameterImplMapConstIterator it;
-    for (it = _remoteParameterImplMap.begin(); it != _remoteParameterImplMap.end(); ++it) {
+    for (it = mRemoteParameterImplMap.begin(); it != mRemoteParameterImplMap.end(); ++it) {
 
         RemoteParameterImpl *implementor = it->second;
         if (remoteParameter->getName() == implementor->getName()) {
@@ -77,7 +77,7 @@ bool RemoteParameterServer::addRemoteParameter(RemoteParameterBase *remoteParame
                                                                remoteParameter->getName(),
                                                                remoteParameter->getSize());
     // Check not already inserted
-    if (_remoteParameterImplMap.find(implementor->getPollFd()) != _remoteParameterImplMap.end()) {
+    if (mRemoteParameterImplMap.find(implementor->getPollFd()) != mRemoteParameterImplMap.end()) {
 
         error = "Poll Fd added twice";
         delete implementor;
@@ -85,25 +85,25 @@ bool RemoteParameterServer::addRemoteParameter(RemoteParameterBase *remoteParame
     }
 
     // Record parameter
-    _remoteParameterImplMap[implementor->getPollFd()] = implementor;
+    mRemoteParameterImplMap[implementor->getPollFd()] = implementor;
 
     // Listen to new server requests
-    _eventThread->addOpenedFd(_fdClientId++, implementor->getPollFd(), true);
+    mEventThread->addOpenedFd(mFdClientId++, implementor->getPollFd(), true);
 
     return true;
 }
 
 bool RemoteParameterServer::start()
 {
-    bool status = _started ? false : _eventThread->start();
-    _started = true;
+    bool status = mStarted ? false : mEventThread->start();
+    mStarted = true;
     return status;
 }
 
 void RemoteParameterServer::stop()
 {
-    _eventThread->stop();
-    _started = false;
+    mEventThread->stop();
+    mStarted = false;
 }
 
 bool RemoteParameterServer::onEvent(int fd)
@@ -111,9 +111,9 @@ bool RemoteParameterServer::onEvent(int fd)
     ALOGD("%s", __FUNCTION__);
 
     // Find appropriate server
-    RemoteParameterImplMapConstIterator it = _remoteParameterImplMap.find(fd);
+    RemoteParameterImplMapConstIterator it = mRemoteParameterImplMap.find(fd);
 
-    if (it == _remoteParameterImplMap.end()) {
+    if (it == mRemoteParameterImplMap.end()) {
 
         ALOGE("%s: remote parameter not found!", __FUNCTION__);
     } else {

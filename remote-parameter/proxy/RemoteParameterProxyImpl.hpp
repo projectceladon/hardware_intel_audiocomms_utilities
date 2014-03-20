@@ -64,25 +64,25 @@ public:
     bool read(uint8_t *data, size_t &size, std::string &error);
 
 private:
-    std::string _name; /**< Parameter Name. */
+    std::string mName; /**< Parameter Name. */
 
-    static const uint32_t _communicationTimeoutMs = 5000; /**< Timeout. */
+    static const uint32_t mCommunicationTimeoutMs = 5000; /**< Timeout. */
 
-    static const char *const _connectionError; /**< human readable connection error. */
+    static const char *const mConnectionError; /**< human readable connection error. */
 
-    static const char *const _sendSizeProtocolError; /**< human readable send size error. */
+    static const char *const mSendSizeProtocolError; /**< human readable send size error. */
 
-    static const char *const _sendDataProtocolError; /**< human readable send data error. */
+    static const char *const mSendDataProtocolError; /**< human readable send data error. */
 
-    static const char *const _receiveProtocolError; /**< human readable receive error. */
+    static const char *const mReceiveProtocolError; /**< human readable receive error. */
 
-    static const char *const _transactionRefusedError; /**< human readable transaction error. */
+    static const char *const mTransactionRefusedError; /**< human readable transaction error. */
 
-    static const char *const _getCommandError; /**< human readable connection error. */
+    static const char *const mGetCommandError; /**< human readable connection error. */
 
-    static const char *const _readSizeProtocolError; /**< human readable send size error. */
+    static const char *const mReadSizeProtocolError; /**< human readable send size error. */
 
-    static const char *const _readDataProtocolError; /**< human readable send data error. */
+    static const char *const mReadDataProtocolError; /**< human readable send data error. */
 
-    static const char *const _readProtocolError; /**< human readable receive error. */
+    static const char *const mReadProtocolError; /**< human readable receive error. */
 };

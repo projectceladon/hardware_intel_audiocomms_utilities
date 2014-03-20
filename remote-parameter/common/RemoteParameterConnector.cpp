@@ -24,49 +24,50 @@
 #include <utils/Log.h>
 #include <cutils/sockets.h>
 
-const char *const RemoteParameterConnector::_baseName = "parameter.";
+const char *const RemoteParameterConnector::mBaseName = "parameter.";
 
 RemoteParameterConnector::RemoteParameterConnector(int socketFd)
-    : _socketFd(socketFd)
+    : mSocketFd(socketFd)
 {
 }
 
 RemoteParameterConnector::~RemoteParameterConnector()
 {
     if (isConnected()) {
-        close(_socketFd);
-        _socketFd = -1;
+
+        close(mSocketFd);
+        mSocketFd = -1;
     }
 }
 
 bool RemoteParameterConnector::isConnected() const
 {
-    return _socketFd != -1;
+    return mSocketFd != -1;
 }
 
 std::string RemoteParameterConnector::getServerName(const std::string &parameterName)
 {
-    return _baseName + parameterName;
+    return mBaseName + parameterName;
 }
 
 int RemoteParameterConnector::acceptConnection()
 {
-    return accept(_socketFd, NULL, NULL);
+    return accept(mSocketFd, NULL, NULL);
 }
 
 int RemoteParameterConnector::getFd() const
 {
-    return _socketFd;
+    return mSocketFd;
 }
 
 void RemoteParameterConnector::setTimeoutMs(uint32_t timeoutMs)
 {
     struct timeval tv;
-    tv.tv_sec = timeoutMs / _msecPerSec;
-    tv.tv_usec = (timeoutMs % _usecPerMsec) * _usecPerMsec;
+    tv.tv_sec = timeoutMs / mMsecPerSec;
+    tv.tv_usec = (timeoutMs % mUsecPerMsec) * mUsecPerMsec;
 
-    setsockopt(_socketFd, SOL_SOCKET, SO_SNDTIMEO, &tv, sizeof(tv));
-    setsockopt(_socketFd, SOL_SOCKET, SO_RCVTIMEO, &tv, sizeof(tv));
+    setsockopt(mSocketFd, SOL_SOCKET, SO_SNDTIMEO, &tv, sizeof(tv));
+    setsockopt(mSocketFd, SOL_SOCKET, SO_RCVTIMEO, &tv, sizeof(tv));
 }
 
 bool RemoteParameterConnector::send(const void *data, uint32_t size)
@@ -78,7 +79,7 @@ bool RemoteParameterConnector::send(const void *data, uint32_t size)
 
     while (size) {
 
-        int32_t accessedSize = ::send(_socketFd, &pData[offset], size, MSG_NOSIGNAL);
+        int32_t accessedSize = ::send(mSocketFd, &pData[offset], size, MSG_NOSIGNAL);
 
         if (!accessedSize || accessedSize == -1) {
 
@@ -98,7 +99,7 @@ bool RemoteParameterConnector::receive(void *data, uint32_t size)
 
     while (size) {
 
-        int32_t accessedSize = ::recv(_socketFd, pData, size, MSG_NOSIGNAL);
+        int32_t accessedSize = ::recv(mSocketFd, pData, size, MSG_NOSIGNAL);
 
         if (!accessedSize || accessedSize == -1) {
 
@@ -115,9 +116,9 @@ gid_t RemoteParameterConnector::getGid()
     struct ucred cr;
     socklen_t len = sizeof(cr);
 
-    if (getsockopt(_socketFd, SOL_SOCKET, SO_PEERCRED, &cr, &len)) {
+    if (getsockopt(mSocketFd, SOL_SOCKET, SO_PEERCRED, &cr, &len)) {
 
-        ALOGE("could not get socket credentials: %s\n", strerror(errno));
+        LOGE("could not get socket credentials: %s\n", strerror(errno));
         return -1;
     }
 

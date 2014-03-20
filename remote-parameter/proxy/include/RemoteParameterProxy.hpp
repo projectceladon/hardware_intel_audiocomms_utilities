@@ -30,7 +30,7 @@ class RemoteParameterProxy
 {
 public:
     RemoteParameterProxy(const std::string &parameterName)
-        : _name(parameterName)
+        : mName(parameterName)
     {}
 
     /**
@@ -56,5 +56,5 @@ public:
     bool get(TypeParam &data, std::string &error);
 
 private:
-    std::string _name; /**< Parameter Name. */
+    std::string mName; /**< Parameter Name. */
 };

@@ -66,11 +66,11 @@ private:
     virtual void onPollError();
     virtual bool onProcess(uint16_t eventId);
 
-    CEventThread *_eventThread; /**< Event thread. */
+    CEventThread *mEventThread; /**< Event thread. */
 
-    uint32_t _fdClientId; /**< FDs identifiers for CEventThread. */
+    uint32_t mFdClientId; /**< FDs identifiers for CEventThread. */
 
-    bool _started; /**< started attribute of the server. */
+    bool mStarted; /**< started attribute of the server. */
 
 protected:
     typedef std::map<int,
@@ -78,5 +78,5 @@ protected:
 
     typedef std::map<int, RemoteParameterImpl *>::iterator RemoteParameterImplMapIterator;
 
-    std::map<int, RemoteParameterImpl *> _remoteParameterImplMap; /**< Parameter Collection. */
+    std::map<int, RemoteParameterImpl *> mRemoteParameterImplMap; /**< Parameter Collection. */
 };
