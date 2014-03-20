@@ -31,7 +31,7 @@ static const size_t MAX_SIZE = MAX_LENGTH + 1;
 template <typename TypeParam>
 bool RemoteParameterProxy<TypeParam>::set(const TypeParam &data, std::string &error)
 {
-    RemoteParameterProxyImpl proxy(_name);
+    RemoteParameterProxyImpl proxy(mName);
     if (data.length() > MAX_LENGTH) {
 
         error = "String Parameter exceeds max allowed length";
@@ -44,7 +44,7 @@ bool RemoteParameterProxy<TypeParam>::set(const TypeParam &data, std::string &er
 template <typename TypeParam>
 bool RemoteParameterProxy<TypeParam>::get(TypeParam &data, std::string &error)
 {
-    RemoteParameterProxyImpl proxy(_name);
+    RemoteParameterProxyImpl proxy(mName);
     char dataToRead[MAX_SIZE];
     size_t size = MAX_SIZE;
     if (!proxy.read(reinterpret_cast<uint8_t *>(dataToRead), size, error)) {

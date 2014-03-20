@@ -24,13 +24,13 @@
 template <typename TypeParam>
 bool RemoteParameterProxy<TypeParam>::set(const TypeParam &data, std::string &error)
 {
-    RemoteParameterProxyImpl proxy(_name);
+    RemoteParameterProxyImpl proxy(mName);
     return proxy.write(reinterpret_cast<const uint8_t *>(&data), sizeof(TypeParam), error);
 }
 template <typename TypeParam>
 bool RemoteParameterProxy<TypeParam>::get(TypeParam &data, std::string &error)
 {
-    RemoteParameterProxyImpl proxy(_name);
+    RemoteParameterProxyImpl proxy(mName);
     size_t size = sizeof(TypeParam);
     return proxy.read(reinterpret_cast<uint8_t *>(&data), size, error);
 }

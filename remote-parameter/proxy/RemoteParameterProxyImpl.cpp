@@ -28,28 +28,28 @@
 
 using std::string;
 
-const char *const RemoteParameterProxyImpl::_connectionError = "Proxy: Not connected";
+const char *const RemoteParameterProxyImpl::mConnectionError = "Proxy: Not connected";
 
-const char *const RemoteParameterProxyImpl::_sendSizeProtocolError =
+const char *const RemoteParameterProxyImpl::mSendSizeProtocolError =
     "Proxy: Send Size:Protocol error";
 
-const char *const RemoteParameterProxyImpl::_sendDataProtocolError =
+const char *const RemoteParameterProxyImpl::mSendDataProtocolError =
     "Proxy: Send Data:Protocol error";
 
-const char *const RemoteParameterProxyImpl::_receiveProtocolError = "Proxy: receive protocol error";
+const char *const RemoteParameterProxyImpl::mReceiveProtocolError = "Proxy: receive protocol error";
 
-const char *const RemoteParameterProxyImpl::_transactionRefusedError = "Proxy: Transaction refused";
+const char *const RemoteParameterProxyImpl::mTransactionRefusedError = "Proxy: Transaction refused";
 
-const char *const RemoteParameterProxyImpl::_getCommandError =
+const char *const RemoteParameterProxyImpl::mGetCommandError =
     "Proxy: protocol error: get should start with empty size";
 
-const char *const RemoteParameterProxyImpl::_readSizeProtocolError =
+const char *const RemoteParameterProxyImpl::mReadSizeProtocolError =
     "Proxy: protocol error while trying to read the size";
 
-const char *const RemoteParameterProxyImpl::_readDataProtocolError =
+const char *const RemoteParameterProxyImpl::mReadDataProtocolError =
     "Proxy: protocol error: answered size does not meet the expected data size";
 
-const char *const RemoteParameterProxyImpl::_readProtocolError =
+const char *const RemoteParameterProxyImpl::mReadProtocolError =
     "Proxy: protocol error in receiving the data";
 
 /**
@@ -57,7 +57,7 @@ const char *const RemoteParameterProxyImpl::_readProtocolError =
  *
  */
 RemoteParameterProxyImpl::RemoteParameterProxyImpl(const string &parameterName)
-    : _name(parameterName)
+    : mName(parameterName)
 {
 }
 
@@ -70,31 +70,31 @@ bool RemoteParameterProxyImpl::write(const uint8_t *data, size_t size, string &e
     AUDIOCOMMS_ASSERT(data != NULL, "NULL data pointer");
 
     RemoteParameterConnector connector(socket_local_client(
-                                           RemoteParameterConnector::getServerName(_name).c_str(),
+                                           RemoteParameterConnector::getServerName(mName).c_str(),
                                            ANDROID_SOCKET_NAMESPACE_ABSTRACT,
                                            SOCK_STREAM));
     if (!connector.isConnected()) {
 
-        error = _connectionError;
+        error = mConnectionError;
         return false;
     }
 
     // Set timeout
-    connector.setTimeoutMs(_communicationTimeoutMs);
+    connector.setTimeoutMs(mCommunicationTimeoutMs);
 
     /// For a set command first
     // By protocol convention, set command is identified with non-zero size sent first.
     // The size sent is the size of the parameter to set.
     if (!connector.send(static_cast<const void *>(&size), sizeof(size))) {
 
-        error = _sendSizeProtocolError;
+        error = mSendSizeProtocolError;
         return false;
     }
 
     /// Send data
     if (!connector.send((const void *)data, size)) {
 
-        error = _sendDataProtocolError;
+        error = mSendDataProtocolError;
         return false;
     }
 
@@ -104,14 +104,14 @@ bool RemoteParameterProxyImpl::write(const uint8_t *data, size_t size, string &e
     // Status
     if (!connector.receive(static_cast<void *>(&status), sizeof(status))) {
 
-        error = _receiveProtocolError;
+        error = mReceiveProtocolError;
         return false;
     }
 
     if (status != RemoteParameterConnector::_transactionSucessfull) {
 
         // Got an error
-        error = _transactionRefusedError;
+        error = mTransactionRefusedError;
         return false;
     }
 
@@ -123,16 +123,16 @@ bool RemoteParameterProxyImpl::read(uint8_t *data, size_t &size, string &error)
     AUDIOCOMMS_ASSERT(data != NULL, "NULL data pointer");
 
     RemoteParameterConnector connector(socket_local_client(
-                                           RemoteParameterConnector::getServerName(_name).c_str(),
+                                           RemoteParameterConnector::getServerName(mName).c_str(),
                                            ANDROID_SOCKET_NAMESPACE_ABSTRACT,
                                            SOCK_STREAM));
     // Set timeout
-    connector.setTimeoutMs(_communicationTimeoutMs);
+    connector.setTimeoutMs(mCommunicationTimeoutMs);
 
     // Check connection
     if (!connector.isConnected()) {
 
-        error = _connectionError;
+        error = mConnectionError;
         return false;
     }
 
@@ -141,7 +141,7 @@ bool RemoteParameterProxyImpl::read(uint8_t *data, size_t &size, string &error)
     uint32_t cmdSize = RemoteParameterConnector::_sizeCommandGet;
     if (!connector.send(static_cast<const void *>(&cmdSize), sizeof(cmdSize))) {
 
-        error = _getCommandError;
+        error = mGetCommandError;
         return false;
     }
 
@@ -151,13 +151,13 @@ bool RemoteParameterProxyImpl::read(uint8_t *data, size_t &size, string &error)
     // Size
     if (!connector.receive(static_cast<void *>(&answerSize), sizeof(answerSize))) {
 
-        error = _readSizeProtocolError;
+        error = mReadSizeProtocolError;
         return false;
     }
 
     if (answerSize > size) {
 
-        error = _readDataProtocolError;
+        error = mReadDataProtocolError;
         return false;
     }
     size = answerSize;
@@ -165,7 +165,7 @@ bool RemoteParameterProxyImpl::read(uint8_t *data, size_t &size, string &error)
     // Read data
     if (!connector.receive(static_cast<void *>(data), answerSize)) {
 
-        error = _readProtocolError;
+        error = mReadProtocolError;
         return false;
     }
 

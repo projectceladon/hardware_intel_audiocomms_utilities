@@ -96,11 +96,10 @@ public:
     int acceptConnection();
 
 private:
-    uint32_t _size; /**< Parameter Size. */
-    int _socketFd; /**< Socket ID (server or client). */
+    int mSocketFd; /**< Socket ID (server or client). */
 
-    static const char *const _baseName; /**< Base string name of a parameter. */
+    static const char *const mBaseName; /**< Base string name of a parameter. */
 
-    static const uint32_t _msecPerSec = 1000; /**< milliseconds per second. */
-    static const uint32_t _usecPerMsec = 1000; /**< microseconds per milliseconds. */
+    static const uint32_t mMsecPerSec = 1000; /**< milliseconds per second. */
+    static const uint32_t mUsecPerMsec = 1000; /**< microseconds per milliseconds. */
 };
