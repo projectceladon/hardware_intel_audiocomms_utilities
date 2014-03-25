@@ -1,5 +1,5 @@
 #
-# Copyright 2013 Intel Corporation
+# Copyright 2013-2014 Intel Corporation
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,6 +14,8 @@
 # limitations under the License.
 
 LOCAL_PATH := $(call my-dir)
+
+ifeq ($(audiocomms_test_gcov_target),true)
 
 include $(CLEAR_VARS)
 
@@ -30,4 +32,26 @@ LOCAL_MODULE_TAGS := optional
 LOCAL_IMPORT_C_INCLUDE_DIRS_FROM_SHARED_LIBRARIES := libproperty
 
 include $(BUILD_STATIC_LIBRARY)
+
+endif
+
+
+ifeq ($(audiocomms_test_gcov_host),true)
+
+include $(CLEAR_VARS)
+
+LOCAL_EXPORT_C_INCLUDE_DIRS := $(LOCAL_PATH)/include_host
+
+LOCAL_SRC_FILES := GcovFlush.cpp
+LOCAL_C_INCLUDES := \
+    $(LOCAL_PATH)/include_host \
+    bionic/libc/kernel/common
+
+LOCAL_MODULE := gcov_flush_host
+LOCAL_MODULE_TAGS := optional
+
+
+include $(BUILD_HOST_STATIC_LIBRARY)
+
+endif
 
