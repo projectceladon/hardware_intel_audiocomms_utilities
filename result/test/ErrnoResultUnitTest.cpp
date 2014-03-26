@@ -30,7 +30,18 @@ typedef audio_comms::cme::result::ErrnoResult ErrnoResult;
 TEST(ErrnoResult, defaultValueConstructor)
 {
     ErrnoResult errResult;
-    EXPECT_EQ("Code -666: Unknown error -666", errResult.format());
+
+    /* Some strerror() implementations display the error as int, other one display the error
+     * as unsigned int */
+
+    std::stringstream expectedStringSigned;
+    expectedStringSigned << "Code -666: Unknown error " << (int)-666;
+
+    std::stringstream expectedStringUnsigned;
+    expectedStringUnsigned << "Code -666: Unknown error " << (unsigned int)-666;
+
+    EXPECT_TRUE(errResult.format() == expectedStringSigned.str() ||
+                errResult.format() == expectedStringUnsigned.str());
 }
 
 TEST(ErrnoResult, sucess)
