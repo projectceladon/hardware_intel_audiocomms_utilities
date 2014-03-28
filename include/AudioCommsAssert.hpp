@@ -4,7 +4,7 @@
  *
  * @section License
  *
- * Copyright 2013 Intel Corporation
+ * Copyright 2013-2014 Intel Corporation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -63,6 +63,17 @@ class compileTimeAssertFailure<false>
 
 #include <cstdlib> /* assert */
 #include <iostream>
+#include <sstream>
+#include <string>
+#include <utils/Log.h>
+
+static inline void printFatalMessage(const std::string &message)
+{
+    std::cerr << message << std::endl;
+#if __ANDROID__
+    __android_log_write(ANDROID_LOG_FATAL, "ASSERT", message.c_str());
+#endif
+}
 
 /**
  * Checks a condition and abort if it is not met.
@@ -75,8 +86,9 @@ class compileTimeAssertFailure<false>
 #define AUDIOCOMMS_ASSERT(cond, iostr) \
  do { \
    if (audio_comms_unlikely(!(cond))) { \
-       std::cerr << __BASE_FILE__ ":" << __LINE__ << ": Assertion " #cond " failed: " \
-                 << iostr << std::endl; \
+       std::stringstream stream; \
+       stream << __BASE_FILE__ ":" << __LINE__ << ": Assertion " #cond " failed: " << iostr; \
+       printFatalMessage(stream.str()); \
        abort(); \
    } \
  } while (false)
