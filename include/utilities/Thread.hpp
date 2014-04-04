@@ -1,7 +1,7 @@
 /*
  ********************************************************************************
  *                              INTEL CONFIDENTIAL
- *   Copyright(C) 2013 Intel Corporation. All Rights Reserved.
+ *   Copyright(C) 2013-2014 Intel Corporation. All Rights Reserved.
  *   The source code contained  or  described herein and all documents related to
  *   the source code ("Material") are owned by Intel Corporation or its suppliers
  *   or licensors.  Title to the  Material remains with  Intel Corporation or its
@@ -83,8 +83,9 @@ protected:
     void selfAbort();
 
 private:
-    /**
-     * The processing function which will repeatedly be called by the thread.
+    /** The processing function which will repeatedly be called by the thread.
+     *
+     * It will be called at least once.
      */
     virtual void processing() = 0;
 
@@ -95,9 +96,9 @@ private:
 
     void loop()
     {
-        while (!_stopRequested) {
+        do {
             processing();
-        }
+        } while (!_stopRequested);
     }
 
     static void *threadMainHelper(void *);
