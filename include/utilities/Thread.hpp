@@ -36,6 +36,10 @@ namespace common
 
 /**
  * Helper class to spawn and handle a thread
+ *
+ * This class is NOT thread safe.
+ * The methods start, stop, isStarted and the destructor
+ * MUST not be called simultaneously.
  */
 class Thread : private audio_comms::utilities::NonCopyable
 {
