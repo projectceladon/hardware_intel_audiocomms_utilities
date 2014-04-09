@@ -17,7 +17,7 @@
 #define LOG_TAG "RemoteParameter"
 
 #include "RemoteParameterImpl.hpp"
-#include "IRemoteParameter.hpp"
+#include "include/RemoteParameter.hpp"
 #include <RemoteParameterConnector.hpp>
 #include <AudioCommsAssert.hpp>
 #include <sys/socket.h>
@@ -33,12 +33,12 @@ using std::string;
  * Remote Parameter (Server Side) implementation based on socket
  *
  */
-RemoteParameterImpl::RemoteParameterImpl(IRemoteParameter *interface,
+RemoteParameterImpl::RemoteParameterImpl(RemoteParameterBase *parameter,
                                          const string &parameterName,
                                          size_t size)
     : _name(parameterName),
       _size(size),
-      _interface(interface),
+      _parameter(parameter),
       _serverConnector(new RemoteParameterConnector(
                            socket_local_server(
                                RemoteParameterConnector::getServerName(_name).c_str(),
@@ -93,7 +93,7 @@ void RemoteParameterImpl::handleNewConnection()
         // Read data
         uint8_t data[size];
 
-        _interface->get(data, size);
+        _parameter->get(data, size);
 
         // Send Size
         if (!clientConnector.send((const void *)&size, sizeof(size))) {
@@ -120,7 +120,7 @@ void RemoteParameterImpl::handleNewConnection()
 
         // Set data
         uint32_t status = RemoteParameterConnector::_transactionSucessfull;
-        if (!_interface->set(data, size)) {
+        if (!_parameter->set(data, size)) {
 
             status = RemoteParameterConnector::_transactionFailed;
         }

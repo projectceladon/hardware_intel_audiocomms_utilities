@@ -25,8 +25,7 @@ remote_param_server_src_files := \
 
 
 remote_param_server_includes_dir := \
-    $(LOCAL_PATH)/include \
-    $(LOCAL_PATH)/interface
+    $(LOCAL_PATH)/include
 
 remote_param_server_includes_dir_host := \
     $(remote_param_server_includes_dir) \

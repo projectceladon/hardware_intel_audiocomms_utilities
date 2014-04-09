@@ -22,7 +22,7 @@
 #include <sys/types.h>
 
 class RemoteParameterConnector;
-class IRemoteParameter;
+class RemoteParameterBase;
 
 /**
  * Remote Parameter (Server Side) implementation based on android socket.
@@ -44,7 +44,7 @@ class IRemoteParameter;
 class RemoteParameterImpl : private audio_comms::utilities::NonCopyable
 {
 public:
-    RemoteParameterImpl(IRemoteParameter *interface,
+    RemoteParameterImpl(RemoteParameterBase *parameter,
                         const std::string &parameterName,
                         size_t size);
 
@@ -76,7 +76,7 @@ private:
     std::string _name; /**< Parameter Name. */
     size_t _size; /**< Parameter Size. */
 
-    IRemoteParameter *_interface; /**< Interface for set/get operation. */
+    RemoteParameterBase *_parameter; /**< Interface for set/get operation. */
 
     RemoteParameterConnector *_serverConnector; /**< Remote Parameter Server Side connector. */
 
