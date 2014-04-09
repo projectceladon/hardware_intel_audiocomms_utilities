@@ -95,7 +95,6 @@ LOCAL_IMPORT_C_INCLUDE_DIRS_FROM_STATIC_LIBRARIES := \
     $(common_local_import_c_include_dirs_from_static_libraries_host)
 
 LOCAL_SHARED_LIBRARIES := \
-    $(common_shared_libraries) \
     libparameter_host
 
 LOCAL_STATIC_LIBRARIES := \
@@ -138,7 +137,6 @@ LOCAL_IMPORT_C_INCLUDE_DIRS_FROM_STATIC_LIBRARIES := \
     $(common_local_import_c_include_dirs_from_static_libraries_host)
 
 LOCAL_SHARED_LIBRARIES := \
-    $(common_shared_libraries) \
     libparameter_host
 
 LOCAL_STATIC_LIBRARIES := \
