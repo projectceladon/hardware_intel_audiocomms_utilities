@@ -57,6 +57,16 @@ public:
 
 private:
     /**
+     * Start/stop the server.
+     *
+     * @param[in] isStarted true if need to start the server, false otherwise.
+     *
+     * @return true if server started / stopped successfully, false if the server is already in the
+     *              requested state.
+     */
+    bool setStarted(bool isStarted);
+
+    /**
      * Event processing - From IEventListener
      */
     virtual bool onEvent(int fd);
