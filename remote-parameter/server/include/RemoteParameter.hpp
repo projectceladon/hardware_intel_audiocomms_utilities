@@ -16,7 +16,6 @@
 
 #pragma once
 
-#include "IRemoteParameter.hpp"
 #include <AudioCommsAssert.hpp>
 #include <string>
 #include <stdint.h>
@@ -27,7 +26,7 @@
  * Server side Remote Parameter object.
  * This class may be used if parameter handled as an array of char
  */
-class RemoteParameterBase : public IRemoteParameter
+class RemoteParameterBase
 {
 public:
     explicit RemoteParameterBase(const std::string &parameterName, size_t size)
@@ -51,11 +50,24 @@ public:
      */
     size_t getSize() const { return mSize; }
 
-private:
     /**
-     * Accessors from IRemoteParameter interface.
+     * Set parameter.
+     *
+     * @param[in] data value to set (as a buffer).
+     * @param[in] size in bytes of the buffer to set.
+     *
+     * @return true if set is successful, false otherwise.
      */
     virtual bool set(const uint8_t *data, size_t size) = 0;
+
+    /**
+     * Get parameter.
+     *
+     * @param[out] data value to be written to (as a buffer).
+     * @param[in] size in bytes of the buffer to get.
+     *
+     * @return true if get is successful, false otherwise.
+     */
     virtual void get(uint8_t *data, size_t &size) const = 0;
 
 
