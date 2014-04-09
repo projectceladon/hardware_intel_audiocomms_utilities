@@ -95,15 +95,35 @@ bool RemoteParameterServer::addRemoteParameter(RemoteParameterBase *remoteParame
 
 bool RemoteParameterServer::start()
 {
-    bool status = mStarted ? false : mEventThread->start();
-    mStarted = true;
+    if (!setStarted(true)) {
+
+        return false;
+    }
+    bool status = mEventThread->start();
+    if (!status) {
+
+        setStarted(false);
+    }
     return status;
 }
 
 void RemoteParameterServer::stop()
 {
+    if (!setStarted(false)) {
+
+        return;
+    }
     mEventThread->stop();
-    mStarted = false;
+}
+
+bool RemoteParameterServer::setStarted(bool isStarted)
+{
+    if (isStarted == mStarted) {
+
+        return false;
+    }
+    mStarted = isStarted;
+    return true;
 }
 
 bool RemoteParameterServer::onEvent(int fd)
