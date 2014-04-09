@@ -15,8 +15,6 @@
 
 LOCAL_PATH := $(call my-dir)
 
-ifeq ($(audiocomms_test_gcov_target),true)
-
 include $(CLEAR_VARS)
 
 LOCAL_EXPORT_C_INCLUDE_DIRS := $(LOCAL_PATH)
@@ -33,10 +31,7 @@ LOCAL_IMPORT_C_INCLUDE_DIRS_FROM_SHARED_LIBRARIES := libproperty
 
 include $(BUILD_STATIC_LIBRARY)
 
-endif
 
-
-ifeq ($(audiocomms_test_gcov_host),true)
 
 include $(CLEAR_VARS)
 
@@ -53,5 +48,4 @@ LOCAL_MODULE_TAGS := optional
 
 include $(BUILD_HOST_STATIC_LIBRARY)
 
-endif
 
