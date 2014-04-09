@@ -53,7 +53,7 @@ RemoteParameterServer::~RemoteParameterServer()
 bool RemoteParameterServer::addRemoteParameter(RemoteParameterBase *remoteParameter, string &error)
 {
     AUDIOCOMMS_ASSERT(remoteParameter != NULL, "invalid remote parameter");
-    if (mStarted || (mStarted && mEventThread->inThreadContext())) {
+    if (mStarted) {
 
         error = "Parameter added in not permitted context";
         return false;
