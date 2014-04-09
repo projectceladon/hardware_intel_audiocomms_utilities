@@ -20,14 +20,10 @@ LOCAL_PATH := $(call my-dir)
 remote_param_common_src_files := \
     RemoteParameterConnector.cpp
 
-remote_param_common_includes_dir := \
-
 remote_param_common_includes_dir_host := \
-    $(remote_param_common_includes_dir) \
     bionic/libc/kernel/common
 
 remote_param_common_includes_dir_target := \
-    $(remote_param_common_includes_dir) \
     external/stlport/stlport \
     bionic
 
@@ -52,7 +48,6 @@ remote_param_common_cflags := -Wall -Werror -Wno-unused-parameter
 define make_remote_param_common_lib
 $( \
     $(eval LOCAL_EXPORT_C_INCLUDE_DIRS := $(LOCAL_PATH)) \
-    $(eval LOCAL_C_INCLUDES := $(remote_param_common_includes_common)) \
     $(eval LOCAL_C_INCLUDES += $(remote_param_common_includes_dir_$(1))) \
     $(eval LOCAL_STATIC_LIBRARIES := $(remote_param_common_static_lib_$(1))) \
     $(eval LOCAL_SHARED_LIBRARIES := $(remote_param_common_shared_lib_$(1))) \
@@ -87,24 +82,17 @@ include $(BUILD_HOST_STATIC_LIBRARY)
 
 # Functional test target with gcov
 ##################################
-ifeq ($(audiocomms_test_gcov_target),true)
-
 include $(CLEAR_VARS)
 LOCAL_MODULE := libremote-parameter-common_gcov
 $(call make_remote_param_common_lib,target)
 $(call add_gcov)
 include $(BUILD_STATIC_LIBRARY)
 
-endif
-
 # Functional test host with gcov
 ##################################
-ifeq ($(audiocomms_test_gcov_host),true)
-
 include $(CLEAR_VARS)
 LOCAL_MODULE := libremote-parameter-common_gcov_host
 $(call make_remote_param_common_lib,host)
 $(call add_gcov)
 include $(BUILD_HOST_STATIC_LIBRARY)
 
-endif

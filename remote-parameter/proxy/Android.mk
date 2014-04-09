@@ -71,7 +71,6 @@ remote_param_proxy_cflags := -Wall -Werror -Wno-unused-parameter
 define make_remote_param_proxy_lib
 $( \
     $(eval LOCAL_EXPORT_C_INCLUDE_DIRS := $(LOCAL_PATH)/include) \
-    $(eval LOCAL_C_INCLUDES := $(remote_param_proxy_includes_common)) \
     $(eval LOCAL_C_INCLUDES += $(remote_param_proxy_includes_dir_$(1))) \
     $(eval LOCAL_STATIC_LIBRARIES := $(remote_param_proxy_static_lib_$(1))) \
     $(eval LOCAL_SHARED_LIBRARIES := $(remote_param_proxy_shared_lib_$(1))) \
@@ -109,8 +108,6 @@ include $(BUILD_HOST_STATIC_LIBRARY)
 
 # Functional test target with gcov
 ##################################
-ifeq ($(audiocomms_test_gcov_target),true)
-
 include $(CLEAR_VARS)
 LOCAL_MODULE := libremote-parameter-proxy_gcov
 $(call make_remote_param_proxy_lib,target)
@@ -119,12 +116,8 @@ $(eval LOCAL_IMPORT_C_INCLUDE_DIRS_FROM_STATIC_LIBRARIES := \
     $(remote_param_proxy_import_c_include_dirs_from_static_lib_gcov_target))
 include $(BUILD_STATIC_LIBRARY)
 
-endif
-
 # Functional test host with gcov
 ##################################
-ifeq ($(audiocomms_test_gcov_host),true)
-
 include $(CLEAR_VARS)
 LOCAL_MODULE := libremote-parameter-proxy_gcov_host
 $(call make_remote_param_proxy_lib,host)
@@ -132,5 +125,3 @@ $(call add_gcov)
 $(eval LOCAL_IMPORT_C_INCLUDE_DIRS_FROM_STATIC_LIBRARIES := \
     $(remote_param_proxy_import_c_include_dirs_from_static_lib_gcov_host))
 include $(BUILD_HOST_STATIC_LIBRARY)
-
-endif

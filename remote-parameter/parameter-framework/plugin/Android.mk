@@ -82,8 +82,6 @@ include $(BUILD_SHARED_LIBRARY)
 
 #######################################################################
 # Host build without mock for functionnal tests
-ifeq ($(audiocomms_test_host),true)
-
 include $(CLEAR_VARS)
 
 LOCAL_SRC_FILES := $(common_src_files)
@@ -117,12 +115,8 @@ LOCAL_MODULE_TAGS := $(common_module_tags)
 
 include $(BUILD_HOST_SHARED_LIBRARY)
 
-endif # $(audiocomms_test_host)
-
 #######################################################################
 # Host build with coverage and mock for unit tests
-ifeq ($(audiocomms_test_gcov_host),true)
-
 include $(CLEAR_VARS)
 
 LOCAL_SRC_FILES := $(common_src_files)
@@ -153,7 +147,5 @@ LOCAL_MODULE := libremoteparameter-subsystem_gcov_host
 LOCAL_MODULE_TAGS := $(common_module_tags)
 
 include $(BUILD_HOST_SHARED_LIBRARY)
-
-endif # $(audiocomms_test_gcov_host)
 
 
