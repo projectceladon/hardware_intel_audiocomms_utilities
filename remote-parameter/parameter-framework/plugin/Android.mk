@@ -101,10 +101,7 @@ LOCAL_STATIC_LIBRARIES := \
     libremote-parameter-proxy_host  \
     libremote-parameter-common_host \
     libaudio_comms_utilities_host \
-    log_mock_host \
-    libgmock_host \
-    libgtest_host \
-    libgmock_main_host \
+    liblog \
     libcutils
 
 LOCAL_CFLAGS := \
