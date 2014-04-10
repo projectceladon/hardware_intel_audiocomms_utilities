@@ -29,7 +29,6 @@ remote_param_common_includes_dir_target := \
     bionic
 
 remote_param_common_shared_lib_target += \
-    libstlport \
     libcutils
 
 remote_param_common_static_lib += \

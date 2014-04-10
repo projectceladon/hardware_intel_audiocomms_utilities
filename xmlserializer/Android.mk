@@ -38,7 +38,6 @@ common_static_libs_host := \
     libtinyxml \
 
 common_shared_libs := \
-    libstlport \
     libtinyxml
 
 common_shared_libs_host :=
@@ -70,8 +69,6 @@ LOCAL_MODULE_OWNER := intel
 LOCAL_SRC_FILES := $(common_library_src_files)
 
 LOCAL_C_INCLUDES := \
-    $(call include-path-for, stlport) \
-    bionic \
     $(common_library_c_includes) \
 
 LOCAL_CFLAGS := $(common_c_flags)
@@ -83,6 +80,8 @@ LOCAL_SHARED_LIBRARIES := $(common_shared_libs)
 LOCAL_EXPORT_C_INCLUDE_DIRS := $(LOCAL_PATH)/include
 
 LOCAL_IMPORT_C_INCLUDE_DIRS_FROM_STATIC_LIBRARIES := $(common_header_lib)
+
+include external/stlport/libstlport.mk
 
 include $(BUILD_STATIC_LIBRARY)
 

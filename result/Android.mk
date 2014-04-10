@@ -42,17 +42,13 @@ common_c_flags := \
 
 include $(CLEAR_VARS)
 LOCAL_MODULE    := $(common_library_local_module)
-
-LOCAL_C_INCLUDES := \
-    $(call include-path-for, stlport) \
-    bionic \
 LOCAL_MODULE_OWNER := intel
 
 LOCAL_CFLAGS := $(common_c_flags)
 
-LOCAL_SHARED_LIBRARIES := libstlport
-
 LOCAL_EXPORT_C_INCLUDE_DIRS := $(LOCAL_PATH)/include
+
+include external/stlport/libstlport.mk
 
 include $(BUILD_STATIC_LIBRARY)
 
@@ -102,8 +98,6 @@ LOCAL_MODULE_OWNER := intel
 LOCAL_SRC_FILES := $(common_test_src_files)
 
 LOCAL_C_INCLUDES := \
-    $(call include-path-for, stlport) \
-    bionic \
     $(common_c_includes)
 
 LOCAL_CFLAGS := $(common_c_flags)
@@ -112,9 +106,9 @@ LOCAL_LDFLAGS :=
 
 LOCAL_STRIP_MODULE := false
 
-LOCAL_SHARED_LIBRARIES := libstlport
-
 LOCAL_MODULE_PATH := $(TARGET_OUT_DATA_NATIVE_TESTS)/audio_comms/
+
+include external/stlport/libstlport.mk
 
 include $(BUILD_NATIVE_TEST)
 

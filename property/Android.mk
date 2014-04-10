@@ -18,15 +18,13 @@ LOCAL_CFLAGS := -DDEBUG
 
 LOCAL_SRC_FILES := $(property_src_files)
 
-LOCAL_C_INCLUDES += \
-    $(call include-path-for, stlport) \
-    bionic
-
-LOCAL_SHARED_LIBRARIES := libstlport libcutils
+LOCAL_SHARED_LIBRARIES := libcutils
 
 LOCAL_MODULE := libproperty
 LOCAL_MODULE_OWNER := intel
 LOCAL_MODULE_TAGS := optional
+
+include external/stlport/libstlport.mk
 
 include $(BUILD_SHARED_LIBRARY)
 
@@ -39,15 +37,13 @@ LOCAL_EXPORT_C_INCLUDE_DIRS := $(LOCAL_PATH)/
 
 LOCAL_SRC_FILES := $(property_src_files)
 
-LOCAL_C_INCLUDES += \
-    $(call include-path-for, stlport) \
-    bionic
-
-LOCAL_SHARED_LIBRARIES := libstlport libcutils
+LOCAL_SHARED_LIBRARIES := libcutils
 
 LOCAL_MODULE := libproperty_static
 LOCAL_MODULE_OWNER := intel
 LOCAL_MODULE_TAGS := optional
+
+include external/stlport/libstlport.mk
 
 include $(BUILD_STATIC_LIBRARY)
 

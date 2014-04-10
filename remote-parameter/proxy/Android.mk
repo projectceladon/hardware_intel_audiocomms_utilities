@@ -37,7 +37,6 @@ remote_param_proxy_includes_dir_target := \
     bionic
 
 remote_param_proxy_shared_lib_target += \
-    libstlport \
     libcutils
 
 remote_param_proxy_static_lib += \
