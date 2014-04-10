@@ -33,12 +33,12 @@ include $(CLEAR_VARS)
 LOCAL_SRC_FILES := $(naive_tokenizer_src_files)
 LOCAL_MODULE_TAGS := optional
 LOCAL_CFLAGS := $(naive_tokenizer_cflags)
-LOCAL_C_INCLUDES := $(call include-path-for, stlport)
 
 LOCAL_EXPORT_C_INCLUDE_DIRS := $(LOCAL_PATH)
 
 LOCAL_MODULE := libaudiocomms_naive_tokenizer
 LOCAL_MODULE_OWNER := intel
+include external/stlport/libstlport.mk
 include $(BUILD_STATIC_LIBRARY)
 
 # host

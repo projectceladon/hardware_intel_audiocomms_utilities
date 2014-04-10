@@ -30,7 +30,7 @@ LOCAL_EXPORT_C_INCLUDE_DIRS := $(LOCAL_PATH)
 
 LOCAL_SRC_FILES := EventThread.cpp
 LOCAL_CFLAGS := -Wall -Werror -Wextra
-LOCAL_SHARED_LIBRARIES := libstlport libcutils
+LOCAL_SHARED_LIBRARIES := libcutils
 LOCAL_STATIC_LIBRARIES := libaudio_comms_utilities
 
 LOCAL_MODULE := libevent-listener

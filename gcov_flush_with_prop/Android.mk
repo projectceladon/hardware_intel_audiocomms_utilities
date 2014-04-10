@@ -22,15 +22,14 @@ include $(CLEAR_VARS)
 LOCAL_EXPORT_C_INCLUDE_DIRS := $(LOCAL_PATH)
 
 LOCAL_SRC_FILES := GcovFlushWithProp.cpp
-LOCAL_C_INCLUDES := \
-    $(call include-path-for, stlport) \
-    bionic
 
 LOCAL_MODULE := gcov_flush_with_prop
 LOCAL_MODULE_OWNER := intel
 LOCAL_MODULE_TAGS := tests
 
 LOCAL_IMPORT_C_INCLUDE_DIRS_FROM_SHARED_LIBRARIES := libproperty
+
+include external/stlport/libstlport.mk
 
 include $(BUILD_STATIC_LIBRARY)
 
@@ -44,12 +43,12 @@ LOCAL_EXPORT_C_INCLUDE_DIRS := $(LOCAL_PATH)/include
 LOCAL_SRC_FILES := GcovFlush.cpp
 LOCAL_C_INCLUDES := \
     $(LOCAL_PATH)/include \
-    $(call include-path-for, stlport) \
-    bionic
 
 LOCAL_MODULE := gcov_flush
 LOCAL_MODULE_OWNER := intel
 LOCAL_MODULE_TAGS := optional
+
+include external/stlport/libstlport.mk
 
 include $(BUILD_STATIC_LIBRARY)
 

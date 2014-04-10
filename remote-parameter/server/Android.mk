@@ -39,7 +39,6 @@ remote_param_server_includes_dir_target := \
     bionic
 
 remote_param_server_shared_lib_target += \
-    libstlport \
     libcutils \
     libevent-listener
 
