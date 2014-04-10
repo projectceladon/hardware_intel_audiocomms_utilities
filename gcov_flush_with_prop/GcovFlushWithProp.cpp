@@ -37,9 +37,9 @@ GcovFlushWithProp::~GcovFlushWithProp()
 
     // Force gcov flush at the end of the main or shared lib
     // But this code is never call in a system shared lib
-    LOGD("GcovFlushWithProp __gcov_flush begin");
+    ALOGD("GcovFlushWithProp __gcov_flush begin");
     __gcov_flush();
-    LOGD("GcovFlushWithProp __gcov_flush end");
+    ALOGD("GcovFlushWithProp __gcov_flush end");
 }
 
 GcovFlushWithProp &GcovFlushWithProp::getInstance()
@@ -66,15 +66,15 @@ void GcovFlushWithProp::run()
         // If the property become true
         if (!hasFlush && gcovFlushForcePropValue) {
             // gcov flush
-            LOGD("GcovFlushWithProp __gcov_flush begin !!!");
+            ALOGD("GcovFlushWithProp __gcov_flush begin !!!");
             __gcov_flush();
             hasFlush = true;
-            LOGD("GcovFlushWithProp __gcov_flush end !!!");
+            ALOGD("GcovFlushWithProp __gcov_flush end !!!");
         }
         // If the property become false
         else if (hasFlush && !gcovFlushForcePropValue) {
             hasFlush = false;
-            LOGD("GcovFlushWithProp wait property \"gcov.flush.force\" is \"true\"");
+            ALOGD("GcovFlushWithProp wait property \"gcov.flush.force\" is \"true\"");
         }
         // Wait a little between property read
         // to let the processor to others threads.
