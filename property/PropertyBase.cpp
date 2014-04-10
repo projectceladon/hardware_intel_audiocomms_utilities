@@ -28,7 +28,7 @@ CPropertyBase::CPropertyBase(const string& strProperty) :
 {
     if (strProperty.length() > PROPERTY_KEY_MAX) {
 
-        LOGE("Invalid property name, it shall be less than %d characters: %s", PROPERTY_KEY_MAX, strProperty.c_str());
+        ALOGE("Invalid property name, it shall be less than %d characters: %s", PROPERTY_KEY_MAX, strProperty.c_str());
     }
 }
 
@@ -50,7 +50,7 @@ string CPropertyBase::get() const
     // Retrieve property
     property_get(_strProperty.c_str(), acValue, _strDefaultValue.c_str());
 
-    LOGD("%s %s: %s", __FUNCTION__, _strProperty.c_str(), acValue);
+    ALOGD("%s %s: %s", __FUNCTION__, _strProperty.c_str(), acValue);
 
     return acValue;
 }
@@ -58,11 +58,11 @@ string CPropertyBase::get() const
 // set the property
 bool CPropertyBase::set(const string& strVal)
 {
-    LOGD("%s %s: %s", __FUNCTION__, _strProperty.c_str(), strVal.c_str());
+    ALOGD("%s %s: %s", __FUNCTION__, _strProperty.c_str(), strVal.c_str());
 
     if (strVal.length() > PROPERTY_VALUE_MAX) {
 
-        LOGE("Invalid property value, it shall be less than %d characters: %s", PROPERTY_VALUE_MAX, strVal.c_str());
+        ALOGE("Invalid property value, it shall be less than %d characters: %s", PROPERTY_VALUE_MAX, strVal.c_str());
         return false;
     }
 

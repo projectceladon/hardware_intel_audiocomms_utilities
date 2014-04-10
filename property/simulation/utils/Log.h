@@ -26,13 +26,13 @@
 #include <stdarg.h>
 #include <iostream>
 
-#define LOGD(...) { \
+#define ALOGD(...) { \
     char acBuffer[512]; \
     snprintf(acBuffer, sizeof(acBuffer), __VA_ARGS__); \
     cout << acBuffer << endl; \
 }
 
-#define LOGE(...) { \
+#define ALOGE(...) { \
     char acBuffer[512]; \
     snprintf(acBuffer, sizeof(acBuffer), __VA_ARGS__); \
     cerr << acBuffer << endl; \
