@@ -38,6 +38,7 @@ LOCAL_C_INCLUDES := $(call include-path-for, stlport)
 LOCAL_EXPORT_C_INCLUDE_DIRS := $(LOCAL_PATH)
 
 LOCAL_MODULE := libaudiocomms_naive_tokenizer
+LOCAL_MODULE_OWNER := intel
 include $(BUILD_STATIC_LIBRARY)
 
 # host
@@ -50,4 +51,5 @@ LOCAL_CFLAGS := $(naive_tokenizer_cflags)
 LOCAL_EXPORT_C_INCLUDE_DIRS := $(LOCAL_PATH)
 
 LOCAL_MODULE := libaudiocomms_naive_tokenizer
+LOCAL_MODULE_OWNER := intel
 include $(BUILD_HOST_STATIC_LIBRARY)

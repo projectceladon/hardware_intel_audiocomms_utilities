@@ -22,6 +22,7 @@ include $(CLEAR_VARS)
 LOCAL_EXPORT_C_INCLUDE_DIRS := $(LOCAL_PATH)/include
 
 LOCAL_MODULE := libaudio_comms_utilities
+LOCAL_MODULE_OWNER := intel
 
 include $(BUILD_STATIC_LIBRARY)
 
@@ -33,6 +34,7 @@ include $(CLEAR_VARS)
 LOCAL_EXPORT_C_INCLUDE_DIRS := $(LOCAL_PATH)/include
 
 LOCAL_MODULE := libaudio_comms_utilities_host
+LOCAL_MODULE_OWNER := intel
 
 include $(BUILD_HOST_STATIC_LIBRARY)
 

@@ -46,6 +46,7 @@ LOCAL_MODULE    := $(common_library_local_module)
 LOCAL_C_INCLUDES := \
     $(call include-path-for, stlport) \
     bionic \
+LOCAL_MODULE_OWNER := intel
 
 LOCAL_CFLAGS := $(common_c_flags)
 
@@ -60,6 +61,7 @@ include $(BUILD_STATIC_LIBRARY)
 
 include $(CLEAR_VARS)
 LOCAL_MODULE    := $(common_library_local_module)_host
+LOCAL_MODULE_OWNER := intel
 
 LOCAL_CFLAGS := $(common_c_flags)
 
@@ -76,6 +78,7 @@ common_ut_local_module    := $(base_name)UnitTest
 include $(CLEAR_VARS)
 
 LOCAL_MODULE := $(common_ut_local_module)_host
+LOCAL_MODULE_OWNER := intel
 
 LOCAL_SRC_FILES := $(common_test_src_files)
 LOCAL_C_INCLUDES := $(common_c_includes)
@@ -94,6 +97,7 @@ include $(BUILD_HOST_NATIVE_TEST)
 include $(CLEAR_VARS)
 
 LOCAL_MODULE := $(common_ut_local_module)
+LOCAL_MODULE_OWNER := intel
 
 LOCAL_SRC_FILES := $(common_test_src_files)
 

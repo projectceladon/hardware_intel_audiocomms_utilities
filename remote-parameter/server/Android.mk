@@ -74,6 +74,7 @@ endef
 ##################################
 include $(CLEAR_VARS)
 LOCAL_MODULE := libremote-parameter-server
+LOCAL_MODULE_OWNER := intel
 $(call make_remote_param_server_lib,target)
 LOCAL_MODULE_TAGS := optional
 
@@ -85,6 +86,7 @@ include $(BUILD_STATIC_LIBRARY)
 include $(CLEAR_VARS)
 $(eval LOCAL_LDFLAGS += -pthread)
 LOCAL_MODULE := libremote-parameter-server_host
+LOCAL_MODULE_OWNER := intel
 $(call make_remote_param_server_lib,host)
 LOCAL_MODULE_TAGS := tests
 

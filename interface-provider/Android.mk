@@ -27,6 +27,7 @@ LOCAL_C_INCLUDES += \
 LOCAL_SHARED_LIBRARIES := libstlport libcutils libdl
 
 LOCAL_MODULE := libinterface-provider
+LOCAL_MODULE_OWNER := intel
 LOCAL_MODULE_TAGS := optional
 
 include $(BUILD_SHARED_LIBRARY)
@@ -48,6 +49,7 @@ LOCAL_C_INCLUDES += \
 LOCAL_SHARED_LIBRARIES := libstlport libcutils libdl
 
 LOCAL_MODULE := libinterface-provider-lib
+LOCAL_MODULE_OWNER := intel
 LOCAL_MODULE_TAGS := optional
 
 include $(BUILD_SHARED_LIBRARY)
@@ -60,6 +62,7 @@ LOCAL_EXPORT_C_INCLUDE_DIRS := $(LOCAL_PATH)
 LOCAL_SRC_FILES := \
         $(interface_provider_src_files)
 LOCAL_MODULE := libinterface-provider_static_host
+LOCAL_MODULE_OWNER := intel
 LOCAL_MODULE_TAGS := optional
 include $(BUILD_HOST_STATIC_LIBRARY)
 
@@ -69,6 +72,7 @@ LOCAL_EXPORT_C_INCLUDE_DIRS := $(LOCAL_PATH)
 LOCAL_SRC_FILES := \
         InterfaceProviderLib.cpp
 LOCAL_MODULE := libinterface-provider-lib_static_host
+LOCAL_MODULE_OWNER := intel
 LOCAL_MODULE_TAGS := optional
 include $(BUILD_HOST_STATIC_LIBRARY)
 
@@ -82,6 +86,7 @@ LOCAL_SRC_FILES := \
 LOCAL_C_INCLUDES += \
         $(interface_provider_includes_target)
 LOCAL_MODULE := libinterface-provider_static
+LOCAL_MODULE_OWNER := intel
 LOCAL_MODULE_TAGS := optional
 include $(BUILD_STATIC_LIBRARY)
 
@@ -93,6 +98,7 @@ LOCAL_SRC_FILES := \
 LOCAL_C_INCLUDES += \
         $(interface_provider_includes_target)
 LOCAL_MODULE := libinterface-provider-lib_static
+LOCAL_MODULE_OWNER := intel
 LOCAL_MODULE_TAGS := optional
 include $(BUILD_STATIC_LIBRARY)
 

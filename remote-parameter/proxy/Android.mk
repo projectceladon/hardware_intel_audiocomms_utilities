@@ -70,6 +70,7 @@ endef
 ##################################
 include $(CLEAR_VARS)
 LOCAL_MODULE := libremote-parameter-proxy
+LOCAL_MODULE_OWNER := intel
 $(call make_remote_param_proxy_lib,target)
 LOCAL_MODULE_TAGS := optional
 
@@ -80,6 +81,7 @@ include $(BUILD_STATIC_LIBRARY)
 ##################################
 include $(CLEAR_VARS)
 LOCAL_MODULE := libremote-parameter-proxy_host
+LOCAL_MODULE_OWNER := intel
 $(call make_remote_param_proxy_lib,host)
 LOCAL_MODULE_TAGS := tests
 

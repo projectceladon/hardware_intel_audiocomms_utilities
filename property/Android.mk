@@ -25,6 +25,7 @@ LOCAL_C_INCLUDES += \
 LOCAL_SHARED_LIBRARIES := libstlport libcutils
 
 LOCAL_MODULE := libproperty
+LOCAL_MODULE_OWNER := intel
 LOCAL_MODULE_TAGS := optional
 
 include $(BUILD_SHARED_LIBRARY)
@@ -45,6 +46,7 @@ LOCAL_C_INCLUDES += \
 LOCAL_SHARED_LIBRARIES := libstlport libcutils
 
 LOCAL_MODULE := libproperty_static
+LOCAL_MODULE_OWNER := intel
 LOCAL_MODULE_TAGS := optional
 
 include $(BUILD_STATIC_LIBRARY)
