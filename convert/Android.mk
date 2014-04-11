@@ -8,6 +8,7 @@ include $(CLEAR_VARS)
 LOCAL_EXPORT_C_INCLUDE_DIRS := $(LOCAL_PATH)/
 
 LOCAL_MODULE := libaudio_comms_convert
+LOCAL_MODULE_OWNER := intel
 
 include $(BUILD_STATIC_LIBRARY)
 
@@ -19,6 +20,7 @@ include $(CLEAR_VARS)
 LOCAL_EXPORT_C_INCLUDE_DIRS := $(LOCAL_PATH)/
 
 LOCAL_MODULE := libaudio_comms_convert_host
+LOCAL_MODULE_OWNER := intel
 
 LOCAL_CFLAGS = -O0 --coverage
 

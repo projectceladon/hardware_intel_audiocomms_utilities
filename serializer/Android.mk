@@ -64,6 +64,7 @@ common_c_flags := \
 
 include $(CLEAR_VARS)
 LOCAL_MODULE    := $(common_library_local_module)
+LOCAL_MODULE_OWNER := intel
 LOCAL_SRC_FILES := $(common_library_src_files)
 
 LOCAL_C_INCLUDES := \
@@ -88,6 +89,7 @@ include $(BUILD_STATIC_LIBRARY)
 
 include $(CLEAR_VARS)
 LOCAL_MODULE    := $(common_library_local_module)_host
+LOCAL_MODULE_OWNER := intel
 LOCAL_SRC_FILES := $(common_library_src_files)
 
 LOCAL_C_INCLUDES := $(common_library_c_includes)
@@ -114,6 +116,7 @@ common_c_flags := $(common_c_flags) -O0 --coverage
 include $(CLEAR_VARS)
 
 LOCAL_MODULE := $(common_base_name)_unit_test
+LOCAL_MODULE_OWNER := intel
 
 LOCAL_SRC_FILES := \
     $(common_library_test_src_files)
@@ -145,6 +148,7 @@ include $(BUILD_NATIVE_TEST)
 include $(CLEAR_VARS)
 
 LOCAL_MODULE := $(common_base_name)_unit_test_host
+LOCAL_MODULE_OWNER := intel
 
 LOCAL_SRC_FILES := \
     $(common_library_test_src_files)

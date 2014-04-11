@@ -34,6 +34,7 @@ LOCAL_SHARED_LIBRARIES := libstlport libcutils
 LOCAL_STATIC_LIBRARIES := libaudio_comms_utilities
 
 LOCAL_MODULE := libevent-listener
+LOCAL_MODULE_OWNER := intel
 LOCAL_MODULE_TAGS := optional
 
 include external/stlport/libstlport.mk
@@ -51,6 +52,7 @@ LOCAL_SRC_FILES := EventThread.cpp
 LOCAL_STATIC_LIBRARIES := libaudio_comms_utilities
 
 LOCAL_MODULE := libevent-listener_static
+LOCAL_MODULE_OWNER := intel
 LOCAL_MODULE_TAGS := optional
 
 include external/stlport/libstlport.mk
@@ -67,6 +69,7 @@ LOCAL_SRC_FILES := EventThread.cpp
 LOCAL_STATIC_LIBRARIES := libaudio_comms_utilities_host
 
 LOCAL_MODULE := libevent-listener_static_host
+LOCAL_MODULE_OWNER := intel
 LOCAL_MODULE_TAGS := tests
 
 include $(BUILD_HOST_STATIC_LIBRARY)
