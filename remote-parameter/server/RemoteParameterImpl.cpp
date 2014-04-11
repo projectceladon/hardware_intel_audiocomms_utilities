@@ -66,12 +66,7 @@ void RemoteParameterImpl::handleNewConnection()
 
     RemoteParameterConnector clientConnector(clientSocketFd);
 
-    // For the security check, compare client group id and server group id
-    if (clientConnector.getGid() != _serverConnector->getGid()) {
-
-        ALOGE("%s: security error", __FUNCTION__);
-        return;
-    }
+    // @todo Implements security enforcement check to limit the scope of remote parameters
 
     // Set timeout
     clientConnector.setTimeoutMs(_communicationTimeoutMs);
