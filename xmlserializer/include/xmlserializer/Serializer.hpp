@@ -28,6 +28,7 @@
 #include "serializer/framework/TextNode.hpp"
 #include "serializer/framework/NamedTextTrait.hpp"
 #include "serializer/framework/Collection.hpp"
+#include <common/UniquePtr.hpp>
 
 
 namespace audio_comms
@@ -48,19 +49,20 @@ public:
         TiXmlOutStream stream;
         TiXmlDocument doc;
         doc.LinkEndChild(new TiXmlDeclaration("1.0", "", ""));
-        TiXmlElement *root = new TiXmlElement("ACME");
-        root->SetAttribute("version", "0.0.1");
-        TiXmlNode *xmlElement;
-        Result res = XmlTraitSerializer<serializer::ClassSerializationTrait<Class> >::toXml(c,
-                                                                                            xmlElement);
-        if (res != Result::success()) {
+        TiXmlElement root("ACME");
+        root.SetAttribute("version", "0.0.1");
+        common::UniquePtr<TiXmlNode> xmlElement;
+        Result res = XmlTraitSerializer<serializer::ClassSerializationTrait<Class> >
+                     ::toXml(c, xmlElement.getRefToSet());
+
+        if (res.isFailure()) {
             serializedCmd = "";
             return res;
         }
 
-        root->LinkEndChild(xmlElement);
+        root.LinkEndChild(xmlElement.release());
 
-        doc.LinkEndChild(root);
+        doc.InsertEndChild(root);
 
         stream << doc;
         serializedCmd = stream.c_str();
