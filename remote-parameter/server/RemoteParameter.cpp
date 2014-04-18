@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include "include/RemoteParameter.hpp"
+#include "RemoteParameter.hpp"
 #include <AudioCommsAssert.hpp>
 #include <string>
 #include <stdint.h>
@@ -26,8 +26,15 @@
  * This class may be used if parameter handled as an typed parameter.
  */
 template <typename TypeParam>
-RemoteParameter<TypeParam>::RemoteParameter(const std::string &parameterName)
-    : RemoteParameterBase(parameterName, sizeof(TypeParam))
+RemoteParameter<TypeParam>::RemoteParameter(const std::string &parameterName,
+                                            const std::string &allowedPeerUserName)
+    : RemoteParameterBase(parameterName, sizeof(TypeParam), allowedPeerUserName)
+{}
+
+template <typename TypeParam>
+RemoteParameter<TypeParam>::RemoteParameter(const std::string &parameterName,
+                                            uid_t trustedPeerUid)
+    : RemoteParameterBase(parameterName, sizeof(TypeParam), trustedPeerUid)
 {}
 
 template <typename TypeParam>

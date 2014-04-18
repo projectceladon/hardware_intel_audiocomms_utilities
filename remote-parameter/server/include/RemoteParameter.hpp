@@ -21,7 +21,8 @@
 #include <stdint.h>
 #include <sys/types.h>
 #include <string.h>
-
+#include <private/android_filesystem_config.h>
+#include <pwd.h>
 /**
  * Server side Remote Parameter object.
  * This class may be used if parameter handled as an array of char
@@ -29,10 +30,13 @@
 class RemoteParameterBase
 {
 public:
-    explicit RemoteParameterBase(const std::string &parameterName, size_t size)
-        : mName(parameterName),
-          mSize(size)
-    {}
+    explicit RemoteParameterBase(const std::string &parameterName,
+                                 size_t size,
+                                 const std::string &trustedPeerUserName);
+
+    explicit RemoteParameterBase(const std::string &parameterName,
+                                 size_t size,
+                                 uid_t trustedPeerUid);
 
     virtual ~RemoteParameterBase() {}
 
@@ -42,6 +46,13 @@ public:
      * @return name of the parameter.
      */
     const std::string getName() const { return mName; }
+
+    /**
+     * Get the user name of the peer allowed to control this parameter.
+     *
+     * @return user name of the peer allowed to control this parameter.
+     */
+    const std::string &getTrustedPeerUserName() const { return mTrustedPeerUserName; }
 
     /**
      * Get the size of the parameter.
@@ -70,9 +81,10 @@ public:
      */
     virtual void get(uint8_t *data, size_t &size) const = 0;
 
-
+private:
     std::string mName; /**< Parameter Name. */
     size_t mSize; /**< Parameter Size. */
+    std::string mTrustedPeerUserName; /**< Name of the peer allowed to control this parameter. */
 };
 
 /**
@@ -83,7 +95,8 @@ template <typename TypeParam>
 class RemoteParameter : public RemoteParameterBase
 {
 public:
-    RemoteParameter(const std::string &parameterName);
+    RemoteParameter(const std::string &parameterName, const std::string &trustedPeerUserName = "");
+    RemoteParameter(const std::string &parameterName, uid_t trustedPeerUid);
 
     /**
      * Set typed parameter.
