@@ -19,6 +19,7 @@ LOCAL_PATH := $(call my-dir)
 
 remote_param_server_src_files := \
     RemoteParameterServer.cpp \
+    RemoteParameterBase.cpp \
     RemoteParameterImpl.cpp \
     RemoteParameter.cpp \
     RemoteParameterString.cpp

@@ -62,7 +62,7 @@ public:
      *
      * @return file descriptor of the remote parameter (server side) to poll.
      */
-    int getPollFd();
+    int getPollFd() const;
 
     /**
      * Get the name of the parameter.
@@ -71,7 +71,26 @@ public:
      */
     const std::string &getName() const { return mName; }
 
+    /**
+     * Returns the user name.
+     *
+     * @param[in] uid User Identifier.
+     *
+     * @return valid string if user name found, empty string otherwise.
+     */
+    static std::string getUserName(uid_t uid);
+
 private:
+    /**
+     * Check the client's credential and only accept socket connection from the allowed peer
+     * user name defined for this remote parameter.
+     *
+     * @param[in] uid User Identifier of the peer connected to the socket.
+     *
+     * @return true if the peer name matches the allowed user name, false otherwise.
+     */
+    bool checkCredential(uid_t uid) const;
+
 
     std::string mName; /**< Parameter Name. */
     size_t mSize; /**< Parameter Size. */

@@ -82,11 +82,11 @@ public:
     bool receive(void *data, uint32_t size);
 
     /**
-     * Get Group ID.
+     * Get User ID.
      *
-     * @eturn linux group id for file descriptor.
+     * @return linux user id for file descriptor.
      */
-    gid_t getGid();
+    uid_t getUid() const;
 
     /**
      * Accept a connection on a socked.

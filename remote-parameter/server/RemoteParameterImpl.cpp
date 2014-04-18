@@ -17,7 +17,7 @@
 #define LOG_TAG "RemoteParameter"
 
 #include "RemoteParameterImpl.hpp"
-#include "include/RemoteParameter.hpp"
+#include "RemoteParameter.hpp"
 #include <RemoteParameterConnector.hpp>
 #include <AudioCommsAssert.hpp>
 #include <sys/socket.h>
@@ -25,7 +25,7 @@
 #include <unistd.h>
 #include <utils/Log.h>
 #include <cutils/sockets.h>
-
+#include <pwd.h>
 
 using std::string;
 
@@ -48,11 +48,45 @@ RemoteParameterImpl::RemoteParameterImpl(RemoteParameterBase *parameter,
 
 }
 
-int RemoteParameterImpl::getPollFd()
+int RemoteParameterImpl::getPollFd() const
 {
     AUDIOCOMMS_ASSERT(mServerConnector != NULL, "server connector invalid");
 
     return mServerConnector->getFd();
+}
+
+std::string RemoteParameterImpl::getUserName(uid_t uid)
+{
+    string name;
+    struct passwd pwd, *result;
+    ssize_t bufSize = sysconf(_SC_GETPW_R_SIZE_MAX);
+    if (bufSize == -1) {
+
+        // Value was undeterminate, 1024 should be enough.
+        bufSize = 1024;
+    }
+    char buf[bufSize];
+
+    getpwuid_r(uid, &pwd, buf, sizeof(buf), &result);
+    if (result != NULL) {
+
+        name = pwd.pw_name;
+    }
+    return name;
+}
+
+bool RemoteParameterImpl::checkCredential(uid_t uid) const
+{
+    if (mParameter->getTrustedPeerUserName().empty()) {
+
+        /**
+         * No allowed peer user name were defined.
+         * Check at least the caller is launched by the same user.
+         */
+        return getuid() == uid;
+
+    }
+    return getUserName(uid) == mParameter->getTrustedPeerUserName();
 }
 
 void RemoteParameterImpl::handleNewConnection()
@@ -66,7 +100,13 @@ void RemoteParameterImpl::handleNewConnection()
 
     RemoteParameterConnector clientConnector(clientSocketFd);
 
-    // @todo Implements security enforcement check to limit the scope of remote parameters
+    if (!checkCredential(clientConnector.getUid())) {
+
+        ALOGE("%s: security error: Requester (%s) is not the allowed peer (%s)", __FUNCTION__,
+              getUserName(clientConnector.getUid()).c_str(),
+              mParameter->getTrustedPeerUserName().c_str());
+        return;
+    }
 
     // Set timeout
     clientConnector.setTimeoutMs(mCommunicationTimeoutMs);

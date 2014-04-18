@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include "include/RemoteParameter.hpp"
+#include "RemoteParameter.hpp"
 #include <AudioCommsAssert.hpp>
 #include <string>
 #include <stdint.h>
@@ -28,9 +28,17 @@ static const uint32_t MAX_LENGTH = 256; /**< Max remote parameter string length.
 static const size_t MAX_SIZE = MAX_LENGTH + 1;
 
 template <>
-RemoteParameter<std::string>::RemoteParameter(const std::string &parameterName)
-    : RemoteParameterBase(parameterName, MAX_SIZE)
+RemoteParameter<std::string>::RemoteParameter(const std::string &parameterName,
+                                              const std::string &trustedPeerUserName)
+    : RemoteParameterBase(parameterName, MAX_SIZE, trustedPeerUserName)
 {}
+
+template <>
+RemoteParameter<std::string>::RemoteParameter(const std::string &parameterName,
+                                              uid_t trustedPeerUid)
+    : RemoteParameterBase(parameterName, MAX_SIZE, trustedPeerUid)
+{}
+
 
 
 template <>

@@ -111,7 +111,7 @@ bool RemoteParameterConnector::receive(void *data, uint32_t size)
     return true;
 }
 
-gid_t RemoteParameterConnector::getGid()
+uid_t RemoteParameterConnector::getUid() const
 {
     struct ucred cr;
     socklen_t len = sizeof(cr);
@@ -122,5 +122,5 @@ gid_t RemoteParameterConnector::getGid()
         return -1;
     }
 
-    return cr.gid;
+    return cr.uid;
 }
