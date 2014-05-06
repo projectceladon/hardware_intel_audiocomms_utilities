@@ -148,3 +148,34 @@ include $(BUILD_HOST_NATIVE_TEST)
 EXECUTABLE_PATH := $(LOCAL_INSTALLED_MODULE)
 include $(CLEAR_VARS)
 include $(LOCAL_PATH)/../runExecutable.mk
+
+#=====================================================================
+# target cme api test
+
+include $(CLEAR_VARS)
+
+LOCAL_MODULE := $(common_base_name)_unit_test
+
+LOCAL_SRC_FILES := \
+    $(common_library_test_src_files)
+
+LOCAL_C_INCLUDES := $(common_library_c_includes)
+
+LOCAL_CFLAGS := $(common_c_flags)
+
+LOCAL_LDFLAGS := --coverage
+
+LOCAL_STRIP_MODULE := false
+
+LOCAL_STATIC_LIBRARIES := \
+    $(common_library_local_module) \
+    $(common_static_libs)
+
+LOCAL_SHARED_LIBRARIES := \
+    $(common_shared_libs) \
+
+LOCAL_IMPORT_C_INCLUDE_DIRS_FROM_STATIC_LIBRARIES := $(common_header_lib)
+
+LOCAL_MODULE_PATH := $(TARGET_OUT_DATA_NATIVE_TESTS)/audio_cme
+
+include $(BUILD_NATIVE_TEST)
