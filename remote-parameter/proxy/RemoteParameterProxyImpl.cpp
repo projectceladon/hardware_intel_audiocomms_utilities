@@ -108,7 +108,7 @@ bool RemoteParameterProxyImpl::write(const uint8_t *data, size_t size, string &e
         return false;
     }
 
-    if (status != RemoteParameterConnector::_transactionSucessfull) {
+    if (status != RemoteParameterConnector::mTransactionSucessfull) {
 
         // Got an error
         error = mTransactionRefusedError;
@@ -138,7 +138,7 @@ bool RemoteParameterProxyImpl::read(uint8_t *data, size_t &size, string &error)
 
     /// Send Get Command
     // By protocol convention, get command is identified by a NULL size
-    uint32_t cmdSize = RemoteParameterConnector::_sizeCommandGet;
+    uint32_t cmdSize = RemoteParameterConnector::mSizeCommandGet;
     if (!connector.send(static_cast<const void *>(&cmdSize), sizeof(cmdSize))) {
 
         error = mGetCommandError;

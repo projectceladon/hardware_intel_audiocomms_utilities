@@ -23,12 +23,12 @@
 class RemoteParameterConnector : private audio_comms::utilities::NonCopyable
 {
 public:
-    static const uint32_t _communicationTimeoutMs = 5000; /**< Timeout. */
+    static const uint32_t mCommunicationTimeoutMs = 5000; /**< Timeout. */
 
-    static const uint32_t _transactionSucessfull = 0; /**< success status of a transaction. */
-    static const uint32_t _transactionFailed = -1; /**< failure status of a transaction. */
+    static const uint32_t mTransactionSucessfull = 0; /**< success status of a transaction. */
+    static const uint32_t mTransactionFailed = -1; /**< failure status of a transaction. */
 
-    static const uint32_t _sizeCommandGet = 0;  /**< get command identiable by its null size. */
+    static const uint32_t mSizeCommandGet = 0;  /**< get command identiable by its null size. */
 
     RemoteParameterConnector(int socketFd);
     ~RemoteParameterConnector();
