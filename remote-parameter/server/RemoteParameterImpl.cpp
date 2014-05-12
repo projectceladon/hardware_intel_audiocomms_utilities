@@ -36,12 +36,12 @@ using std::string;
 RemoteParameterImpl::RemoteParameterImpl(RemoteParameterBase *parameter,
                                          const string &parameterName,
                                          size_t size)
-    : _name(parameterName),
-      _size(size),
-      _parameter(parameter),
-      _serverConnector(new RemoteParameterConnector(
+    : mName(parameterName),
+      mSize(size),
+      mParameter(parameter),
+      mServerConnector(new RemoteParameterConnector(
                            socket_local_server(
-                               RemoteParameterConnector::getServerName(_name).c_str(),
+                               RemoteParameterConnector::getServerName(mName).c_str(),
                                ANDROID_SOCKET_NAMESPACE_ABSTRACT,
                                SOCK_STREAM)))
 {
@@ -50,14 +50,14 @@ RemoteParameterImpl::RemoteParameterImpl(RemoteParameterBase *parameter,
 
 int RemoteParameterImpl::getPollFd()
 {
-    AUDIOCOMMS_ASSERT(_serverConnector != NULL, "server connector invalid");
+    AUDIOCOMMS_ASSERT(mServerConnector != NULL, "server connector invalid");
 
-    return _serverConnector->getFd();
+    return mServerConnector->getFd();
 }
 
 void RemoteParameterImpl::handleNewConnection()
 {
-    int clientSocketFd = _serverConnector->acceptConnection();
+    int clientSocketFd = mServerConnector->acceptConnection();
     if (clientSocketFd < 0) {
 
         ALOGE("%s: accept: %s", __FUNCTION__, strerror(errno));
@@ -69,7 +69,7 @@ void RemoteParameterImpl::handleNewConnection()
     // @todo Implements security enforcement check to limit the scope of remote parameters
 
     // Set timeout
-    clientConnector.setTimeoutMs(_communicationTimeoutMs);
+    clientConnector.setTimeoutMs(mCommunicationTimeoutMs);
 
     /// Read command first
     // By protocol convention, get is 0, set is non null (size of the parameter to set in fact)
@@ -80,15 +80,15 @@ void RemoteParameterImpl::handleNewConnection()
         return;
     }
 
-    if (size == RemoteParameterConnector::_sizeCommandGet) {
+    if (size == RemoteParameterConnector::mSizeCommandGet) {
 
         /// Get parameter
-        size = _size;
+        size = mSize;
 
         // Read data
         uint8_t data[size];
 
-        _parameter->get(data, size);
+        mParameter->get(data, size);
 
         // Send Size
         if (!clientConnector.send((const void *)&size, sizeof(size))) {
@@ -114,10 +114,10 @@ void RemoteParameterImpl::handleNewConnection()
         }
 
         // Set data
-        uint32_t status = RemoteParameterConnector::_transactionSucessfull;
-        if (!_parameter->set(data, size)) {
+        uint32_t status = RemoteParameterConnector::mTransactionSucessfull;
+        if (!mParameter->set(data, size)) {
 
-            status = RemoteParameterConnector::_transactionFailed;
+            status = RemoteParameterConnector::mTransactionFailed;
         }
 
         // Send status back
@@ -131,5 +131,5 @@ void RemoteParameterImpl::handleNewConnection()
 
 RemoteParameterImpl::~RemoteParameterImpl()
 {
-    delete _serverConnector;
+    delete mServerConnector;
 }

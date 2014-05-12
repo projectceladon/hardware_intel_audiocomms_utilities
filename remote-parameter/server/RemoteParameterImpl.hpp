@@ -69,16 +69,16 @@ public:
      *
      * @return name of the parameter.
      */
-    const std::string &getName() const { return _name; }
+    const std::string &getName() const { return mName; }
 
 private:
 
-    std::string _name; /**< Parameter Name. */
-    size_t _size; /**< Parameter Size. */
+    std::string mName; /**< Parameter Name. */
+    size_t mSize; /**< Parameter Size. */
 
-    RemoteParameterBase *_parameter; /**< Interface for set/get operation. */
+    RemoteParameterBase *mParameter; /**< Interface for set/get operation. */
 
-    RemoteParameterConnector *_serverConnector; /**< Remote Parameter Server Side connector. */
+    RemoteParameterConnector *mServerConnector; /**< Remote Parameter Server Side connector. */
 
-    static const uint32_t _communicationTimeoutMs = 5000; /**< Timeout. */
+    static const uint32_t mCommunicationTimeoutMs = 5000; /**< Timeout. */
 };
