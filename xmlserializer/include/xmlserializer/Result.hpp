@@ -1,7 +1,7 @@
 /*
  * INTEL CONFIDENTIAL
  *
- * Copyright 2013 Intel Corporation
+ * Copyright 2013-2014 Intel Corporation
  * All Rights Reserved.
  *
  * The source code contained or described herein and all documents related
@@ -38,7 +38,8 @@ enum ResultCode
     wrongXmlNode,
     childNotFound,
     unexpectedNodeType,
-    conversionFailed
+    conversionFailed,
+    invalidArgument
 };
 
 namespace detail
@@ -65,6 +66,8 @@ struct ResultTrait
             return "Unexpected node type";
         case conversionFailed:
             return "Conversion failed";
+        case invalidArgument:
+            return "Invalid argument";
         }
         /* Unreachable, prevents gcc to complain */
         return "Invalid error (Unreachable)";

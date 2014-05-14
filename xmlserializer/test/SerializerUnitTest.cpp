@@ -45,12 +45,17 @@ class ToXml : public testing::Test
 {
 public:
     template <class Trait, typename Elem>
-    void toXml(Elem elem)
+    void toXml(Elem elem, bool success = true)
     {
-        ASSERT_RESULT_SUCCESS(XmlTraitSerializer<Trait>::toXml(elem, _xmlNode));
-        _doc.LinkEndChild(_xmlNode);
-        _stream << _doc;
-        _xml = _stream.c_str();
+        Result res = XmlTraitSerializer<Trait>::toXml(elem, _xmlNode);
+        if (success) {
+            ASSERT_RESULT_SUCCESS(res);
+            _doc.LinkEndChild(_xmlNode);
+            _stream << _doc;
+            _xml = _stream.c_str();
+        } else {
+            ASSERT_RESULT_FAILURE(res);
+        }
     }
 
 protected:
@@ -186,8 +191,10 @@ struct Param
 {
     explicit Param(int param) : _param(param) {}
     Param() : _param(66) {}
+    virtual ~Param() {}
     const int &getValue() const { return _param; }
     void setValue(int param) { _param = param; }
+    virtual bool isParam() const { return true; }
     int _param;
 };
 
@@ -378,4 +385,108 @@ TEST_F(FromXml, EmptyCollection)
     ASSERT_RESULT_SUCCESS(XmlTraitSerializer<IntCollectionTrait>::fromXml(*_xmlNode, myList));
 
     ASSERT_TRUE(myList.empty());
+}
+
+
+char PolymorphismTag[] = "Poly";
+typedef PolymorphismTrait<PolymorphismTag, BigElem, TYPELIST0> EmptyPolyTrait;
+
+TEST_F(ToXml, NullPolyTrait)
+{
+    toXml<EmptyPolyTrait>((BigElem *)NULL, false);
+}
+
+TEST_F(ToXml, EmptyPolyTrait)
+{
+    BigElem big;
+
+    toXml<EmptyPolyTrait>(&big, false);
+}
+
+TEST_F(FromXml, EmptyPolyTrait)
+{
+    parseXml("<Poly/>");
+    BigElem *big;
+    ASSERT_RESULT_FAILURE(XmlTraitSerializer<EmptyPolyTrait>::fromXml(*_xmlNode, big));
+}
+
+struct ParamMorphTrait
+{
+    typedef Param Derived;
+    typedef ParamTrait<> DerivedTrait;
+    static bool isOf(const Param &param) { return param.isParam(); }
+};
+
+struct Param2 : Param
+{
+    Param2(int param, bool param2) : Param(param), mParam2(param2) {}
+    Param2() : mParam2(false) {}
+    const bool &getValue2() const { return mParam2; }
+    void setValue2(bool param) { mParam2 = param; }
+    virtual bool isParam() const { return false; }
+    bool mParam2;
+};
+
+char boolTag[] = "bool";
+struct Param2Trait
+{
+    static const char *tag;
+    typedef Param2 Element;
+    typedef Child<NamedTextTrait<bool, boolTag>,
+                  typeof( &Element::getValue2), &Element::getValue2,
+                  typeof( &Element::setValue2), &Element::setValue2, false> Child2;
+    typedef TYPELIST2 (ParamTrait<>::Child1, Child2) Children;
+};
+const char *Param2Trait::tag = "Param2";
+
+struct Param2MorphTrait
+{
+    typedef Param2 Derived;
+    typedef Param2Trait DerivedTrait;
+    static bool isOf(const Param &param) { return not param.isParam(); }
+};
+
+typedef PolymorphismTrait<PolymorphismTag, Param,
+                          TYPELIST2(ParamMorphTrait, Param2MorphTrait)> PolyMorphTrait;
+
+TEST_F(ToXml, PolyMorphTrait_base)
+{
+    Param param(22);
+
+    toXml<PolyMorphTrait>(&param);
+
+    EXPECT_EQ("<Poly><Param>22</Param></Poly>", _xml);
+}
+
+
+TEST_F(FromXml, PolyMorphTrait_base)
+{
+    parseXml("<Poly><Param>10</Param></Poly>");
+    Param *param;
+    ASSERT_RESULT_SUCCESS(XmlTraitSerializer<PolyMorphTrait>::fromXml(*_xmlNode, param));
+    ASSERT_TRUE(param->isParam());
+    ASSERT_EQ(10, param->getValue());
+    delete param;
+}
+
+TEST_F(ToXml, PolyMorphTrait_derived)
+{
+    Param2 param2(33, true);
+    Param *param = &param2;
+
+    toXml<PolyMorphTrait>(param);
+
+    EXPECT_EQ("<Poly><Param2>33<bool>true</bool></Param2></Poly>", _xml);
+}
+
+
+TEST_F(FromXml, PolyMorphTrait_derived)
+{
+    parseXml("<Poly><Param2>11<bool>true</bool></Param2></Poly>");
+    Param *param2;
+    ASSERT_RESULT_SUCCESS(XmlTraitSerializer<PolyMorphTrait>::fromXml(*_xmlNode, param2));
+    ASSERT_FALSE(param2->isParam());
+    ASSERT_EQ(11, param2->getValue());
+    ASSERT_TRUE(static_cast<Param2 *>(param2)->getValue2());
+    delete param2;
 }
