@@ -1,7 +1,7 @@
 /*
  * INTEL CONFIDENTIAL
  *
- * Copyright 2013 Intel Corporation
+ * Copyright 2013-2014 Intel Corporation
  * All Rights Reserved.
  *
  * The source code contained or described herein and all documents related
@@ -53,7 +53,7 @@ public:
 
     /** A toXml version using Trait::tag as xml tag for the serialized element.
      *
-     * Return toXml(element, xmlElement, Trait::tag)
+     * @return toXml(element, xmlElement, Trait::tag)
      */
     static Result toXml(const Element &element, TiXmlNode * &xmlElement)
     {
@@ -74,7 +74,8 @@ public:
     }
 
     /** A fromXml version using Trait::tag as xml tag for the serialized element.
-     * Return fromXml(xmlElement, element, Trait::tag)
+     *
+     * @return fromXml(xmlElement, element, Trait::tag)
      */
     static Result fromXml(const TiXmlNode &xmlElement, Element &element)
     {
