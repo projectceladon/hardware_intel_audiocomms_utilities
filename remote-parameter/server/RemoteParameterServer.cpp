@@ -73,9 +73,16 @@ bool RemoteParameterServer::addRemoteParameter(RemoteParameterBase *remoteParame
     }
 
     // Create new Remote Parameter Implementor
-    RemoteParameterImpl *implementor = new RemoteParameterImpl(remoteParameter,
-                                                               remoteParameter->getName(),
-                                                               remoteParameter->getSize());
+    RemoteParameterImpl *implementor = RemoteParameterImpl::create(remoteParameter,
+                                                                   remoteParameter->getName(),
+                                                                   remoteParameter->getSize(),
+                                                                   error);
+    if (implementor == NULL) {
+
+        error += " new RemoteParameterImpl failed.";
+        return false;
+    }
+
     // Check not already inserted
     if (mRemoteParameterImplMap.find(implementor->getPollFd()) != mRemoteParameterImplMap.end()) {
 

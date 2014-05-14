@@ -44,9 +44,20 @@ class RemoteParameterBase;
 class RemoteParameterImpl : private audio_comms::utilities::NonCopyable
 {
 public:
-    RemoteParameterImpl(RemoteParameterBase *parameter,
-                        const std::string &parameterName,
-                        size_t size);
+    /**
+     * Create a RemoteParameterImpl instance.
+     *
+     * @param[in] parameter interface to the parameter.
+     * @param[in] parameterName label to be used to access the parameter.
+     * @param[in] size parameter size in bytes.
+     * @param[out] error humain readable error, set if returned pointer is NULL
+     *
+     * @return a pointer to new instance if succeed, NULL otherwise and error is set.
+     */
+    static RemoteParameterImpl *create(RemoteParameterBase *parameter,
+                                       const std::string &parameterName,
+                                       size_t size,
+                                       std::string &error);
 
     ~RemoteParameterImpl();
 
@@ -81,6 +92,11 @@ public:
     static std::string getUserName(uid_t uid);
 
 private:
+    RemoteParameterImpl(RemoteParameterBase *parameter,
+                        const std::string &parameterName,
+                        size_t size,
+                        RemoteParameterConnector *connector);
+
     /**
      * Check the client's credential and only accept socket connection from the allowed peer
      * user name defined for this remote parameter.

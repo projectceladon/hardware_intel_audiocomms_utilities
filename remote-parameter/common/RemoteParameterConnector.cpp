@@ -60,6 +60,50 @@ int RemoteParameterConnector::getFd() const
     return mSocketFd;
 }
 
+int RemoteParameterConnector::createClientSocket(const std::string &paramName, std::string &error)
+{
+    /**
+     * It is necessary to initialize errno to ENAMETOOLONG to have a chance to log
+     * a consistent error in all cases.
+     * The implementation of socket_local_client is not a POSIX function and may return
+     * an error (i.e. a Fd = -1) in case of a name too long WITHOUT setting the errno.
+     * In all other case of error, it will be consequent to a call of a POSIX function,
+     * so errno would have been overwritten with the right error code.
+     * So, setting manually errno to ENAMETOOLONG will garantee to have a consistent errno
+     * in all cases with the current implementation of socket_local_client.
+     */
+    errno = ENAMETOOLONG;
+    int socketFd = socket_local_client(getServerName(paramName).c_str(),
+                                       ANDROID_SOCKET_NAMESPACE_ABSTRACT,
+                                       SOCK_STREAM);
+    if (socketFd == -1) {
+        error = "socket_local_client connection to " + paramName + " failed : " + strerror(errno);
+    }
+    return socketFd;
+}
+
+int RemoteParameterConnector::createServerSocket(const std::string &paramName, std::string &error)
+{
+    /**
+     * It is necessary to initialize errno to ENAMETOOLONG to have a chance to log
+     * a consistent error in all cases.
+     * The implementation of socket_local_client is not a POSIX function and may return
+     * an error (i.e. a Fd = -1) in case of a name too long WITHOUT setting the errno.
+     * In all other case of error, it will be consequent to a call of a POSIX function,
+     * so errno would have been overwritten with the right error code.
+     * So, setting manually errno to ENAMETOOLONG will garantee to have a consistent errno
+     * in all cases with the current implementation of socket_local_client.
+     */
+    errno = ENAMETOOLONG;
+    int socketFd = socket_local_server(getServerName(paramName).c_str(),
+                                       ANDROID_SOCKET_NAMESPACE_ABSTRACT,
+                                       SOCK_STREAM);
+    if (socketFd == -1) {
+        error = "socket_local_server connection to " + paramName + " failed : " + strerror(errno);
+    }
+    return socketFd;
+}
+
 void RemoteParameterConnector::setTimeoutMs(uint32_t timeoutMs)
 {
     struct timeval tv;
