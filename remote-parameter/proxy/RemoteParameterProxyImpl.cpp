@@ -69,12 +69,14 @@ bool RemoteParameterProxyImpl::write(const uint8_t *data, size_t size, string &e
 {
     AUDIOCOMMS_ASSERT(data != NULL, "NULL data pointer");
 
-    RemoteParameterConnector connector(socket_local_client(
-                                           RemoteParameterConnector::getServerName(mName).c_str(),
-                                           ANDROID_SOCKET_NAMESPACE_ABSTRACT,
-                                           SOCK_STREAM));
-    if (!connector.isConnected()) {
+    int socketFd = RemoteParameterConnector::createClientSocket(mName, error);
+    if (socketFd == -1) {
 
+        return false;
+    }
+
+    RemoteParameterConnector connector(socketFd);
+    if (!connector.isConnected()) {
         error = mConnectionError;
         return false;
     }
@@ -122,10 +124,14 @@ bool RemoteParameterProxyImpl::read(uint8_t *data, size_t &size, string &error)
 {
     AUDIOCOMMS_ASSERT(data != NULL, "NULL data pointer");
 
-    RemoteParameterConnector connector(socket_local_client(
-                                           RemoteParameterConnector::getServerName(mName).c_str(),
-                                           ANDROID_SOCKET_NAMESPACE_ABSTRACT,
-                                           SOCK_STREAM));
+    int socketFd = RemoteParameterConnector::createClientSocket(mName, error);
+    if (socketFd == -1) {
+
+        return false;
+    }
+
+    RemoteParameterConnector connector(socketFd);
+
     // Set timeout
     connector.setTimeoutMs(mCommunicationTimeoutMs);
 

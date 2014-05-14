@@ -89,11 +89,31 @@ public:
     uid_t getUid() const;
 
     /**
-     * Accept a connection on a socked.
+     * Accept a connection on a socket.
      *
      * @return file descriptor of the client connected to the socket.
      */
     int acceptConnection();
+
+    /**
+     * Creates client side socket.
+     *
+     * @param[in] parameterName Name of the parameter.
+     * @param[out] error human readable error is set if returned file desc is -1.
+     *
+     * @return valid file descriptor if success, -1 on error and error is set accordingly.
+     */
+    static int createClientSocket(const std::string &paramName, std::string &error);
+
+    /**
+     * Creates server side socket.
+     *
+     * @param[in] parameterName Name of the parameter.
+     * @param[out] error human readable error is set if returned file desc is -1.
+     *
+     * @return valid file descriptor if success, -1 on error and error is set accordingly.
+     */
+    static int createServerSocket(const std::string &paramName, std::string &error);
 
 private:
     int mSocketFd; /**< Socket ID (server or client). */

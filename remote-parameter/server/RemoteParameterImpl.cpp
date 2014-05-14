@@ -29,23 +29,38 @@
 
 using std::string;
 
+RemoteParameterImpl *RemoteParameterImpl::create(RemoteParameterBase *parameter,
+                                                 const string &parameterName,
+                                                 size_t size,
+                                                 string &error)
+{
+    int socketFd = RemoteParameterConnector::createServerSocket(parameterName, error);
+    if (socketFd == -1) {
+        return NULL;
+    }
+
+    RemoteParameterConnector *connector = new RemoteParameterConnector(socketFd);
+    if (connector == NULL) {
+        error = "Could not create Remote Parameter %s " + parameterName + ": connector error.";
+        close(socketFd);
+        return NULL;
+    }
+    return new RemoteParameterImpl(parameter, parameterName, size, connector);
+}
+
 /**
  * Remote Parameter (Server Side) implementation based on socket
  *
  */
 RemoteParameterImpl::RemoteParameterImpl(RemoteParameterBase *parameter,
                                          const string &parameterName,
-                                         size_t size)
+                                         size_t size,
+                                         RemoteParameterConnector *connector)
     : mName(parameterName),
       mSize(size),
       mParameter(parameter),
-      mServerConnector(new RemoteParameterConnector(
-                           socket_local_server(
-                               RemoteParameterConnector::getServerName(mName).c_str(),
-                               ANDROID_SOCKET_NAMESPACE_ABSTRACT,
-                               SOCK_STREAM)))
+      mServerConnector(connector)
 {
-
 }
 
 int RemoteParameterImpl::getPollFd() const
