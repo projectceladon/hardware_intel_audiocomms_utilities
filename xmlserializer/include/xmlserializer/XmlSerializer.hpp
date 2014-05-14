@@ -68,6 +68,7 @@ public:
         Result res = detail::SerializerChildren<Trait>::toXml(element, *xmlElement);
         if (res.isFailure()) {
             delete xmlElement;
+            xmlElement = NULL;
             return res << " (While serializing " << tag << ")";
         }
         return res;
@@ -225,3 +226,4 @@ private:
 
 #include "xmlserializer/TextNodeImplementation.hpp"
 #include "xmlserializer/CollectionImplementation.hpp"
+#include "xmlserializer/PolymorphismImplementation.hpp"
