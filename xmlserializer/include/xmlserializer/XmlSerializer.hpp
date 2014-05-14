@@ -144,7 +144,7 @@ struct ChildAccess
      */
     static Result get(const TiXmlNode &xmlParent, const TiXmlNode * &xmlChild)
     {
-        xmlChild = xmlParent.FirstChild(ChildTrait::tag);
+        xmlChild = xmlParent.FirstChildElement(ChildTrait::tag);
         if (xmlChild == NULL) {
             return Result(childNotFound) << "No element node " << ChildTrait::tag
                                          << " found in node " << xmlParent.Value();
