@@ -75,7 +75,7 @@ public:
         TiXmlDocument doc;
         doc.Parse(str.c_str(), NULL);
 
-        const TiXmlNode *acmeTag = doc.FirstChild("ACME");
+        const TiXmlNode *acmeTag = doc.FirstChildElement("ACME");
         if (acmeTag == NULL) {
             return Result(conversionFailed) << "No ACME root element.";
         }

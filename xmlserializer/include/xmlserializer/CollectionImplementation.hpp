@@ -92,7 +92,7 @@ public:
 
         // For each <nb>...</nb> node
         const TiXmlNode *xmlItemNb;
-        while ((xmlItemNb = xmlCollection.FirstChild(formatIndex(nb).c_str())) != NULL) {
+        while ((xmlItemNb = xmlCollection.FirstChildElement(formatIndex(nb).c_str())) != NULL) {
             Item item;
             ItemNb itemNb(item);
             Result res = XmlTraitSerializer<ItemNbTrait>::fromXml(*xmlItemNb, itemNb,
