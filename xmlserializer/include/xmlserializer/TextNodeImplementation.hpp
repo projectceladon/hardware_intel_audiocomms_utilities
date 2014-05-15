@@ -1,7 +1,7 @@
 /*
  * INTEL CONFIDENTIAL
  *
- * Copyright 2013 Intel Corporation
+ * Copyright 2013-2014 Intel Corporation
  * All Rights Reserved.
  *
  * The source code contained or described herein and all documents related
@@ -41,8 +41,8 @@ struct ChildAccess<serializer::TextTrait<TextType, Convertor> >
     {
         xmlChild = xmlParent.FirstChild();
         if (xmlChild == NULL) {
-            return Result(childNotFound) << "Node " << xmlParent.Value()
-                                         << " is empy, expected a text node child";
+            return Result(childNotFound) << "Node \"" << xmlParent.Value()
+                                         << "\" is empy, expected a text node child";
         }
         return Result::success();
     }
@@ -59,8 +59,8 @@ public:
     {
         std::string text;
         if (not Convertor::toString(rawtext, text)) {
-            return Result(conversionFailed) << "Unable to convert " << &rawtext
-                                            << "to string.";
+            return Result(conversionFailed) << "Unable to convert \"" << &rawtext
+                                            << "\" to string.";
         }
         xmlText = new TiXmlText(text.c_str());
         return Result::success();
@@ -74,8 +74,8 @@ public:
         }
         std::string text(textNode->Value());
         if (not Convertor::fromString(text, rawText)) {
-            return Result(conversionFailed) << "Unable to convert from string"
-                                            << text << ".";
+            return Result(conversionFailed) << "Unable to convert from string \""
+                                            << text << "\".";
         }
         return Result::success();
     }

@@ -69,7 +69,7 @@ public:
         if (res.isFailure()) {
             delete xmlElement;
             xmlElement = NULL;
-            return res << " (While serializing " << tag << ")";
+            return res << " (While serializing \"" << tag << "\")";
         }
         return res;
     }
@@ -89,10 +89,10 @@ public:
         if (strcmp(tag, xmlElement.Value()) != 0) {
             return Result(wrongXmlNode)
                    << "Trying to deserialize the wrong element."
-                   << "Found " << xmlElement.Value() << " expected " << tag;
+                   << "Found \"" << xmlElement.Value() << "\" expected " << tag;
         }
         return detail::SerializerChildren<Trait>::fromXml(xmlElement, element)
-               << " (While desserializing " << tag << ")";
+               << " (While desserializing \"" << tag << "\")";
     }
 };
 
@@ -147,8 +147,9 @@ struct ChildAccess
     {
         xmlChild = xmlParent.FirstChildElement(ChildTrait::tag);
         if (xmlChild == NULL) {
-            return Result(childNotFound) << "No element node " << ChildTrait::tag
-                                         << " found in node " << xmlParent.Value();
+            return Result(childNotFound) << "No element node \"" << ChildTrait::tag
+                                         << "\" found in node \"" << xmlParent.Value()
+                                         << '"';
         }
         return Result::success();
     }
