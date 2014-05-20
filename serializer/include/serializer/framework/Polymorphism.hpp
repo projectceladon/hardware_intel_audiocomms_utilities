@@ -64,23 +64,20 @@ namespace serializer
  *
  *   // Starting by defining the morphism traits.
  *   class BMorphTrait {
- *       typedef B Derived;
  *       typedef BTrait DerivedTrait;
- *       bool isOf(B &b) {
+ *       bool isOf(const B &b) {
  *           // isOfTypeB is an arbitrary function that should return true
- *           // if b is really a B. It can be implemented using rtti, enum
- *           // or any other way.
+ *           // if b is really (static type) a B.
+ *           // It can be implemented using rtti, enum or any other way.
  *           return isOfTypeB(b);
  *       }
  *   class D1MorphTrait {
- *       typedef D1 Derived;
  *       typedef D1Trait DerivedTrait;
- *       bool isOf(B &b) { return isOfTypeD1(b); }
+ *       bool isOf(const B &b) { return isOfTypeD1(b); }
  *   }
  *   class D2MorphTrait {
- *       typedef D2 Derived;
  *       typedef D2Trait DerivedTrait;
- *       bool isOf(B &b) { return isOfTypeD2(b); }
+ *       bool isOf(const B &b) { return isOfTypeD2(b); }
  *   }
  *
  *   // Define a tag to identify our polymorphic pointer
