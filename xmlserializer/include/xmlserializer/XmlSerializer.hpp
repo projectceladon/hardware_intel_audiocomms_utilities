@@ -155,6 +155,17 @@ struct ChildAccess
     }
 };
 
+template <class Trait, bool takeOwnership>
+struct Deleter
+{
+    static void del(typename Trait::Element *element)
+    {
+        if (not takeOwnership) {
+            delete element;
+        }
+    }
+};
+
 template <class Parent, class H, class T>
 class SerializerChildList<Parent, TypeList<H, T> >
 {
@@ -213,9 +224,7 @@ private:
             }
         }
         H::Setter::function(parent, *child);
-        if (not H::takeOwnership) {
-            delete child;
-        }
+        detail::Deleter<typename H::ChildTrait, H::takeOwnership>::del(child);
         return Result::success();
     }
 };
