@@ -412,7 +412,6 @@ TEST_F(FromXml, EmptyPolyTrait)
 
 struct ParamMorphTrait
 {
-    typedef Param Derived;
     typedef ParamTrait<> DerivedTrait;
     static bool isOf(const Param &param) { return param.isParam(); }
 };
@@ -441,7 +440,6 @@ const char *Param2Trait::tag = "Param2";
 
 struct Param2MorphTrait
 {
-    typedef Param2 Derived;
     typedef Param2Trait DerivedTrait;
     static bool isOf(const Param &param) { return not param.isParam(); }
 };
