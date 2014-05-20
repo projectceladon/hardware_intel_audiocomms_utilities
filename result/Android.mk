@@ -82,9 +82,9 @@ LOCAL_MODULE := $(common_ut_local_module)_host
 LOCAL_SRC_FILES := $(common_test_src_files)
 LOCAL_C_INCLUDES := $(common_c_includes)
 
-LOCAL_CFLAGS := $(common_c_flags) --coverage
+LOCAL_CFLAGS := $(common_c_flags) $(CME_COVERAGE_FLAG)
 
-LOCAL_LDFLAGS := --coverage
+LOCAL_LDFLAGS := $(CME_COVERAGE_FLAG)
 
 LOCAL_STRIP_MODULE := false
 
@@ -108,9 +108,9 @@ LOCAL_C_INCLUDES := \
     bionic \
     $(common_c_includes)
 
-LOCAL_CFLAGS := $(common_c_flags) --coverage
+LOCAL_CFLAGS := $(common_c_flags) $(CME_COVERAGE_FLAG)
 
-LOCAL_LDFLAGS := --coverage
+LOCAL_LDFLAGS := $(CME_COVERAGE_FLAG)
 
 LOCAL_STRIP_MODULE := false
 
