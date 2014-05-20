@@ -54,6 +54,15 @@ namespace serializer
  *                                     I.e. that serializing the pointer as
  *                                     a class Derived is lossless.
  *
+ * The meaning of the Child::takeOwnership changes when Child::ChildTrait is a
+ * PolymorphismTrait. Usually it is true if the setter takes the Trait::Element's
+ * ownership, false otherwise.
+ * A setter receives an Trait::Element&, aka Base *& for a PolymorphismTrait.
+ * Nevertheless, a polymorphic setter must NOT take the ownership of the
+ * Trait::Element, aka Base *, aka the pointer, but can only take the ownership
+ * of the pointee.
+ * If the pointee ownership is taken, Child::takeOwnership must be true.
+ *
  * Example:
  *   - Given a base class B and two derived class D1 and D2.
  *   - Given the BTrait, D1Trait, D2Trait, the traits to serialize those objects.
