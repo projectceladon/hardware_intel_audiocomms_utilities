@@ -138,6 +138,21 @@ private:
     }
 };
 
+
+/** Pattern match polymorphic trait to handle the ownership particularity. */
+template <const char *tag, class Base, class SuportedTypelist, bool takeOwnership>
+struct Deleter<serializer::PolymorphismTrait<tag, Base, SuportedTypelist>, takeOwnership>
+{
+    static void del(Base **element)
+    {
+        if (not takeOwnership) {
+            delete *element;
+        }
+        delete element;
+    }
+};
+
+
 } // namespace detail
 } // namespace serializer
 } // namespace cme
