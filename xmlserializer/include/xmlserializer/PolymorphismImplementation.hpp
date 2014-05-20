@@ -96,7 +96,7 @@ public:
         }
         TiXmlNode *xmlMorph = NULL;
         // Now that the type is determined, continue serialisation
-        // as a H::Derived
+        // as a Derived
         Result res = XmlTraitSerializer<typename H::DerivedTrait>::toXml(
             downCast(element), xmlMorph);
         if (res.isFailure()) {
@@ -113,14 +113,14 @@ public:
             return Morph<Base, T>::fromXml(xmlMorph, element);
         }
         // Now that the type is determined, continue deserialisation
-        // as a H::Derived
+        // as a Derived
         element = new Derived;
         return XmlTraitSerializer<typename H::DerivedTrait>::fromXml(
             xmlMorph, downCast(*element));
     }
 
 private:
-    typedef typename H::Derived Derived;
+    typedef typename H::DerivedTrait::Element Derived;
 
     /* Convert a Base to derived.
      *
