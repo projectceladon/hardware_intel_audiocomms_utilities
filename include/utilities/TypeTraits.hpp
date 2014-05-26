@@ -17,7 +17,9 @@
  */
 #pragma once
 
-/** @file This files aims to implement the c++11 type_traits new header. */
+/** @file
+ * This file aims to implement the c++11 type_traits new header.
+ */
 
 namespace audio_comms
 {
