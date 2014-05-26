@@ -48,7 +48,7 @@ public:
 
     /** Constuct a constructs a new unique_ptr
      *
-     * @param[in] p pointer to the object to manage.
+     * @param[in] pointer pointer to the object to manage.
      */
     explicit UniquePtr(Pointer pointer = Pointer()) : _ptr(pointer), _deleter() {}
     /** Constuct a constructs a new unique_ptr
