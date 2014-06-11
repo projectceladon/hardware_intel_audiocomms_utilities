@@ -19,7 +19,7 @@
 
 #include "serializer/framework/TextNode.hpp"
 #include "serializer/framework/Child.hpp"
-#include "TypeList.hpp"
+#include "utilities/TypeList.hpp"
 
 namespace audio_comms
 {
