@@ -28,7 +28,7 @@ common_test_src_files := \
     test/ResultUnitTest.cpp \
     test/ErrnoResultUnitTest.cpp \
 
-base_name := cmeresult
+base_name := acresult
 common_library_local_module := lib$(base_name)
 
 common_c_includes := \
@@ -89,10 +89,6 @@ LOCAL_LDFLAGS := $(CME_COVERAGE_FLAG)
 LOCAL_STRIP_MODULE := false
 
 include $(BUILD_HOST_NATIVE_TEST)
-
-EXECUTABLE_PATH := $(LOCAL_INSTALLED_MODULE)
-include $(CLEAR_VARS)
-include $(LOCAL_PATH)/../runExecutable.mk
 
 #======================================================================
 # target unit test
