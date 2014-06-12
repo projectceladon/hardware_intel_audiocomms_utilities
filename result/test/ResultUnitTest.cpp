@@ -53,7 +53,7 @@ struct TestResult
 const TestResult::Code TestResult::success = A;
 const TestResult::Code TestResult::defaultError = B;
 
-typedef audio_comms::cme::result::Result<TestResult> Result;
+typedef audio_comms::utilities::result::Result<TestResult> Result;
 
 TEST(Result, defaultValueConstructor)
 {

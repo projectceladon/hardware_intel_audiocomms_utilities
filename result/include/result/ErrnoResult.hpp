@@ -24,7 +24,7 @@
 
 namespace audio_comms
 {
-namespace cme
+namespace utilities
 {
 namespace result
 {
@@ -48,6 +48,6 @@ typedef Result<ErrnoTrait> ErrnoResult;
 
 } /* namespace result */
 
-} /* namespace cme */
+} /* namespace utilities */
 
 } /* namespace audio_comms */

@@ -22,7 +22,7 @@
 
 namespace audio_comms
 {
-namespace cme
+namespace utilities
 {
 namespace result
 {
@@ -211,6 +211,6 @@ private:
 
 } /* namespace result */
 
-} /* namespace cme */
+} /* namespace utilities */
 
 } /* namespace audio_comms */

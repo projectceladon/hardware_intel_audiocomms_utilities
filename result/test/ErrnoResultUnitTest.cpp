@@ -20,7 +20,7 @@
 
 #include <gtest/gtest.h>
 
-typedef audio_comms::cme::result::ErrnoResult ErrnoResult;
+typedef audio_comms::utilities::result::ErrnoResult ErrnoResult;
 
 TEST(ErrnoResult, defaultValueConstructor)
 {
