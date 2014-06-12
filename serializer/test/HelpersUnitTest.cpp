@@ -17,9 +17,10 @@
  */
 #include "serializer/framework/GetterHelper.hpp"
 #include "serializer/framework/SetterHelper.hpp"
-#include <common/TypeTraits.hpp>
+#include <utilities/TypeTraits.hpp>
 #include <gtest/gtest.h>
 
+using namespace audio_comms::utilities;
 using namespace audio_comms::utilities::serializer;
 
 // An abstract containor with serveral accessors
@@ -57,7 +58,7 @@ struct Cont
 template <class F, class T>
 bool fis_same(T)
 {
-    return audio_comms::cme::common::is_same<F, T>::value;
+    return is_same<F, T>::value;
 }
 
 /** Test that:
