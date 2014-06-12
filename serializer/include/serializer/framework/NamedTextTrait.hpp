@@ -1,7 +1,7 @@
 /*
  * INTEL CONFIDENTIAL
  *
- * Copyright 2013 Intel Corporation
+ * Copyright 2013-2014 Intel Corporation
  * All Rights Reserved.
  *
  * The source code contained or described herein and all documents related
@@ -24,7 +24,7 @@
 
 #include "serializer/framework/TextNode.hpp"
 #include "serializer/framework/Child.hpp"
-#include "common/TypeList.hpp"
+#include "TypeList.hpp"
 
 namespace audio_comms
 {
