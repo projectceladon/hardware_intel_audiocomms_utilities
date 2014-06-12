@@ -23,7 +23,7 @@
 #include "serializer/framework/TextNode.hpp"
 #include "serializer/framework/NamedTextTrait.hpp"
 #include "serializer/framework/Collection.hpp"
-#include <common/UniquePtr.hpp>
+#include <utilities/UniquePtr.hpp>
 
 
 namespace audio_comms
@@ -46,7 +46,7 @@ public:
         doc.LinkEndChild(new TiXmlDeclaration("1.0", "", ""));
         TiXmlElement root("ACME");
         root.SetAttribute("version", "0.0.1");
-        audio_comms::cme::common::UniquePtr<TiXmlNode> xmlElement;
+        UniquePtr<TiXmlNode> xmlElement;
         Result res = XmlTraitSerializer<serializer::ClassSerializationTrait<Class> >
                      ::toXml(c, xmlElement.getRefToSet());
 

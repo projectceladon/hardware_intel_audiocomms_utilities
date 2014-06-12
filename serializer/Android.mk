@@ -38,18 +38,21 @@ common_static_libs_host := \
     libacresult_host \
 
 common_shared_libs := \
-    libstlport \
-    libcmecommon
+    libstlport
 
-common_shared_libs_host := \
-    libcmecommon_host
+common_shared_libs_host :=
 
 common_library_c_includes := \
     $(LOCAL_PATH)/include \
     $(LOCAL_PATH)/src \
 
-common_header_lib := libaudio_comms_convert
-common_header_lib_host := libaudio_comms_convert_host
+common_header_lib := \
+    libaudio_comms_convert \
+    libaudio_comms_utilities
+
+common_header_lib_host := \
+    libaudio_comms_convert_host \
+    libaudio_comms_utilities_host
 
 common_c_flags := \
     -Wall \

@@ -20,7 +20,7 @@
 #include "serializer/framework/Collection.hpp"
 #include "serializer/framework/ConvertToString.hpp"
 
-#include "common/TypeTraits.hpp"
+#include "utilities/TypeTraits.hpp"
 
 namespace audio_comms
 {
