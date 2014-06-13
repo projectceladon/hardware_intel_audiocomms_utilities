@@ -40,7 +40,7 @@ static bool toString(const Source &source, std::string &dest)
 
 /** For boolean, sepecialize to return "true" or "false". */
 template <>
-bool toString<bool>(const bool &source, std::string &dest)
+inline bool toString<bool>(const bool &source, std::string &dest)
 {
     if (source) {
         dest = "true";
