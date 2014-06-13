@@ -31,7 +31,7 @@ namespace serializer
  * Class has to be serialized
  */
 template <class Class>
-class ClassSerializationTrait;
+struct ClassSerializationTrait;
 
 template <class Result>
 class Serializer

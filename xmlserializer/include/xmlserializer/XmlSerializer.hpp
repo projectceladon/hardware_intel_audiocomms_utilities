@@ -113,8 +113,9 @@ public:
 
 /** Do nothing in case of empty list. */
 template <class Parent>
-struct SerializerChildList<Parent, TYPELIST0>
+class SerializerChildList<Parent, TYPELIST0>
 {
+public:
     static Result toXml(const Parent &, TiXmlNode &)
     {
         return Result::success();
