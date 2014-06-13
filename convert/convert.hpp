@@ -242,6 +242,25 @@ inline bool convertTo<bool>(const std::string &str, bool &result)
     return false;
 }
 
+/**
+ * Specialization for string of convertTo template function.
+ *
+ * This function is a dummy conversion from string to string.
+ * In case of clients using template as well, this implementation avoids adding extra
+ * specialization to bypass the conversion from string to string.
+ *
+ * @param[in]  str    the string to parse.
+ * @param[out] result reference to object where to store the result.
+ *
+ * @return true if conversion was successful, false otherwise.
+ */
+template <>
+inline bool convertTo<std::string>(const std::string &str, std::string &result)
+{
+    result = str;
+    return true;
+}
+
 } // namespace utilities
 
 } // namespace audio_comms
