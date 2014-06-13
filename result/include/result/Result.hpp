@@ -32,14 +32,14 @@ namespace result
  * @tparam ErrorTrait a class describing a specific error field
  *  ErrorTrait MUST have a Code type which hold its error values and MUST have
  *  codeToString() static function that converts this code type into std::string.
- *
- * Can be cast to bool to see if the function succeed.
  */
 template <class ErrorTrait>
 class Result
 {
 public:
     typedef ErrorTrait Trait;
+    typedef typename ErrorTrait::Code Code;
+
     /** Result constructor
      *
      * this creates a Result object which holds the given error code.
@@ -47,7 +47,7 @@ public:
      * @param[in] code the code to be put in Result; Default value is
      *                       ErrorTrait::defaultError.
      */
-    explicit Result(typename ErrorTrait::Code code = ErrorTrait::defaultError)
+    explicit Result(Code code = ErrorTrait::defaultError)
         : _errorCode(code)
     {}
 
@@ -64,8 +64,8 @@ public:
      */
     template <class InputTrait>
     explicit Result(const Result<InputTrait> &inputResult,
-                    typename ErrorTrait::Code failureCode,
-                    typename ErrorTrait::Code successCode = ErrorTrait::success)
+                    Code failureCode,
+                    Code successCode = ErrorTrait::success)
     {
         if (inputResult.isFailure()) {
             _errorCode = failureCode;
@@ -79,15 +79,14 @@ public:
      *
      * @return the error code, undefined behaviour if the result is a success.
      */
-    typename ErrorTrait::Code getErrorCode() const { return _errorCode; }
+    Code getErrorCode() const { return _errorCode; }
 
     /** Get the error message
      * @return the error message held by the class
      */
     const std::string &getMessage() const { return _message; }
 
-    /**
-     * Comparison operator.
+    /** Comparison operator.
      * Careful, comparison is performed on error code only, messages MAY differ
      * even if this function returns true.
      *
@@ -99,6 +98,17 @@ public:
     {
         return _errorCode == toCompare._errorCode;
     }
+    /** not == */
+    bool operator!=(const Result<ErrorTrait> &toCompare) const
+    {
+        return not operator==(toCompare);
+    }
+
+    /** Is code the same as getErrorCode() */
+    bool operator==(Code code) { return _errorCode == code; }
+
+    /** Is code different than getErrorCode() */
+    bool operator!=(Code code) { return _errorCode != code; }
 
     /**
      * Success
@@ -118,16 +128,6 @@ public:
      * @return true is the error code is success, false otherwise
      */
     bool isSuccess() const { return _errorCode == ErrorTrait::success; }
-
-    /**
-     * Cast to ErrorTrait::Code
-     * This function allows to test a Result with an ErrorTrait::Code easily
-     *
-     * @return the code held by the object
-     */
-    operator typename ErrorTrait::Code() const {
-        return _errorCode;
-    }
 
     /**
      * is object holding a failure
@@ -205,12 +205,34 @@ private:
     template <class Data>
     friend void Append<Data>::run();
 
-    typename ErrorTrait::Code _errorCode; /*< result code held by class */
+    Code _errorCode; /*< result code held by class */
     std::string _message;                 /*< an error message explaining the error */
 };
 
+template <class ErrorTrait>
+bool operator==(Result<ErrorTrait> result, typename ErrorTrait::Code code)
+{
+    return result.operator==(code);
+}
+
+template <class ErrorTrait>
+bool operator==(typename ErrorTrait::Code code, Result<ErrorTrait> result)
+{
+    return result.operator==(code);
+}
+
+template <class ErrorTrait>
+bool operator!=(Result<ErrorTrait> result, typename ErrorTrait::Code code)
+{
+    return result.operator!=(code);
+}
+
+template <class ErrorTrait>
+bool operator!=(typename ErrorTrait::Code code, Result<ErrorTrait> result)
+{
+    return result.operator!=(code);
+}
+
 } /* namespace result */
-
 } /* namespace utilities */
-
 } /* namespace audio_comms */
