@@ -35,27 +35,27 @@ namespace details
 
 /** Helper class to limit instantiation of templates */
 template <typename T>
-struct ConvertionAllowed;
+struct ConversionAllowed;
 
 /* List of allowed types for conversion */
 template <>
-struct ConvertionAllowed<bool> {};
+struct ConversionAllowed<bool> {};
 template <>
-struct ConvertionAllowed<uint64_t> {};
+struct ConversionAllowed<uint64_t> {};
 template <>
-struct ConvertionAllowed<int64_t> {};
+struct ConversionAllowed<int64_t> {};
 template <>
-struct ConvertionAllowed<uint32_t> {};
+struct ConversionAllowed<uint32_t> {};
 template <>
-struct ConvertionAllowed<int32_t> {};
+struct ConversionAllowed<int32_t> {};
 template <>
-struct ConvertionAllowed<uint16_t> {};
+struct ConversionAllowed<uint16_t> {};
 template <>
-struct ConvertionAllowed<int16_t> {};
+struct ConversionAllowed<int16_t> {};
 template <>
-struct ConvertionAllowed<float> {};
+struct ConversionAllowed<float> {};
 template <>
-struct ConvertionAllowed<double> {};
+struct ConversionAllowed<double> {};
 
 template <typename T>
 static inline bool convertTo(const std::string &str, T &result)
@@ -63,7 +63,7 @@ static inline bool convertTo(const std::string &str, T &result)
     /* Check that conversion to that type is allowed.
      * If this fails, this means that this template was not intended to be used
      * with this type, thus that the result is undefined. */
-    ConvertionAllowed<T>();
+    ConversionAllowed<T>();
 
     if (str.find_first_of(std::string("\r\n\t\v ")) != std::string::npos) {
         return false;
