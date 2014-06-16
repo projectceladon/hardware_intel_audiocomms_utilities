@@ -20,5 +20,11 @@ LOCAL_EXPORT_C_INCLUDE_DIRS := $(LOCAL_PATH)/
 
 LOCAL_MODULE := libaudio_comms_convert_host
 
+LOCAL_CFLAGS = -O0 --coverage
+
+LOCAL_LDFLAGS = --coverage
+
+LOCAL_MODULE_TAGS := tests
+
 include $(BUILD_HOST_STATIC_LIBRARY)
 
