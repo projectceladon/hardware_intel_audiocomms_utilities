@@ -35,35 +35,48 @@ namespace details
 
 /** Helper class to limit instantiation of templates */
 template <typename T>
-struct ConversionAllowed;
+struct ConversionFromStringAllowed;
+template <typename T>
+struct ConversionToStringAllowed;
 
 /* List of allowed types for conversion */
 template <>
-struct ConversionAllowed<bool> {};
+struct ConversionFromStringAllowed<bool> {};
 template <>
-struct ConversionAllowed<uint64_t> {};
+struct ConversionFromStringAllowed<uint64_t> {};
 template <>
-struct ConversionAllowed<int64_t> {};
+struct ConversionFromStringAllowed<int64_t> {};
 template <>
-struct ConversionAllowed<uint32_t> {};
+struct ConversionFromStringAllowed<uint32_t> {};
 template <>
-struct ConversionAllowed<int32_t> {};
+struct ConversionFromStringAllowed<int32_t> {};
 template <>
-struct ConversionAllowed<uint16_t> {};
+struct ConversionFromStringAllowed<uint16_t> {};
 template <>
-struct ConversionAllowed<int16_t> {};
+struct ConversionFromStringAllowed<int16_t> {};
 template <>
-struct ConversionAllowed<float> {};
+struct ConversionFromStringAllowed<float> {};
 template <>
-struct ConversionAllowed<double> {};
+struct ConversionFromStringAllowed<double> {};
+
+template <>
+struct ConversionToStringAllowed<int64_t> {};
+template <>
+struct ConversionToStringAllowed<uint64_t> {};
+template <>
+struct ConversionToStringAllowed<uint32_t> {};
+template <>
+struct ConversionToStringAllowed<int32_t> {};
+template <>
+struct ConversionToStringAllowed<double> {};
 
 template <typename T>
-static inline bool convertTo(const std::string &str, T &result)
+static inline bool fromString(const std::string &str, T &result)
 {
     /* Check that conversion to that type is allowed.
      * If this fails, this means that this template was not intended to be used
      * with this type, thus that the result is undefined. */
-    ConversionAllowed<T>();
+    ConversionFromStringAllowed<T>();
 
     if (str.find_first_of(std::string("\r\n\t\v ")) != std::string::npos) {
         return false;
@@ -94,10 +107,48 @@ static inline bool convertTo(const std::string &str, T &result)
 
     return ss.eof() && !ss.fail() && !ss.bad();
 }
+
+template <typename T>
+static inline bool toString(const T &value, std::string &str)
+{
+    /* Check that conversion from that type is allowed.
+     * If this fails, this means that this template was not intended to be used
+     * with this type, thus that the result is undefined. */
+    ConversionToStringAllowed<T>();
+
+    std::stringstream oss;
+    oss << value;
+    str = oss.str();
+    return !oss.fail() && !oss.bad();
+}
+
+template <typename srcType, typename dstType>
+class Converter;
+
+template <typename dstType>
+class Converter<std::string, dstType>
+{
+public:
+    static inline bool run(const std::string &str, dstType &result)
+    {
+        return fromString<dstType>(str, result);
+    }
+};
+
+template <typename srcType>
+class Converter<srcType, std::string>
+{
+public:
+    static inline bool run(const srcType &str, std::string &result)
+    {
+        return toString<srcType>(str, result);
+    }
+};
+
 } // namespace details
 
 /**
- * Convert a string to a given type.
+ * Convert a given source type to a given destination type.
  *
  * This template function read the value of the type T in the given string.
  * The function does not allow to have white spaces around the value to parse
@@ -107,15 +158,17 @@ static inline bool convertTo(const std::string &str, T &result)
  * for integral types conversions.
  * Result may be modified, even in case of failure.
  *
- * @param[in]  str    the string to parse.
+ * @tparam srcType source type, default value is string type
+ * @tparam dstType destination type
+ * @param[in] str the string to parse.
  * @param[out] result reference to object where to store the result.
  *
  * @return true if conversion was successful, false otherwise.
  */
-template <typename T>
-static inline bool convertTo(const std::string &str, T &result)
+template <typename srcType, typename dstType>
+static inline bool convertTo(const srcType &input, dstType &result)
 {
-    return details::convertTo<T>(str, result);
+    return details::Converter<srcType, dstType>::run(input, result);
 }
 
 /**
@@ -133,11 +186,11 @@ static inline bool convertTo(const std::string &str, T &result)
  * @return true if conversion was successful, false otherwise.
  */
 template <>
-inline bool convertTo<int16_t>(const std::string &str, int16_t &result)
+inline bool convertTo<std::string, int16_t>(const std::string &str, int16_t &result)
 {
     int64_t res;
 
-    if (!convertTo<int64_t>(str, res)) {
+    if (!convertTo<std::string, int64_t>(str, res)) {
         return false;
     }
 
@@ -165,9 +218,9 @@ inline bool convertTo<int16_t>(const std::string &str, int16_t &result)
  * @return true if conversion was successful, false otherwise.
  */
 template <>
-inline bool convertTo<float>(const std::string &str, float &result)
+inline bool convertTo<std::string, float>(const std::string &str, float &result)
 {
-    if (!details::convertTo(str, result)) {
+    if (!details::Converter<std::string, float>::run(str, result)) {
         return false;
     }
 
@@ -195,9 +248,9 @@ inline bool convertTo<float>(const std::string &str, float &result)
  * @return true if conversion was successful, false otherwise.
  */
 template <>
-inline bool convertTo<double>(const std::string &str, double &result)
+inline bool convertTo<std::string, double>(const std::string &str, double &result)
 {
-    if (!details::convertTo(str, result)) {
+    if (!details::Converter<std::string, double>::run(str, result)) {
         return false;
     }
 
@@ -227,7 +280,7 @@ inline bool convertTo<double>(const std::string &str, double &result)
  * @return true if conversion was successful, false otherwise.
  */
 template <>
-inline bool convertTo<bool>(const std::string &str, bool &result)
+inline bool convertTo<std::string, bool>(const std::string &str, bool &result)
 {
     if (str == "0" || str == "FALSE" || str == "false") {
         result = false;
@@ -243,7 +296,7 @@ inline bool convertTo<bool>(const std::string &str, bool &result)
 }
 
 /**
- * Specialization for string of convertTo template function.
+ * Specialization for string to string of convertTo template function.
  *
  * This function is a dummy conversion from string to string.
  * In case of clients using template as well, this implementation avoids adding extra
@@ -255,7 +308,7 @@ inline bool convertTo<bool>(const std::string &str, bool &result)
  * @return true if conversion was successful, false otherwise.
  */
 template <>
-inline bool convertTo<std::string>(const std::string &str, std::string &result)
+inline bool convertTo<std::string, std::string>(const std::string &str, std::string &result)
 {
     result = str;
     return true;
