@@ -61,19 +61,8 @@ class compileTimeAssertFailure<false>
 
 } // namespace audio_comms
 
+#include <utilities/Log.hpp>
 #include <cstdlib> /* assert */
-#include <iostream>
-#include <sstream>
-#include <string>
-#include <utils/Log.h>
-
-static inline void printFatalMessage(const std::string &message)
-{
-    std::cerr << message << std::endl;
-#if __ANDROID__
-    __android_log_write(ANDROID_LOG_FATAL, "ASSERT", message.c_str());
-#endif
-}
 
 /**
  * Checks a condition and abort if it is not met.
@@ -86,9 +75,8 @@ static inline void printFatalMessage(const std::string &message)
 #define AUDIOCOMMS_ASSERT(cond, iostr) \
  do { \
    if (audio_comms_unlikely(!(cond))) { \
-       std::stringstream stream; \
-       stream << __BASE_FILE__ ":" << __LINE__ << ": Assertion " #cond " failed: " << iostr; \
-       printFatalMessage(stream.str()); \
+       audio_comms::utilities::Log::Fatal("AUDIOCOMMS") << __BASE_FILE__ ":" << __LINE__ \
+                                            << ": Assertion " #cond " failed: " << iostr; \
        abort(); \
    } \
  } while (false)
