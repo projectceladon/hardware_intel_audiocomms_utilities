@@ -162,7 +162,7 @@ uid_t RemoteParameterConnector::getUid() const
 
     if (getsockopt(mSocketFd, SOL_SOCKET, SO_PEERCRED, &cr, &len)) {
 
-        LOGE("could not get socket credentials: %s\n", strerror(errno));
+        ALOGE("could not get socket credentials: %s\n", strerror(errno));
         return -1;
     }
 
