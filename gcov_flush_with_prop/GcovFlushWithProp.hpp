@@ -1,5 +1,5 @@
 /*
- * Copyright 2013 Intel Corporation
+ * Copyright 2013-2014 Intel Corporation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -34,7 +34,7 @@
  *
  * @subsection install Installing lcov
  * If lcov is already installed on your system, please uninstall it, because
- * it’s not compatible with the new Android gcc.
+ * it's not compatible with the new Android gcc.
  *
  * Then download lcov here: http://ltp.cvs.sourceforge.net/viewvc/ltp/utils/analysis/lcov/?view=tar&pathrev=MAIN
  *
@@ -202,4 +202,3 @@ private:
  * with this static lib.
  */
 static GcovFlushWithProp *gcovFlushWithPropInstance = &(GcovFlushWithProp::getInstance());
-

@@ -15,6 +15,8 @@
 
 LOCAL_PATH := $(call my-dir)
 
+#######################################################################
+# Build for target with flush from property
 include $(CLEAR_VARS)
 
 LOCAL_EXPORT_C_INCLUDE_DIRS := $(LOCAL_PATH)
@@ -25,25 +27,44 @@ LOCAL_C_INCLUDES := \
     bionic
 
 LOCAL_MODULE := gcov_flush_with_prop
-LOCAL_MODULE_TAGS := optional
+LOCAL_MODULE_TAGS := tests
 
 LOCAL_IMPORT_C_INCLUDE_DIRS_FROM_SHARED_LIBRARIES := libproperty
 
 include $(BUILD_STATIC_LIBRARY)
 
-
+#######################################################################
+# Build for target
 
 include $(CLEAR_VARS)
 
-LOCAL_EXPORT_C_INCLUDE_DIRS := $(LOCAL_PATH)/include_host
+LOCAL_EXPORT_C_INCLUDE_DIRS := $(LOCAL_PATH)/include
 
 LOCAL_SRC_FILES := GcovFlush.cpp
 LOCAL_C_INCLUDES := \
-    $(LOCAL_PATH)/include_host \
+    $(LOCAL_PATH)/include \
+    $(call include-path-for, stlport) \
+    bionic
+
+LOCAL_MODULE := gcov_flush
+LOCAL_MODULE_TAGS := optional
+
+include $(BUILD_STATIC_LIBRARY)
+
+#######################################################################
+# Build for host
+
+include $(CLEAR_VARS)
+
+LOCAL_EXPORT_C_INCLUDE_DIRS := $(LOCAL_PATH)/include
+
+LOCAL_SRC_FILES := GcovFlush.cpp
+LOCAL_C_INCLUDES := \
+    $(LOCAL_PATH)/include \
     bionic/libc/kernel/common
 
-LOCAL_MODULE := gcov_flush_host
-LOCAL_MODULE_TAGS := optional
+LOCAL_MODULE := gcov_flush
+LOCAL_MODULE_TAGS := tests
 
 
 include $(BUILD_HOST_STATIC_LIBRARY)
