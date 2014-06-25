@@ -49,4 +49,4 @@ public:
  * code, just by adding the cflag <tt>-include %GcovFlush.h</tt> and link
  * with this static lib.
  */
-static GcovFlush *gcovFlushWithPropInstance = &(GcovFlush::getInstance());
+static GcovFlush *gcovFlushInstance = &(GcovFlush::getInstance());

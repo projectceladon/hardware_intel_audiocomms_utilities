@@ -15,7 +15,7 @@
  *
  */
 
-#include "include_host/GcovFlush.hpp"
+#include "GcovFlush.hpp"
 
 extern "C" void __gcov_flush();
 

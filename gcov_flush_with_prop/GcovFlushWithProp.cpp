@@ -1,5 +1,5 @@
 /*
- * Copyright 2013 Intel Corporation
+ * Copyright 2013-2014 Intel Corporation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,7 +15,7 @@
  *
  */
 
-#include <GcovFlushWithProp.h>
+#include "GcovFlushWithProp.hpp"
 #include <Property.h>
 #define LOG_TAG "GcovFlushWithProp"
 #include <utils/Log.h>
@@ -60,13 +60,11 @@ void GcovFlushWithProp::run()
     // shell and this thread.
     TProperty<bool> gcovFlushForceProp = TProperty<bool>("gcov.flush.force", false);
     bool hasFlush = true;
-    while (!stopThread)
-    {
+    while (!stopThread) {
         // Read the property value to take into account Android shell modification
         bool gcovFlushForcePropValue = gcovFlushForceProp.getValue();
         // If the property become true
-        if (!hasFlush && gcovFlushForcePropValue)
-        {
+        if (!hasFlush && gcovFlushForcePropValue) {
             // gcov flush
             LOGD("GcovFlushWithProp __gcov_flush begin !!!");
             __gcov_flush();
@@ -74,8 +72,7 @@ void GcovFlushWithProp::run()
             LOGD("GcovFlushWithProp __gcov_flush end !!!");
         }
         // If the property become false
-        else if (hasFlush && !gcovFlushForcePropValue)
-        {
+        else if (hasFlush && !gcovFlushForcePropValue) {
             hasFlush = false;
             LOGD("GcovFlushWithProp wait property \"gcov.flush.force\" is \"true\"");
         }
@@ -87,4 +84,3 @@ void GcovFlushWithProp::run()
         sleep(1);
     }
 }
-
