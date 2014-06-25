@@ -48,13 +48,15 @@ class compileTimeAssertFailure;
 
 // If true do nothing
 template <>
-class compileTimeAssertFailure<true> {};
+class compileTimeAssertFailure<true>
+{
+};
 
 // If false instanciate with private constructor
 template <>
 class compileTimeAssertFailure<false>
 {
-    compileTimeAssertFailure();
+compileTimeAssertFailure();
 };
 
 } // namespace utilities
@@ -72,12 +74,12 @@ class compileTimeAssertFailure<false>
  * @param[in] cond   the condition to check
  * @param[in] iostr  an iostream giving some details about the error
  */
-#define AUDIOCOMMS_ASSERT(cond, iostr) \
- do { \
-   if (audio_comms_unlikely(!(cond))) { \
-       audio_comms::utilities::Log::Fatal("AUDIOCOMMS") << __BASE_FILE__ ":" << __LINE__ \
-                                            << ": Assertion " #cond " failed: " << iostr; \
-       abort(); \
-   } \
- } while (false)
-
+#define AUDIOCOMMS_ASSERT(cond, iostr)                                                           \
+    do {                                                                                         \
+        if (audio_comms_unlikely(!(cond))) {                                                     \
+            audio_comms::utilities::Log::Fatal("AUDIOCOMMS") << __BASE_FILE__ ":" << __LINE__    \
+                                                             << ": Assertion " #cond " failed: " \
+                                                             << iostr;                           \
+            abort();                                                                             \
+        }                                                                                        \
+    } while (false)
