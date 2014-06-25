@@ -13,6 +13,7 @@
 # limitations under the License.
 
 LOCAL_PATH := $(call my-dir)
+include $(OPTIONAL_QUALITY_ENV_SETUP)
 
 # Common variables
 ##################
@@ -43,7 +44,8 @@ remote_param_server_shared_lib_target += \
     libevent-listener
 
 remote_param_server_static_lib += \
-    libaudio_comms_utilities
+    libaudio_comms_utilities \
+    libremote-parameter-common
 
 remote_param_server_static_lib_host += \
     $(foreach lib, $(remote_param_server_static_lib), $(lib)_host) \
@@ -51,21 +53,6 @@ remote_param_server_static_lib_host += \
 
 remote_param_server_static_lib_target += \
     $(remote_param_server_static_lib)
-
-remote_param_server_import_c_include_dirs_from_static_lib := \
-    libremote-parameter-common
-
-remote_param_server_import_c_include_dirs_from_static_lib_host += \
-    $(foreach lib, $(remote_param_server_import_c_include_dirs_from_static_lib), $(lib)_host)
-
-remote_param_server_import_c_include_dirs_from_static_lib_target += \
-    $(remote_param_server_import_c_include_dirs_from_static_lib)
-
-remote_param_server_import_c_include_dirs_from_static_lib_gcov_host := \
-    $(foreach lib, $(remote_param_server_import_c_include_dirs_from_static_lib), $(lib)_gcov_host)
-
-remote_param_server_import_c_include_dirs_from_static_lib_gcov_target := \
-    $(foreach lib, $(remote_param_server_import_c_include_dirs_from_static_lib), $(lib)_gcov)
 
 remote_param_server_cflags := -Wall -Werror -Wno-unused-parameter
 
@@ -76,58 +63,33 @@ define make_remote_param_server_lib
 $( \
     $(eval LOCAL_EXPORT_C_INCLUDE_DIRS := $(remote_param_server_includes_dir)) \
     $(eval LOCAL_C_INCLUDES += $(remote_param_server_includes_dir_$(1))) \
-    $(eval LOCAL_STATIC_LIBRARIES += $(remote_param_server_static_lib_$(1))) \
+    $(eval LOCAL_STATIC_LIBRARIES := $(remote_param_server_static_lib_$(1))) \
     $(eval LOCAL_SHARED_LIBRARIES := $(remote_param_server_shared_lib_$(1))) \
     $(eval LOCAL_SRC_FILES := $(remote_param_server_src_files)) \
     $(eval LOCAL_CFLAGS += $(remote_param_server_cflags)) \
-    $(eval LOCAL_MODULE_TAGS := optional) \
 )
 endef
 
-define add_gcov
-$( \
-    $(eval LOCAL_CFLAGS += -O0 --coverage) \
-    $(eval LOCAL_LDFLAGS += --coverage) \
-)
-endef
-
-# Build for targets
-##################
-
+# Build for target
+##################################
 include $(CLEAR_VARS)
 LOCAL_MODULE := libremote-parameter-server
 $(call make_remote_param_server_lib,target)
-LOCAL_IMPORT_C_INCLUDE_DIRS_FROM_STATIC_LIBRARIES := \
-    $(remote_param_server_import_c_include_dirs_from_static_lib_target)
+LOCAL_MODULE_TAGS := optional
+
+include $(OPTIONAL_QUALITY_COVERAGE_JUMPER)
 include $(BUILD_STATIC_LIBRARY)
 
-
-# Build for host test
-#####################
-include $(CLEAR_VARS)
-$(call make_remote_param_server_lib,host)
-LOCAL_MODULE :=  libremote-parameter-server_host
-LOCAL_LDFLAGS += -pthread
-LOCAL_STATIC_LIBRARIES += $(remote_param_server_import_c_include_dirs_from_static_lib_host)
-include $(BUILD_HOST_STATIC_LIBRARY)
-
-# Functional test target with gcov
-##################################
-include $(CLEAR_VARS)
-LOCAL_MODULE := libremote-parameter-server_gcov
-$(call make_remote_param_server_lib,target)
-$(call add_gcov)
-LOCAL_IMPORT_C_INCLUDE_DIRS_FROM_STATIC_LIBRARIES := \
-    $(remote_param_server_import_c_include_dirs_from_static_lib_gcov_target)
-include $(BUILD_STATIC_LIBRARY)
-
-# Functional test host with gcov
+# Build for host
 ##################################
 include $(CLEAR_VARS)
 $(eval LOCAL_LDFLAGS += -pthread)
-LOCAL_MODULE := libremote-parameter-server_gcov_host
+LOCAL_MODULE := libremote-parameter-server_host
 $(call make_remote_param_server_lib,host)
-$(call add_gcov)
-LOCAL_IMPORT_C_INCLUDE_DIRS_FROM_STATIC_LIBRARIES := \
-    $(remote_param_server_import_c_include_dirs_from_static_lib_gcov_host)
+LOCAL_MODULE_TAGS := tests
+
+include $(OPTIONAL_QUALITY_COVERAGE_JUMPER)
 include $(BUILD_HOST_STATIC_LIBRARY)
+
+
+include $(OPTIONAL_QUALITY_ENV_TEARDOWN)

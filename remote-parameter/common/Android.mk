@@ -13,6 +13,7 @@
 # limitations under the License.
 
 LOCAL_PATH := $(call my-dir)
+include $(OPTIONAL_QUALITY_ENV_SETUP)
 
 # Common variables
 ##################
@@ -53,46 +54,27 @@ $( \
     $(eval LOCAL_SHARED_LIBRARIES := $(remote_param_common_shared_lib_$(1))) \
     $(eval LOCAL_SRC_FILES := $(remote_param_common_src_files)) \
     $(eval LOCAL_CFLAGS += $(remote_param_common_cflags)) \
-    $(eval LOCAL_MODULE_TAGS := optional) \
-)
-endef
-
-define add_gcov
-$( \
-    $(eval LOCAL_CFLAGS += -O0 --coverage) \
-    $(eval LOCAL_LDFLAGS += --coverage) \
 )
 endef
 
 # Build for target
-##################
-
+##################################
 include $(CLEAR_VARS)
 LOCAL_MODULE := libremote-parameter-common
 $(call make_remote_param_common_lib,target)
+LOCAL_MODULE_TAGS := optional
+
+include $(OPTIONAL_QUALITY_COVERAGE_JUMPER)
 include $(BUILD_STATIC_LIBRARY)
 
-
-# Build for host test
-#####################
+# Build for host
+##################################
 include $(CLEAR_VARS)
-$(call make_remote_param_common_lib,host)
 LOCAL_MODULE := libremote-parameter-common_host
-include $(BUILD_HOST_STATIC_LIBRARY)
-
-# Functional test target with gcov
-##################################
-include $(CLEAR_VARS)
-LOCAL_MODULE := libremote-parameter-common_gcov
-$(call make_remote_param_common_lib,target)
-$(call add_gcov)
-include $(BUILD_STATIC_LIBRARY)
-
-# Functional test host with gcov
-##################################
-include $(CLEAR_VARS)
-LOCAL_MODULE := libremote-parameter-common_gcov_host
 $(call make_remote_param_common_lib,host)
-$(call add_gcov)
+LOCAL_MODULE_TAGS := tests
+
+include $(OPTIONAL_QUALITY_COVERAGE_JUMPER)
 include $(BUILD_HOST_STATIC_LIBRARY)
 
+include $(OPTIONAL_QUALITY_ENV_TEARDOWN)
