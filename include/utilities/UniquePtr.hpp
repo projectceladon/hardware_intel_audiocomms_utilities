@@ -19,6 +19,7 @@
 
 #include "utilities/DefaultDelete.hpp"
 #include <NonCopyable.hpp>
+#include <cstdlib>
 
 namespace audio_comms
 {
@@ -88,6 +89,12 @@ public:
         Pointer tmp = _ptr;
         _ptr = Pointer();
         return tmp;
+    }
+
+    /** @return true if pointer is NULL, false otherwise. */
+    bool isNull()
+    {
+        return _ptr == NULL;
     }
 
 private:
