@@ -33,7 +33,15 @@ namespace serializer
 template <class Class>
 struct ClassSerializationTrait;
 
-template <class Result>
+/** (De)serialize object to string given the corresponding trait.
+ *
+ * The trait to deserialize a given class K is SerializationTrait<K>.
+ * tparam Result class to use return an operation status.
+ *               Should be an instance of utilities::Result;
+ * tparam SerializationTrait template trait.
+ */
+template <class Result,
+          template <class> class SerializationTrait = ClassSerializationTrait>
 class Serializer
 {
 public:

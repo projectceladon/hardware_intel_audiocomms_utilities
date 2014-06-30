@@ -39,7 +39,8 @@ namespace xmlserializer
  * Class that handles xml serialization/deserialization
  * The version numbering follows the Semantic Versioning scheme
  */
-class XmlSerializer : public serializer::Serializer<Result>
+template <template <class> class SerializationTrait = serializer::ClassSerializationTrait>
+class XmlSerializer : public serializer::Serializer<Result, SerializationTrait>
 {
 public:
     typedef xmlserializer::Result Result;
@@ -79,7 +80,7 @@ public:
         root.SetAttribute("version", mVersion.c_str());
 
         UniquePtr<TiXmlNode> xmlElement;
-        Result res = XmlTraitSerializer<serializer::ClassSerializationTrait<Class> >
+        Result res = XmlTraitSerializer<SerializationTrait<Class> >
                      ::toXml(c, xmlElement.getRefToSet());
 
         if (res.isFailure()) {
@@ -137,9 +138,7 @@ public:
             return Result(conversionFailed) << "No command tag found.";
         }
 
-        return XmlTraitSerializer<serializer::ClassSerializationTrait<Class> >::fromXml(
-            *rootTag->FirstChild(),
-            c);
+        return XmlTraitSerializer<SerializationTrait<Class> >::fromXml(*rootTag->FirstChild(), c);
     }
 
 private:
