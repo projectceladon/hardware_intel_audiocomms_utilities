@@ -138,7 +138,11 @@ public:
             return Result(conversionFailed) << "No command tag found.";
         }
 
-        return XmlTraitSerializer<SerializationTrait<Class> >::fromXml(*rootTag->FirstChild(), c);
+        const TiXmlNode *xmlChild = rootTag->FirstChild();
+        if (xmlChild == NULL) {
+            return Result(conversionFailed) << "No content under root element.";
+        }
+        return XmlTraitSerializer<SerializationTrait<Class> >::fromXml(*xmlChild, c);
     }
 
 private:
