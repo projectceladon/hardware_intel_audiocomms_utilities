@@ -26,7 +26,21 @@ public:
     virtual bool onHangup(int iFd) = 0; // return true if Fd sets has changed
     virtual void onAlarm() = 0;
     virtual void onPollError() = 0;
-    virtual bool onProcess(uint16_t uiEventId) = 0; // return true if Fd sets has changed
+
+    /**
+     * Callback upon a trig request to process an event from the event thread context
+     * (to avoid borrow the context of a caller for example).
+     *
+     * @param[in] context pointer that was given by the client of the event thread through trig.
+     *                    Note that is may be NULL.
+     * @param[in] eventId that was given by the client of the event thread through trig.
+     *                    NOTE: this parameter is DEPRECATED, for maintained for compatibility.
+     *
+     * @return true if the list of file descripter polled has changed, false otherwise.
+     * @deprecated Using this function with 2 parameters is deprecated, only context shall remain
+     *             as a parameter of this function.
+     */
+    virtual bool onProcess(void *context, uint32_t eventId) = 0;
 
 protected:
     virtual ~IEventListener() {}

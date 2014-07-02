@@ -176,7 +176,7 @@ void RemoteParameterServer::onPollError()
     ALOGE("%s: server poll error!", __FUNCTION__);
 }
 
-bool RemoteParameterServer::onProcess(uint16_t eventId)
+bool RemoteParameterServer::onProcess(void *context, uint32_t eventId)
 {
     // Nothing to do
     return false;

@@ -37,11 +37,17 @@ private:
         ENbPipeMsg
     };
 
+    struct Message
+    {
+        void *context;
+        uint32_t eventId;
+        uint32_t msg;
+    };
+
     struct SFd
     {
         SFd(uint32_t uiClientFdId, int iFd,
             bool bToListenTo) : _uiClientFdId(uiClientFdId), _iFd(iFd), _bToListenTo(bToListenTo) {}
-
         uint32_t _uiClientFdId;
         int _iFd;
         bool _bToListenTo;
@@ -76,8 +82,20 @@ public:
     bool start();
     // Thread stop
     void stop();
-    // trigger
-    void trig(uint16_t uiClientRequest = 0);
+
+    /**
+     * Trig an execution context change. The caller of this function has to process an event within
+     * theevent thread context in order to avoid borrowing the execution context of another thread
+     * for example.
+     *
+     * @param[in] context pointer given by the client of the event thread.
+     *                    Note that is may be NULL.
+     * @param[in] eventId given by the client of the event thread.
+     *                    NOTE: this parameter is DEPRECATED, for maintained for compatibility.
+     * @deprecated Using this function with 2 parameters is deprecated, only context shall remain
+     *             as a parameter of this function.
+     */
+    void trig(void *context, uint32_t eventId = -1);
 
     // Context check
     bool inThreadContext() const;
