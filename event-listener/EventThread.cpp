@@ -172,8 +172,12 @@ void CEventThread::stop()
     }
 
     // Cause exiting of the thread
-    uint8_t ucData = EExit;
-    ::write(_aiInbandPipe[1], &ucData, sizeof(ucData));
+    Message toWrite;
+    toWrite.eventId = 0;
+    toWrite.context = NULL;
+    toWrite.msg = EExit;
+
+    ::write(_aiInbandPipe[1], &toWrite, sizeof(toWrite));
 
     // Join thread
     pthread_join(_ulThreadId, NULL);
@@ -182,8 +186,7 @@ void CEventThread::stop()
     _bIsStarted = false;
 }
 
-// Trigger
-void CEventThread::trig(uint16_t uiEventId)
+void CEventThread::trig(void *context, uint32_t eventId /* = -1 */)
 {
     if (_bLogsOn) {
 
@@ -192,8 +195,12 @@ void CEventThread::trig(uint16_t uiEventId)
 
     assert(_bIsStarted);
 
-    uint32_t ulData = (((uint32_t)uiEventId) << 16) | EProcess;
-    ::write(_aiInbandPipe[1], &ulData, sizeof(ulData));
+    Message toWrite;
+    toWrite.eventId = eventId;
+    toWrite.context = context;
+    toWrite.msg = EProcess;
+
+    ::write(_aiInbandPipe[1], &toWrite, sizeof(toWrite));
 
     if (_bLogsOn) {
 
@@ -265,17 +272,17 @@ void CEventThread::run()
         if (astPollFds[0].revents & POLLIN) {
 
             // Consume request
-            uint32_t ucData;
-            ::read(_aiInbandPipe[0], &ucData, sizeof(ucData));
+            Message dataRead;
+            ::read(_aiInbandPipe[0], &dataRead, sizeof(dataRead));
 
-            if ((uint16_t)ucData == EProcess) {
+            if (dataRead.msg == EProcess) {
 
-                if (_pEventListener->onProcess((uint16_t)(ucData >> 16))) {
+                if (_pEventListener->onProcess(dataRead.context, dataRead.eventId)) {
 
                     continue;
                 }
             } else {
-                assert(ucData == EExit);
+                assert(dataRead.msg == EExit);
 
                 if (_bLogsOn) {
 
@@ -287,7 +294,6 @@ void CEventThread::run()
         }
 
         {
-            // bool bContinue = false;
             uint32_t uiIndex;
 
             // Check for read events

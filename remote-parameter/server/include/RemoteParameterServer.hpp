@@ -74,7 +74,7 @@ private:
     virtual bool onHangup(int fd);
     virtual void onAlarm();
     virtual void onPollError();
-    virtual bool onProcess(uint16_t eventId);
+    virtual bool onProcess(void *context, uint32_t eventId);
 
     CEventThread *mEventThread; /**< Event thread. */
 
