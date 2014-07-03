@@ -19,10 +19,10 @@
 
 #include "xmlserializer/Result.hpp"
 #include "xmlserializer/XmlSerializer.hpp"
-#include "serializer/Serializer.hpp"
 #include "serializer/framework/TextNode.hpp"
 #include "serializer/framework/NamedTextTrait.hpp"
 #include "serializer/framework/Collection.hpp"
+#include <utilities/TypeList.hpp>
 #include <utilities/UniquePtr.hpp>
 #include <sstream>
 
@@ -34,13 +34,51 @@ namespace utilities
 namespace xmlserializer
 {
 
+namespace detail
+{
+/**
+ * Helper class to fetch a serialization trait in for a given class type.
+ * tparam List the serialization trait list
+ * tparam Class the class we search a serialization trait for.
+ * This assumes that the classes passed in the list have a Element type defined that MUST match the
+ * Class type.
+ *
+ * The COMPILATION FAILS if you ask use the serializer with a type which does not have a
+ * serialization trait.
+ */
+template <class List, class Class>
+struct Find;
+
+template <class T>
+struct Find<utilities::detail::TypeNull, T>
+{
+    typedef typename T::TheClassHasNoSerializationTraitDefinedInList type;
+};
+
+template <class Head, class Tail, class Class>
+struct Find<TypeList<Head, Tail>, Class>
+{
+    typedef typename Find<Tail, Class>::type type;
+};
+
+template <class Head, class Tail>
+struct Find<TypeList<Head, Tail>, typename Head::Element>
+{
+    typedef Head type;
+};
+
+} // namespace detail
+
 /**
  * XmlSerializer
  * Class that handles xml serialization/deserialization
  * The version numbering follows the Semantic Versioning scheme
  */
-template <template <class> class SerializationTrait = serializer::ClassSerializationTrait>
-class XmlSerializer : public serializer::Serializer<Result, SerializationTrait>
+template <class List>
+class XmlSerializer;
+
+template <class H, class T>
+class XmlSerializer<TypeList<H, T> >
 {
 public:
     typedef xmlserializer::Result Result;
@@ -72,6 +110,8 @@ public:
     template <class Class>
     Result serialize(const Class &c, std::string &serializedCmd)
     {
+        typedef typename detail::Find<TypeList<H, T>, Class>::type SerializationTrait;
+
         TiXmlOutStream stream;
         TiXmlDocument doc;
         doc.LinkEndChild(new TiXmlDeclaration("1.0", "", ""));
@@ -80,7 +120,7 @@ public:
         root.SetAttribute("version", mVersion.c_str());
 
         UniquePtr<TiXmlNode> xmlElement;
-        Result res = XmlTraitSerializer<SerializationTrait<Class> >
+        Result res = XmlTraitSerializer<SerializationTrait>
                      ::toXml(c, xmlElement.getRefToSet());
 
         if (res.isFailure()) {
@@ -113,6 +153,7 @@ public:
     template <class Class>
     Result deserialize(const std::string &str, Class &c)
     {
+        typedef typename detail::Find<TypeList<H, T>, Class>::type SerializationTrait;
         TiXmlDocument doc;
         doc.Parse(str.c_str(), NULL);
 
@@ -142,7 +183,7 @@ public:
         if (xmlChild == NULL) {
             return Result(conversionFailed) << "No content under root element.";
         }
-        return XmlTraitSerializer<SerializationTrait<Class> >::fromXml(*xmlChild, c);
+        return XmlTraitSerializer<SerializationTrait>::fromXml(*xmlChild, c);
     }
 
 private:
