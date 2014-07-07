@@ -1,19 +1,19 @@
 /* EventThread.cpp
- **
- ** Copyright 2011 Intel Corporation
- **
- ** Licensed under the Apache License, Version 2.0 (the "License");
- ** you may not use this file except in compliance with the License.
- ** You may obtain a copy of the License at
- **
- **     http://www.apache.org/licenses/LICENSE-2.0
- **
- ** Unless required by applicable law or agreed to in writing, software
- ** distributed under the License is distributed on an "AS IS" BASIS,
- ** WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- ** See the License for the specific language governing permissions and
- ** limitations under the License.
- */
+**
+** Copyright 2011-2014 Intel Corporation
+**
+** Licensed under the Apache License, Version 2.0 (the "License");
+** you may not use this file except in compliance with the License.
+** You may obtain a copy of the License at
+**
+**     http://www.apache.org/licenses/LICENSE-2.0
+**
+** Unless required by applicable law or agreed to in writing, software
+** distributed under the License is distributed on an "AS IS" BASIS,
+** WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+** See the License for the specific language governing permissions and
+** limitations under the License.
+*/
 #include <unistd.h>
 #include <assert.h>
 #include <strings.h>
@@ -27,20 +27,20 @@
 
 #include "EventThread.h"
 
-const int64_t MILLISECONDS_IN_SECONDS      = 1000;
-const int64_t NANOSECONDS_IN_MILLISECONDS  = 1000 * 1000;
+const int64_t MILLISECONDS_IN_SECONDS = 1000;
+const int64_t NANOSECONDS_IN_MILLISECONDS = 1000 * 1000;
 
 #define SECONDS_TO_MILLISECONDS(seconds)            (int32_t(seconds) * MILLISECONDS_IN_SECONDS)
 #define NANOSECONDS_TO_MILLISECONDS(nanoseconds)    ((nanoseconds) / NANOSECONDS_IN_MILLISECONDS)
 
-CEventThread::CEventThread(IEventListener* pEventListener, bool bLogsOn) :
-    _pEventListener(pEventListener),
-    _bIsStarted(false),
-    _ulThreadId(0),
-    _uiNbPollFds(0),
-    _iAlarmMs(-1),
-    _bThreadContext(false),
-    _bLogsOn(bLogsOn)
+CEventThread::CEventThread(IEventListener *pEventListener, bool bLogsOn)
+    : _pEventListener(pEventListener),
+      _bIsStarted(false),
+      _ulThreadId(0),
+      _uiNbPollFds(0),
+      _iAlarmMs(-1),
+      _bThreadContext(false),
+      _bLogsOn(bLogsOn)
 {
     assert(pEventListener);
 
@@ -84,7 +84,7 @@ void CEventThread::closeAndRemoveFd(uint32_t uiClientFdId)
 
     for (it = _sFdList.begin(); it != _sFdList.end(); ++it) {
 
-        const SFd* pFd = &(*it);
+        const SFd *pFd = &(*it);
 
         if (pFd->_uiClientFdId == uiClientFdId) {
 
@@ -113,7 +113,7 @@ int CEventThread::getFd(uint32_t uiClientFdId) const
 
     for (it = _sFdList.begin(); it != _sFdList.end(); ++it) {
 
-        const SFd* pFd = &(*it);
+        const SFd *pFd = &(*it);
 
         if (pFd->_uiClientFdId == uiClientFdId) {
 
@@ -208,9 +208,9 @@ bool CEventThread::inThreadContext() const
 }
 
 // Thread
-void* CEventThread::thread_func(void* pData)
+void *CEventThread::thread_func(void *pData)
 {
-    reinterpret_cast<CEventThread*>(pData)->run();
+    reinterpret_cast<CEventThread *>(pData)->run();
 
     return NULL;
 }
@@ -235,7 +235,7 @@ void CEventThread::run()
             // Future ?
             if (_iAlarmMs > now) {
 
-                iTimeoutMs = (int) (_iAlarmMs - now);
+                iTimeoutMs = (int)(_iAlarmMs - now);
             } else {
 
                 iTimeoutMs = 0;
@@ -282,12 +282,12 @@ void CEventThread::run()
                     LOGD("%s exit", __func__);
                 }
                 // Exit
-                return ;
+                return;
             }
         }
 
         {
-            //bool bContinue = false;
+            // bool bContinue = false;
             uint32_t uiIndex;
 
             // Check for read events
@@ -339,7 +339,7 @@ void CEventThread::run()
 }
 
 // Poll FD computation
-void CEventThread::buildPollFds(struct pollfd* paPollFds) const
+void CEventThread::buildPollFds(struct pollfd *paPollFds) const
 {
     // Reset memory
     bzero(paPollFds, sizeof(struct pollfd) * _uiNbPollFds);
@@ -350,7 +350,7 @@ void CEventThread::buildPollFds(struct pollfd* paPollFds) const
 
     for (it = _sFdList.begin(); it != _sFdList.end(); ++it) {
 
-        const SFd* pFd = &(*it);
+        const SFd *pFd = &(*it);
 
         if (pFd->_bToListenTo) {
 

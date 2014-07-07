@@ -1,19 +1,19 @@
 /* EventThread.h
- **
- ** Copyright 2011 Intel Corporation
- **
- ** Licensed under the Apache License, Version 2.0 (the "License");
- ** you may not use this file except in compliance with the License.
- ** You may obtain a copy of the License at
- **
- **     http://www.apache.org/licenses/LICENSE-2.0
- **
- ** Unless required by applicable law or agreed to in writing, software
- ** distributed under the License is distributed on an "AS IS" BASIS,
- ** WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- ** See the License for the specific language governing permissions and
- ** limitations under the License.
- */
+**
+** Copyright 2011-2014 Intel Corporation
+**
+** Licensed under the Apache License, Version 2.0 (the "License");
+** you may not use this file except in compliance with the License.
+** You may obtain a copy of the License at
+**
+**     http://www.apache.org/licenses/LICENSE-2.0
+**
+** Unless required by applicable law or agreed to in writing, software
+** distributed under the License is distributed on an "AS IS" BASIS,
+** WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+** See the License for the specific language governing permissions and
+** limitations under the License.
+*/
 #pragma once
 
 #include <poll.h>
@@ -28,15 +28,19 @@ class IEventListener;
 
 class CEventThread
 {
-    enum PipeMsg {
+private:
+    enum PipeMsg
+    {
         EProcess,
         EExit,
 
         ENbPipeMsg
     };
 
-    struct SFd {
-        SFd(uint32_t uiClientFdId, int iFd, bool bToListenTo) : _uiClientFdId(uiClientFdId), _iFd(iFd), _bToListenTo(bToListenTo) {}
+    struct SFd
+    {
+        SFd(uint32_t uiClientFdId, int iFd,
+            bool bToListenTo) : _uiClientFdId(uiClientFdId), _iFd(iFd), _bToListenTo(bToListenTo) {}
 
         uint32_t _uiClientFdId;
         int _iFd;
@@ -48,7 +52,7 @@ class CEventThread
 
 public:
     // Construction
-    CEventThread(IEventListener* pEventListener, bool bLogsOn = true);
+    CEventThread(IEventListener *pEventListener, bool bLogsOn = true);
     ~CEventThread();
     // Add open FDs
     void addOpenedFd(uint32_t uiFdClientId, int iFd, bool bToListenTo = false);
@@ -84,7 +88,7 @@ public:
 
 private:
     // Thread
-    static void* thread_func(void* pData);
+    static void *thread_func(void *pData);
     // Run
     void run();
     // Add FD
@@ -92,13 +96,13 @@ private:
     // Remove FD
     void removeListenedFd(int iFd);
     // Poll FD computation
-    void buildPollFds(struct pollfd* paPollFds) const;
+    void buildPollFds(struct pollfd *paPollFds) const;
     // Get current date in milliseconds
     static int64_t getCurrentDateMs();
 
 private:
     // Listener
-    IEventListener* _pEventListener;
+    IEventListener *_pEventListener;
     // State
     bool _bIsStarted;
     // Thread id
@@ -116,4 +120,3 @@ private:
     // EventThread logs enabled
     bool _bLogsOn;
 };
-
