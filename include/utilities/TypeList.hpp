@@ -78,5 +78,27 @@ struct TypeNull;
 #define TYPELIST15(A, B, C, D, E, F, G, H, I, J, K, L, M, N, O) \
     audio_comms::utilities::TypeList < A, TYPELIST14(B, C, D, E, F, G, H, I, J, K, L, M, N, O) >
 
+/**
+ * Append Helper for TypeLists
+ * This class allow to Append a typelist to another
+ * @tparam List1 first list
+ * @tparam List2 second list
+ * The result appended list is: Append<List1, List2>::list
+ */
+template <class List1, class List2>
+struct Append;
+
+template <class Head, class Tail, class List2>
+struct Append<TypeList<Head, Tail>, List2>
+{
+    typedef TypeList<Head, typename Append<Tail, List2>::list> list;
+};
+
+template <class List>
+struct Append<TYPELIST0, List>
+{
+    typedef List list;
+};
+
 } // namespace utilities
 } // namespace audio_comms
