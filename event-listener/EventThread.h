@@ -84,6 +84,17 @@ public:
     void stop();
 
     /**
+     * Returns the state of the event thread. When started, i.e. the event thread is listening
+     * to event from its list of file descriptor and from its pipe, no file descriptor can be
+     * added outside the context of the event thread. The only way to change this list is to append
+     * remove file descriptor upon call back of the event thread and returning true to notify
+     * of the change.
+     *
+     * @return true if started false otherwise.
+     */
+    bool isStarted() const { return _bIsStarted; }
+
+    /**
      * Trig an execution context change. The caller of this function has to process an event within
      * theevent thread context in order to avoid borrowing the execution context of another thread
      * for example.
@@ -122,7 +133,7 @@ private:
     // Listener
     IEventListener *_pEventListener;
     // State
-    bool _bIsStarted;
+    bool _bIsStarted; /**< State of the event thread. */
     // Thread id
     pthread_t _ulThreadId;
     // Inband pipe
