@@ -59,5 +59,38 @@ struct remove_reference<T &>
     typedef T type;
 };
 
+/** Remove the pointer of a type.
+ * @see std::remove_pointer (c++11)
+ *
+ * If the type T is a pointer type,
+ * provides the member typedef type which is the type pointed to by T,
+ * otherwise type is the same as T.
+ */
+template <class T>
+struct remove_pointer
+{
+    typedef T type;
+};
+template <class T>
+struct remove_pointer<T *>
+{
+    typedef T type;
+};
+template <class T>
+struct remove_pointer<T *const>
+{
+    typedef T type;
+};
+template <class T>
+struct remove_pointer<T *volatile>
+{
+    typedef T type;
+};
+template <class T>
+struct remove_pointer<T *const volatile>
+{
+    typedef T type;
+};
+
 } // namespace utilities
 } // namespace audio_comms
