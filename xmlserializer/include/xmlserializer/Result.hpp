@@ -34,7 +34,8 @@ enum ResultCode
     childNotFound,
     unexpectedNodeType,
     conversionFailed,
-    invalidArgument
+    invalidArgument,
+    invalidInputData
 };
 
 namespace detail
@@ -63,6 +64,8 @@ struct ResultTrait
             return "Conversion failed";
         case invalidArgument:
             return "Invalid argument";
+        case invalidInputData:
+            return "Input stream is invalid";
         }
         /* Unreachable, prevents gcc to complain */
         return "Invalid error (Unreachable)";

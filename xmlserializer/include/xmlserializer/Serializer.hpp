@@ -25,6 +25,7 @@
 #include <utilities/TypeList.hpp>
 #include <utilities/UniquePtr.hpp>
 #include <sstream>
+#include <istream>
 
 
 namespace audio_comms
@@ -184,6 +185,23 @@ public:
             return Result(conversionFailed) << "No content under root element.";
         }
         return XmlTraitSerializer<SerializationTrait>::fromXml(*xmlChild, c);
+    }
+
+    template <class Class>
+    Result deserialize(std::istream &stream, Class &c)
+    {
+        if (!stream.good()) {
+            return Result(invalidInputData);
+        }
+
+        std::stringstream content;
+        content << stream.rdbuf();
+
+        if (!stream) {
+            Result(invalidInputData) << "Fail to load configuration from input data.";
+        }
+
+        return deserialize(content.str(), c);
     }
 
 private:
