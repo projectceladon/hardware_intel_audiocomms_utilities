@@ -31,6 +31,7 @@ LOCAL_EXPORT_C_INCLUDE_DIRS := $(LOCAL_PATH)
 LOCAL_SRC_FILES := EventThread.cpp
 LOCAL_CFLAGS := -Wall -Werror -Wextra
 LOCAL_SHARED_LIBRARIES := libstlport libcutils
+LOCAL_STATIC_LIBRARIES := libaudio_comms_utilities
 
 LOCAL_MODULE := libevent-listener
 LOCAL_MODULE_TAGS := optional
@@ -46,6 +47,7 @@ include $(CLEAR_VARS)
 
 LOCAL_EXPORT_C_INCLUDE_DIRS := $(LOCAL_PATH)
 LOCAL_SRC_FILES := EventThread.cpp
+LOCAL_STATIC_LIBRARIES := libaudio_comms_utilities_host
 
 LOCAL_MODULE := libevent-listener_static_host
 LOCAL_MODULE_TAGS := tests
@@ -60,6 +62,7 @@ include $(CLEAR_VARS)
 LOCAL_EXPORT_C_INCLUDE_DIRS := $(LOCAL_PATH)
 
 LOCAL_SRC_FILES := EventThread.cpp
+LOCAL_STATIC_LIBRARIES := libaudio_comms_utilities
 
 LOCAL_MODULE := libevent-listener_static
 LOCAL_MODULE_TAGS := optional
