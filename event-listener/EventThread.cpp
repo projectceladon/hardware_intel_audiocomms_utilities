@@ -14,18 +14,18 @@
 ** See the License for the specific language governing permissions and
 ** limitations under the License.
 */
-#include <unistd.h>
-#include <assert.h>
-#include <strings.h>
-#include <string.h>
-#include <time.h>
-#include <assert.h>
 
 #define LOG_TAG "EVENT_THREAD"
 #include <utils/Log.h>
 #include "EventListener.h"
 
 #include "EventThread.h"
+#include <AudioCommsAssert.hpp>
+#include <unistd.h>
+#include <strings.h>
+#include <string.h>
+#include <time.h>
+
 
 const int64_t MILLISECONDS_IN_SECONDS = 1000;
 const int64_t NANOSECONDS_IN_MILLISECONDS = 1000 * 1000;
@@ -42,7 +42,7 @@ CEventThread::CEventThread(IEventListener *pEventListener, bool bLogsOn)
       _bThreadContext(false),
       _bLogsOn(bLogsOn)
 {
-    assert(pEventListener);
+    AUDIOCOMMS_ASSERT(pEventListener, "Invalid event listener");
 
     // Create inband pipe
     pipe(_aiInbandPipe);
@@ -64,7 +64,7 @@ CEventThread::~CEventThread()
 // Add open FDs
 void CEventThread::addOpenedFd(uint32_t uiFdClientId, int iFd, bool bToListenTo)
 {
-    assert(!_bIsStarted || inThreadContext());
+    AUDIOCOMMS_ASSERT(!_bIsStarted || inThreadContext(), "Operation invalid within this context");
 
     _sFdList.push_back(SFd(uiFdClientId, iFd, bToListenTo));
 
@@ -78,7 +78,7 @@ void CEventThread::addOpenedFd(uint32_t uiFdClientId, int iFd, bool bToListenTo)
 // Remove and close FD
 void CEventThread::closeAndRemoveFd(uint32_t uiClientFdId)
 {
-    assert(!_bIsStarted || inThreadContext());
+    AUDIOCOMMS_ASSERT(!_bIsStarted || inThreadContext(), "Operation invalid within this context");
 
     SFdListIterator it;
 
@@ -151,7 +151,7 @@ void CEventThread::cancelAlarm()
 // Start
 bool CEventThread::start()
 {
-    assert(!_bIsStarted);
+    AUDIOCOMMS_ASSERT(!_bIsStarted, "Event thread already started");
 
     // Create thread
     pthread_create(&_ulThreadId, NULL, thread_func, this);
@@ -192,8 +192,7 @@ void CEventThread::trig(void *context, uint32_t eventId /* = -1 */)
 
         LOGD("%s: in", __func__);
     }
-
-    assert(_bIsStarted);
+    AUDIOCOMMS_ASSERT(_bIsStarted, "Event thread not started");
 
     Message toWrite;
     toWrite.eventId = eventId;
@@ -274,6 +273,7 @@ void CEventThread::run()
             // Consume request
             Message dataRead;
             ::read(_aiInbandPipe[0], &dataRead, sizeof(dataRead));
+            AUDIOCOMMS_ASSERT(dataRead.msg < ENbPipeMsg, "Invalid message in pipe");
 
             if (dataRead.msg == EProcess) {
 
@@ -282,8 +282,6 @@ void CEventThread::run()
                     continue;
                 }
             } else {
-                assert(dataRead.msg == EExit);
-
                 if (_bLogsOn) {
 
                     LOGD("%s exit", __func__);
@@ -365,7 +363,7 @@ void CEventThread::buildPollFds(struct pollfd *paPollFds) const
         }
     }
     // Consistency
-    assert(uiFdIndex == _uiNbPollFds);
+    AUDIOCOMMS_ASSERT(uiFdIndex == _uiNbPollFds, "Inconsistent list of file descriptor to poll");
 }
 
 // Get current date in milliseconds
