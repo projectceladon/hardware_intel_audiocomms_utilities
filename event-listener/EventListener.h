@@ -21,10 +21,42 @@
 class IEventListener
 {
 public:
-    virtual bool onEvent(int iFd) = 0; // return true if Fd sets has changed
-    virtual bool onError(int iFd) = 0; // return true if Fd sets has changed
-    virtual bool onHangup(int iFd) = 0; // return true if Fd sets has changed
+    /**
+     * Callback upon read event on a given file descriptor.
+     *
+     * @param[in] fd on which the event was detected.
+     *
+     * @return true if the list of file descripter polled has changed, false otherwise.
+     */
+    virtual bool onEvent(int fd) = 0;
+
+    /**
+     * Callback upon an error event on a given file descriptor.
+     *
+     * @param[in] fd on which the event was detected.
+     *
+     * @return true if the list of file descripter polled has changed, false otherwise.
+     */
+    virtual bool onError(int fd) = 0;
+
+    /**
+     * Callback upon hang up event on a given file descriptor.
+     *
+     * @param[in] fd on which the event was detected.
+     *
+     * @return true if the list of file descripter polled has changed, false otherwise.
+     */
+    virtual bool onHangup(int fd) = 0;
+
+    /**
+     * Callback upon alarm. It supposed that the client has previously set an alarm on the event
+     * thread.
+     */
     virtual void onAlarm() = 0;
+
+    /**
+     * Callback upon read event on a given file descriptor.
+     */
     virtual void onPollError() = 0;
 
     /**
