@@ -40,20 +40,6 @@ include external/stlport/libstlport.mk
 
 include $(BUILD_SHARED_LIBRARY)
 
-# Build for host test
-#####################
-
-include $(CLEAR_VARS)
-
-LOCAL_EXPORT_C_INCLUDE_DIRS := $(LOCAL_PATH)
-LOCAL_SRC_FILES := EventThread.cpp
-LOCAL_STATIC_LIBRARIES := libaudio_comms_utilities_host
-
-LOCAL_MODULE := libevent-listener_static_host
-LOCAL_MODULE_TAGS := tests
-
-include $(BUILD_HOST_STATIC_LIBRARY)
-
 # Build static lib
 ###########################
 
@@ -70,4 +56,19 @@ LOCAL_MODULE_TAGS := optional
 include external/stlport/libstlport.mk
 
 include $(BUILD_STATIC_LIBRARY)
+
+# Build for host test
+#####################
+
+include $(CLEAR_VARS)
+
+LOCAL_EXPORT_C_INCLUDE_DIRS := $(LOCAL_PATH)
+LOCAL_SRC_FILES := EventThread.cpp
+LOCAL_STATIC_LIBRARIES := libaudio_comms_utilities_host
+
+LOCAL_MODULE := libevent-listener_static_host
+LOCAL_MODULE_TAGS := tests
+
+include $(BUILD_HOST_STATIC_LIBRARY)
+
 
