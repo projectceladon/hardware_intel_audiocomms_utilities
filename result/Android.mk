@@ -38,7 +38,7 @@ common_c_flags := \
     -Wextra
 
 #######################################################################
-# target cme common library
+# target result common library
 
 include $(CLEAR_VARS)
 LOCAL_MODULE    := $(common_library_local_module)
@@ -56,7 +56,7 @@ LOCAL_EXPORT_C_INCLUDE_DIRS := $(LOCAL_PATH)/include
 include $(BUILD_STATIC_LIBRARY)
 
 #======================================================================
-# host cme common library
+# host result common library
 
 include $(CLEAR_VARS)
 LOCAL_MODULE    := $(common_library_local_module)_host
@@ -71,7 +71,7 @@ include $(BUILD_HOST_STATIC_LIBRARY)
 common_c_flags := $(common_c_flags) -ggdb3 -O0
 common_ut_local_module    := $(base_name)UnitTest
 #---------------------------------------------------------------------
-# host cme common test
+# host result common test
 
 include $(CLEAR_VARS)
 
@@ -80,9 +80,9 @@ LOCAL_MODULE := $(common_ut_local_module)_host
 LOCAL_SRC_FILES := $(common_test_src_files)
 LOCAL_C_INCLUDES := $(common_c_includes)
 
-LOCAL_CFLAGS := $(common_c_flags) $(CME_COVERAGE_FLAG)
+LOCAL_CFLAGS := $(common_c_flags)
 
-LOCAL_LDFLAGS := $(CME_COVERAGE_FLAG)
+LOCAL_LDFLAGS :=
 
 LOCAL_STRIP_MODULE := false
 
@@ -102,15 +102,15 @@ LOCAL_C_INCLUDES := \
     bionic \
     $(common_c_includes)
 
-LOCAL_CFLAGS := $(common_c_flags) $(CME_COVERAGE_FLAG)
+LOCAL_CFLAGS := $(common_c_flags)
 
-LOCAL_LDFLAGS := $(CME_COVERAGE_FLAG)
+LOCAL_LDFLAGS :=
 
 LOCAL_STRIP_MODULE := false
 
 LOCAL_SHARED_LIBRARIES := libstlport
 
-LOCAL_MODULE_PATH := $(TARGET_OUT_DATA_NATIVE_TESTS)/audio_cme
+LOCAL_MODULE_PATH := $(TARGET_OUT_DATA_NATIVE_TESTS)/audio_comms/
 
 include $(BUILD_NATIVE_TEST)
 
