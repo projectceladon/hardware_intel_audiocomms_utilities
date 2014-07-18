@@ -206,31 +206,19 @@ private:
     friend void Append<Data>::run();
 
     Code _errorCode; /*< result code held by class */
-    std::string _message;                 /*< an error message explaining the error */
+    std::string _message; /*< an error message explaining the error */
 };
-
-template <class ErrorTrait>
-bool operator==(Result<ErrorTrait> result, typename ErrorTrait::Code code)
-{
-    return result.operator==(code);
-}
 
 template <class ErrorTrait>
 bool operator==(typename ErrorTrait::Code code, Result<ErrorTrait> result)
 {
-    return result.operator==(code);
-}
-
-template <class ErrorTrait>
-bool operator!=(Result<ErrorTrait> result, typename ErrorTrait::Code code)
-{
-    return result.operator!=(code);
+    return result == code;
 }
 
 template <class ErrorTrait>
 bool operator!=(typename ErrorTrait::Code code, Result<ErrorTrait> result)
 {
-    return result.operator!=(code);
+    return result != code;
 }
 
 } /* namespace result */
