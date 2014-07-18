@@ -38,16 +38,6 @@ common_c_flags := \
     -Wextra
 
 #######################################################################
-# target acme backward compatibility common library
-
-include $(CLEAR_VARS)
-LOCAL_MODULE    := libcmeresult
-
-LOCAL_EXPORT_C_INCLUDE_DIRS := $(LOCAL_PATH)/include
-
-include $(BUILD_STATIC_LIBRARY)
-
-#######################################################################
 # target result common library
 
 include $(CLEAR_VARS)
