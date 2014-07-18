@@ -30,10 +30,10 @@ TEST(ErrnoResult, defaultValueConstructor)
      * as unsigned int */
 
     std::stringstream expectedStringSigned;
-    expectedStringSigned << "Code -666: Unknown error " << (int)-666;
+    expectedStringSigned << "Unknown error " << (int)-666 << " (Code -666)";
 
     std::stringstream expectedStringUnsigned;
-    expectedStringUnsigned << "Code -666: Unknown error " << (unsigned int)-666;
+    expectedStringUnsigned << "Unknown error " << (unsigned int)-666 << " (Code -666): ";
 
     EXPECT_TRUE(errResult.format() == expectedStringSigned.str() ||
                 errResult.format() == expectedStringUnsigned.str());
@@ -48,5 +48,5 @@ TEST(ErrnoResult, sucess)
 TEST(ErrnoResult, error)
 {
     ErrnoResult errResult(EPERM);
-    EXPECT_EQ("Code 1: Operation not permitted", errResult.format());
+    EXPECT_EQ("Operation not permitted (Code 1)", errResult.format());
 }
