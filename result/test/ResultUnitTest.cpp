@@ -180,3 +180,42 @@ TEST(Result, resultStream)
                                      << (Result(TestResult::D) << "gnuu")
               ).format());
 }
+
+TEST(ResultConcat, twoFailureEmptyMsg)
+{
+    const Result resultBRef(TestResult::B);
+    const Result resultCRef(TestResult::C);
+
+    Result resultBC = resultBRef;
+    resultBC &= resultCRef;
+
+    EXPECT_EQ(resultBC.format(), (resultBRef & resultCRef).format());
+    EXPECT_EQ("Code 667: B ( && Code 668: C)", resultBC.format());
+}
+
+TEST(ResultConcat, twoFailureWithMsg)
+{
+    const Result result = (
+        (Result(TestResult::B) << "<B>") &
+        (Result(TestResult::C) << "<C>")
+        ) << "<B&C>";
+    EXPECT_EQ("Code 667: B (<B> && Code 668: C (<C>)<B&C>)", result.format());
+}
+
+TEST(ResultConcat, twoSuccess)
+{
+    EXPECT_EQ(Result::success().format(),
+              (Result::success() & Result::success()).format());
+}
+
+TEST(ResultConcat, leftSuccess_rightFailure)
+{
+    EXPECT_EQ((Result(TestResult::C) << "msg").format(),
+              (Result::success() & (Result(TestResult::C) << "msg")).format());
+}
+
+TEST(ResultConcat, leftFailure_rightSuccess)
+{
+    EXPECT_EQ((Result(TestResult::C) << "msg").format(),
+              ((Result(TestResult::C) << "msg") & Result::success()).format());
+}
