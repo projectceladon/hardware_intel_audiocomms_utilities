@@ -105,10 +105,10 @@ public:
     }
 
     /** Is code the same as getErrorCode() */
-    bool operator==(Code code) { return _errorCode == code; }
+    bool operator==(Code code) const { return _errorCode == code; }
 
     /** Is code different than getErrorCode() */
-    bool operator!=(Code code) { return _errorCode != code; }
+    bool operator!=(Code code) const { return _errorCode != code; }
 
     /**
      * Success
