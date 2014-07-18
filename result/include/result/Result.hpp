@@ -176,6 +176,40 @@ public:
         return *this;
     }
 
+    /** Join with an other result from the same level.
+     *
+     * @see operator&
+     */
+    Result<ErrorTrait> &operator&=(const Result<ErrorTrait> res)
+    {
+        return *this = *this & res;
+    }
+
+    /** Join two result from the same level.
+     *
+     * @param[in] res Is the result to concatenate with.
+     * @return If both are successful, returns success.
+     *         If one is successful returns the other.
+     *         If both are failure, returns *this with the formated second
+     *            appended to its message.
+     */
+    Result<ErrorTrait> operator&(const Result<ErrorTrait> res) const
+    {
+        // If one is successfull return the other
+        if (isSuccess()) {
+            return res;
+        }
+        if (res.isSuccess()) {
+            return *this;
+        }
+
+        // As both result are failure, concatenate their messages.
+        Result concatRes = *this;
+        concatRes._message += " && " + res.format();
+
+        return concatRes;
+    }
+
 private:
     /** Artefact class to partial specialize operator<< */
     template <class Data>
