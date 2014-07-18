@@ -81,10 +81,11 @@ public:
      */
     Code getErrorCode() const { return _errorCode; }
 
-    /** Get the error message
-     * @return the error message held by the class
-     */
-    const std::string &getMessage() const { return _message; }
+    /** @return The formated error message. */
+    const std::string getMessage() const
+    {
+        return getMainMessage() + _peerMessage;
+    }
 
     /** Comparison operator.
      * Careful, comparison is performed on error code only, messages MAY differ
@@ -136,27 +137,36 @@ public:
      */
     bool isFailure() const { return !isSuccess(); }
 
-    /**
-     * Format a Result in oder to have it under a synthetic human readable view.
+    /** Format a Result in oder to have it under a synthetic human readable view.
      *
+     * The output format is implementation defined and should not be consider
+     * presistant across versions.
      * @return a formated Result
      */
     std::string format() const
     {
-        if (isFailure()) {
-            std::ostringstream ss;
-
-            // error code and error description
-            ss << "Code " << static_cast<int>(_errorCode) << ": " <<
-                ErrorTrait::codeToString(_errorCode);
-
-            // concatenate the message (if not empty)
-            if (_message.length() > 0) {
-                ss << " (" << _message << ")";
-            }
-            return ss.str();
+        if (isSuccess()) {
+            return "Success";
         }
-        return "Success";
+
+        std::ostringstream ss;
+
+        // Error code and error description
+        ss << ErrorTrait::codeToString(_errorCode)
+           << " (Code " << static_cast<int>(_errorCode) << ")";
+
+        // Construct main message
+        std::string message = getMainMessage();
+
+        // Append main message
+        if (not message.empty()) {
+            ss << ": " << message;
+        }
+
+        // Append peer message
+        ss << _peerMessage;
+
+        return ss.str();
     }
 
     /**
@@ -205,7 +215,7 @@ public:
 
         // As both result are failure, concatenate their messages.
         Result concatRes = *this;
-        concatRes._message += " && " + res.format();
+        concatRes._peerMessage += " && " + res.format();
 
         return concatRes;
     }
@@ -226,21 +236,38 @@ private:
     template <class Err>
     struct Append<Result<Err> >
     {
-        /** Append a Result to _message. @see Result::operator<< */
+        /** Register a result as a sub message. @see Result::operator<< */
         static void run(Result<ErrorTrait> &res, const Result<Err> &data)
         {
-            if (not res._message.empty()) {
-                res._message += ": ";
+            if (not res._subMessage.empty()) {
+                res._subMessage += " && ";
             }
-            res._message += data.format();
+            res._subMessage += data.format();
         }
     };
     template <class>
     template <class Data>
     friend void Append<Data>::run();
 
+    /** @return the main and sub message in a formated way. */
+    const std::string getMainMessage() const
+    {
+        std::string message = _message;
+
+        // Append sub messages
+        if (not _subMessage.empty()) {
+            if (not message.empty()) {
+                message += ' ';
+            }
+            message += '{' + _subMessage + '}';
+        }
+        return message;
+    }
+
     Code _errorCode; /*< result code held by class */
     std::string _message; /*< an error message explaining the error */
+    std::string _peerMessage;
+    std::string _subMessage;
 };
 
 template <class ErrorTrait>

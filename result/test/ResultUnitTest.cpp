@@ -141,7 +141,7 @@ TEST(Result, formatSuccess)
 TEST(Result, formatError)
 {
     Result aResult(TestResult::C);
-    EXPECT_EQ("Code 668: C", aResult.format());
+    EXPECT_EQ("C (Code 668)", aResult.format());
 }
 
 TEST(Result, useWithStream)
@@ -149,7 +149,7 @@ TEST(Result, useWithStream)
     Result aResult(TestResult::B);
     aResult << "gnii";
     EXPECT_EQ("gnii",  aResult.getMessage());
-    EXPECT_EQ("Code 667: B (gnii)",  aResult.format());
+    EXPECT_EQ("B (Code 667): gnii",  aResult.format());
 }
 
 TEST(Result, successSingleton)
@@ -160,10 +160,13 @@ TEST(Result, successSingleton)
 TEST(Result, constructFromfailureRes)
 {
     Result bResult(TestResult::B);
-    bResult << "gnii";
+    bResult << "<B>";
     Result trans(bResult, TestResult::D);
-    trans << "gnaa";
-    EXPECT_EQ("Code 669: D (Code 667: B (gnii)gnaa)",  trans.format());
+    trans << "<D>";
+    EXPECT_EQ("D (Code 669): <D> {B (Code 667): <B>}",  trans.format());
+    EXPECT_EQ(trans.format(),
+              (Result(TestResult::D) << "<D>" << (Result(TestResult::B) << "<B>")
+              ).format());
 }
 
 TEST(Result, constructFromSuccessRes)
@@ -174,32 +177,41 @@ TEST(Result, constructFromSuccessRes)
 
 TEST(Result, resultStream)
 {
-    Result bResult(TestResult::B);
-    EXPECT_EQ("Code 667: B (gnii: Code 669: D (gnuu))",
-              (Result(TestResult::B) << "gnii"
-                                     << (Result(TestResult::D) << "gnuu")
+    EXPECT_EQ("B (Code 667): <B><end> {D (Code 669) && B (Code 667): <B>}",
+              (Result(TestResult::B) << "<B>"
+                                     << Result(TestResult::D)
+                                     << (Result(TestResult::B) << "<B>")
+                                     << "<end>"
               ).format());
 }
 
 TEST(ResultConcat, twoFailureEmptyMsg)
 {
+    const Result resultARef(TestResult::A);
     const Result resultBRef(TestResult::B);
     const Result resultCRef(TestResult::C);
 
-    Result resultBC = resultBRef;
+    Result resultBC = resultARef;
+    resultBC &= resultBRef;
     resultBC &= resultCRef;
 
-    EXPECT_EQ(resultBC.format(), (resultBRef & resultCRef).format());
-    EXPECT_EQ("Code 667: B ( && Code 668: C)", resultBC.format());
+    EXPECT_EQ(resultBC.format(), (resultARef & resultBRef & resultCRef).format());
+    EXPECT_EQ("B (Code 667) && C (Code 668)", resultBC.format());
 }
 
 TEST(ResultConcat, twoFailureWithMsg)
 {
-    const Result result = (
-        (Result(TestResult::B) << "<B>") &
-        (Result(TestResult::C) << "<C>")
-        ) << "<B&C>";
-    EXPECT_EQ("Code 667: B (<B> && Code 668: C (<C>)<B&C>)", result.format());
+    const Result result = (Result(TestResult::A) &
+                           (Result(TestResult::B) << "<B>") &
+                           Result(TestResult::C)
+                           ) << "<end>";
+    EXPECT_EQ("B (Code 667): <B><end> && C (Code 668)", result.format());
+
+    Result resultD = Result(TestResult::D) << result;
+    EXPECT_EQ("D (Code 669): {B (Code 667): <B><end> && C (Code 668)}",
+              resultD.format());
+    EXPECT_EQ("D (Code 669): <D> {B (Code 667): <B><end> && C (Code 668)}",
+              (resultD << "<D>").format());
 }
 
 TEST(ResultConcat, twoSuccess)
