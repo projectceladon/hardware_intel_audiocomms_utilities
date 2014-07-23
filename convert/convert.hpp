@@ -94,6 +94,15 @@ template <>
 struct ConversionToStringAllowed<int32_t> {};
 template <>
 struct ConversionToStringAllowed<double> {};
+template <>
+struct ConversionToStringAllowed<float> {};
+
+/**
+ * Set the decimal precision to 10 digits.
+ * Note that this setting is aligned with Android Audio Parameter
+ * policy concerning float storage into string.
+ */
+static const uint32_t gFloatPrecision = 10;
 
 template <typename T>
 static inline bool fromString(const std::string &str, T &result)
@@ -142,6 +151,7 @@ static inline bool toString(const T &value, std::string &str)
     ConversionToStringAllowed<T>();
 
     std::stringstream oss;
+    oss.precision(gFloatPrecision);
     oss << value;
     str = oss.str();
     return !oss.fail() && !oss.bad();
