@@ -94,11 +94,11 @@ private:
 
         va_copy(argsCopy, args);
 
-        GenericLog<RemainingTraits>::template valog<l>(logTag, format, argsCopy);
+        GenericLog<RemainingTraits>().valog<l>(logTag, format, argsCopy);
 
         va_end(argsCopy);
 
-        FirstTrait::template valog<l>(logTag, format, args);
+        FirstTrait().valog<l>(logTag, format, args);
     }
 
     /**
@@ -177,7 +177,7 @@ class StdIoLogTrait
 {
 public:
     template <details::Level::Enum l>
-    static void valog(const char *logTag, const char *format, va_list args)
+    void valog(const char *logTag, const char *format, va_list args)
     {
         FILE *outputFile;
         const char *prefix;
@@ -230,7 +230,7 @@ class AndroidLogTrait
 {
 public:
     template <details::Level::Enum l>
-    static void valog(const char *logTag, const char *format, va_list args)
+    void valog(const char *logTag, const char *format, va_list args)
     {
         android_LogPriority aprio;
         switch (l) {
