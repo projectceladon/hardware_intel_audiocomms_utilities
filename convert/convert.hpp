@@ -19,6 +19,7 @@
 #include <limits>
 #include <sstream>
 #include <string>
+#include <vector>
 #include <stdint.h>
 #include <cmath>
 
@@ -27,6 +28,30 @@ namespace audio_comms
 
 namespace utilities
 {
+
+/**
+ * Convert a given source type to a given destination type.
+ *
+ * String conversion to T reads the value of the type T in the given string.
+ * The function does not allow to have white spaces around the value to parse
+ * and tries to parse the whole string, which means that if some bytes were not
+ * read in the string, the function fails.
+ * Hexadecimal representation (ie. numbers starting with 0x) is supported only
+ * for integral types conversions.
+ *
+ * Numeric conversion to string formats the source value to decimal space.
+ *
+ * Vector to vector conversion calls convertTo on each element.
+ *
+ * @tparam srcType source type, default value is string type
+ * @tparam dstType destination type
+ * @param[in] input The source to convert from.
+ * @param[out] result Converted value if success, undefined on failure.
+ *
+ * @return true if conversion was successful, false otherwise.
+ */
+template <typename srcType, typename dstType>
+static inline bool convertTo(const srcType &input, dstType &result);
 
 /* details namespace is here to hide implementation details to header end user. It
  * is NOT intended to be used outside. */
@@ -69,6 +94,15 @@ template <>
 struct ConversionToStringAllowed<int32_t> {};
 template <>
 struct ConversionToStringAllowed<double> {};
+template <>
+struct ConversionToStringAllowed<float> {};
+
+/**
+ * Set the decimal precision to 10 digits.
+ * Note that this setting is aligned with Android Audio Parameter
+ * policy concerning float storage into string.
+ */
+static const uint32_t gFloatPrecision = 10;
 
 template <typename T>
 static inline bool fromString(const std::string &str, T &result)
@@ -117,6 +151,7 @@ static inline bool toString(const T &value, std::string &str)
     ConversionToStringAllowed<T>();
 
     std::stringstream oss;
+    oss.precision(gFloatPrecision);
     oss << value;
     str = oss.str();
     return !oss.fail() && !oss.bad();
@@ -145,26 +180,36 @@ public:
     }
 };
 
+/** Convert a vector by applying convertTo on each element.
+ *
+ * @tparam SrcElem Type of the src elements.
+ * @tparam DstElem Type of the destination elements.
+ */
+template <typename SrcElem, typename DstElem>
+class Converter<std::vector<SrcElem>, std::vector<DstElem> >
+{
+public:
+    typedef const std::vector<SrcElem> Src;
+    typedef std::vector<DstElem> Dst;
+
+    static inline bool run(Src &src, Dst &dst)
+    {
+        typedef typename Src::const_iterator SrcIt;
+        dst.clear();
+        dst.reserve(src.size());
+        for (SrcIt it = src.begin(); it != src.end(); ++it) {
+            DstElem dstElem;
+            if (not convertTo(*it, dstElem)) {
+                return false;
+            }
+            dst.push_back(dstElem);
+        }
+        return true;
+    }
+};
+
 } // namespace details
 
-/**
- * Convert a given source type to a given destination type.
- *
- * This template function read the value of the type T in the given string.
- * The function does not allow to have white spaces around the value to parse
- * and tries to parse the whole string, which means that if some bytes were not
- * read in the string, the function fails.
- * Hexadecimal representation (ie numbers starting with 0x) is supported only
- * for integral types conversions.
- * Result may be modified, even in case of failure.
- *
- * @tparam srcType source type, default value is string type
- * @tparam dstType destination type
- * @param[in] str the string to parse.
- * @param[out] result reference to object where to store the result.
- *
- * @return true if conversion was successful, false otherwise.
- */
 template <typename srcType, typename dstType>
 static inline bool convertTo(const srcType &input, dstType &result)
 {

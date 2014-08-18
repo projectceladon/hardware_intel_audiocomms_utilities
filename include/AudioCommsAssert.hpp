@@ -48,32 +48,23 @@ class compileTimeAssertFailure;
 
 // If true do nothing
 template <>
-class compileTimeAssertFailure<true> {};
+class compileTimeAssertFailure<true>
+{
+};
 
 // If false instanciate with private constructor
 template <>
 class compileTimeAssertFailure<false>
 {
-    compileTimeAssertFailure();
+compileTimeAssertFailure();
 };
 
 } // namespace utilities
 
 } // namespace audio_comms
 
+#include <utilities/Log.hpp>
 #include <cstdlib> /* assert */
-#include <iostream>
-#include <sstream>
-#include <string>
-#include <utils/Log.h>
-
-static inline void printFatalMessage(const std::string &message)
-{
-    std::cerr << message << std::endl;
-#if __ANDROID__
-    __android_log_write(ANDROID_LOG_FATAL, "ASSERT", message.c_str());
-#endif
-}
 
 /**
  * Checks a condition and abort if it is not met.
@@ -83,13 +74,12 @@ static inline void printFatalMessage(const std::string &message)
  * @param[in] cond   the condition to check
  * @param[in] iostr  an iostream giving some details about the error
  */
-#define AUDIOCOMMS_ASSERT(cond, iostr) \
- do { \
-   if (audio_comms_unlikely(!(cond))) { \
-       std::stringstream stream; \
-       stream << __BASE_FILE__ ":" << __LINE__ << ": Assertion " #cond " failed: " << iostr; \
-       printFatalMessage(stream.str()); \
-       abort(); \
-   } \
- } while (false)
-
+#define AUDIOCOMMS_ASSERT(cond, iostr)                                                           \
+    do {                                                                                         \
+        if (audio_comms_unlikely(!(cond))) {                                                     \
+            audio_comms::utilities::Log::Fatal("AUDIOCOMMS") << __BASE_FILE__ ":" << __LINE__    \
+                                                             << ": Assertion " #cond " failed: " \
+                                                             << iostr;                           \
+            abort();                                                                             \
+        }                                                                                        \
+    } while (false)
