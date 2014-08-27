@@ -31,11 +31,15 @@ common_library_local_module := lib$(common_base_name)
 common_static_libs := \
     libacserializer \
     libacresult \
+    libaudio_comms_convert_includes \
+    libaudio_comms_utilities
 
 common_static_libs_host := \
     libacserializer_host \
     libacresult_host \
     libtinyxml \
+    libaudio_comms_convert_includes_host \
+    libaudio_comms_utilities_host
 
 common_shared_libs := \
     libtinyxml
@@ -46,14 +50,6 @@ common_library_c_includes := \
     external/tinyxml/ \
     $(LOCAL_PATH)/include \
     $(LOCAL_PATH)/src \
-
-common_header_lib := \
-    libaudio_comms_convert \
-    libaudio_comms_utilities
-
-common_header_lib_host := \
-    libaudio_comms_convert_host \
-    libaudio_comms_utilities_host
 
 common_c_flags := \
     -Wall \
@@ -79,8 +75,6 @@ LOCAL_SHARED_LIBRARIES := $(common_shared_libs)
 
 LOCAL_EXPORT_C_INCLUDE_DIRS := $(LOCAL_PATH)/include
 
-LOCAL_IMPORT_C_INCLUDE_DIRS_FROM_STATIC_LIBRARIES := $(common_header_lib)
-
 include external/stlport/libstlport.mk
 
 include $(BUILD_STATIC_LIBRARY)
@@ -100,8 +94,6 @@ LOCAL_CFLAGS := $(common_c_flags)
 LOCAL_STATIC_LIBRARIES := $(common_static_libs_host)
 
 LOCAL_SHARED_LIBRARIES := $(common_shared_libs_host)
-
-LOCAL_IMPORT_C_INCLUDE_DIRS_FROM_STATIC_LIBRARIES := $(common_header_lib_host)
 
 LOCAL_EXPORT_C_INCLUDE_DIRS := $(LOCAL_PATH)/include
 
@@ -137,8 +129,6 @@ LOCAL_STATIC_LIBRARIES := \
 LOCAL_SHARED_LIBRARIES := \
     $(common_shared_libs_host) \
 
-LOCAL_IMPORT_C_INCLUDE_DIRS_FROM_STATIC_LIBRARIES := $(common_header_lib_host)
-
 include $(BUILD_HOST_NATIVE_TEST)
 
 #=====================================================================
@@ -166,8 +156,6 @@ LOCAL_STATIC_LIBRARIES := \
 
 LOCAL_SHARED_LIBRARIES := \
     $(common_shared_libs) \
-
-LOCAL_IMPORT_C_INCLUDE_DIRS_FROM_STATIC_LIBRARIES := $(common_header_lib)
 
 LOCAL_MODULE_PATH := $(TARGET_OUT_DATA_NATIVE_TESTS)/audio_cme
 

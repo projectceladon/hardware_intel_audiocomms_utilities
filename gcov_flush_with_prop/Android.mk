@@ -27,7 +27,7 @@ LOCAL_MODULE := gcov_flush_with_prop
 LOCAL_MODULE_OWNER := intel
 LOCAL_MODULE_TAGS := tests
 
-LOCAL_IMPORT_C_INCLUDE_DIRS_FROM_SHARED_LIBRARIES := libproperty
+LOCAL_STATIC_LIBRARIES := libproperty_includes
 
 include external/stlport/libstlport.mk
 

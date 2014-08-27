@@ -47,3 +47,15 @@ include external/stlport/libstlport.mk
 
 include $(BUILD_STATIC_LIBRARY)
 
+# export headers
+################
+
+include $(CLEAR_VARS)
+
+LOCAL_EXPORT_C_INCLUDE_DIRS := $(LOCAL_PATH)
+LOCAL_MODULE := libproperty_includes
+LOCAL_MODULE_OWNER := intel
+LOCAL_MODULE_TAGS := optional
+
+include $(BUILD_STATIC_LIBRARY)
+
