@@ -30,3 +30,31 @@ LOCAL_MODULE_TAGS := tests
 
 include $(BUILD_HOST_STATIC_LIBRARY)
 
+##############################
+# build hack for getting headers (target version)
+
+include $(CLEAR_VARS)
+
+LOCAL_EXPORT_C_INCLUDE_DIRS := $(LOCAL_PATH)
+
+LOCAL_MODULE := libaudio_comms_convert_includes
+LOCAL_MODULE_OWNER := intel
+
+LOCAL_MODULE_TAGS := tests
+
+include $(BUILD_STATIC_LIBRARY)
+
+##############################
+# build hack for getting headers (host version)
+
+include $(CLEAR_VARS)
+
+LOCAL_EXPORT_C_INCLUDE_DIRS := $(LOCAL_PATH)
+
+LOCAL_MODULE := libaudio_comms_convert_includes_host
+LOCAL_MODULE_OWNER := intel
+
+LOCAL_MODULE_TAGS := tests
+
+include $(BUILD_HOST_STATIC_LIBRARY)
+
