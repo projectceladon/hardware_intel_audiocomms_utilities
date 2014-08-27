@@ -156,5 +156,6 @@ LOCAL_STATIC_LIBRARIES := \
 
 LOCAL_SHARED_LIBRARIES := \
     $(common_shared_libs) \
+    libcompiler_rt \
 
 include $(BUILD_NATIVE_TEST)
