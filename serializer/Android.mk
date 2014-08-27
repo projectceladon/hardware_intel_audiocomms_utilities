@@ -120,6 +120,8 @@ LOCAL_STATIC_LIBRARIES := \
     $(common_library_local_module) \
     $(common_static_libs)
 
+LOCAL_SHARED_LIBRARIES := libcompiler_rt
+
 include external/stlport/libstlport.mk
 
 include $(BUILD_NATIVE_TEST)
