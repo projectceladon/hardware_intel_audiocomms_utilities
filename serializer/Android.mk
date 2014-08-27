@@ -120,9 +120,6 @@ LOCAL_STATIC_LIBRARIES := \
     $(common_library_local_module) \
     $(common_static_libs)
 
-
-LOCAL_MODULE_PATH := $(TARGET_OUT_DATA_NATIVE_TESTS)/audio_cme
-
 include external/stlport/libstlport.mk
 
 include $(BUILD_NATIVE_TEST)

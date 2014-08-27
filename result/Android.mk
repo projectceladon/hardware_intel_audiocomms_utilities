@@ -106,8 +106,6 @@ LOCAL_LDFLAGS :=
 
 LOCAL_STRIP_MODULE := false
 
-LOCAL_MODULE_PATH := $(TARGET_OUT_DATA_NATIVE_TESTS)/audio_comms/
-
 include external/stlport/libstlport.mk
 
 include $(BUILD_NATIVE_TEST)

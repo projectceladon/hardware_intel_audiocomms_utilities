@@ -157,6 +157,4 @@ LOCAL_STATIC_LIBRARIES := \
 LOCAL_SHARED_LIBRARIES := \
     $(common_shared_libs) \
 
-LOCAL_MODULE_PATH := $(TARGET_OUT_DATA_NATIVE_TESTS)/audio_cme
-
 include $(BUILD_NATIVE_TEST)
