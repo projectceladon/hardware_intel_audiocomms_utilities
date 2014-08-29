@@ -43,3 +43,50 @@ LOCAL_LDFLAGS = --coverage
 LOCAL_MODULE_TAGS := tests
 
 include $(BUILD_HOST_STATIC_LIBRARY)
+
+#########################
+# host common test
+
+include $(CLEAR_VARS)
+
+LOCAL_MODULE := libaudio_comms_signal_processing_unit_test_host
+
+LOCAL_SRC_FILES := test/SignalProcessingUnitTest.cpp
+LOCAL_C_INCLUDES := $(LOCAL_PATH)/include
+
+LOCAL_CFLAGS := -Wall -Werror -Wextra -ggdb3 -O0
+
+LOCAL_STATIC_LIBRARIES := \
+    libacresult_host \
+    libaudio_comms_utilities_host
+
+LOCAL_STRIP_MODULE := false
+
+LOCAL_MODULE_TAGS := tests
+
+include $(BUILD_HOST_NATIVE_TEST)
+
+#########################
+# target unit test
+
+include $(CLEAR_VARS)
+
+LOCAL_MODULE := libaudio_comms_signal_processing_unit_test
+
+LOCAL_SRC_FILES := test/SignalProcessingUnitTest.cpp
+
+LOCAL_C_INCLUDES := $(LOCAL_PATH)/include
+
+LOCAL_CFLAGS := -Wall -Werror -Wextra -ggdb3 -O0
+
+LOCAL_STRIP_MODULE := false
+
+LOCAL_SHARED_LIBRARIES := libstlport
+
+LOCAL_STATIC_LIBRARIES := \
+    libacresult \
+    libaudio_comms_utilities
+
+include external/stlport/libstlport.mk
+include $(BUILD_NATIVE_TEST)
+
