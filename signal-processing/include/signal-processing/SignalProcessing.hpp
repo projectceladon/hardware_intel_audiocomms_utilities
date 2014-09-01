@@ -47,7 +47,8 @@ public:
         InvalidArg,
         NoSuchFile,
         InvalidFileLength,
-        MemoryError
+        MemoryError,
+        ConstSignal
     };
 
     struct CrossCorrelationResult
@@ -79,6 +80,8 @@ public:
                 return "Invalid file length";
             case MemoryError:
                 return "Memory error";
+            case ConstSignal:
+                return "Cross Correlation of a const signal (silence)";
             }
             /* Unreachable, prevents gcc to complain */
             return "Invalid error (Unreachable)";
@@ -98,12 +101,12 @@ public:
      *
      *  @return the normalized cross correlation between the 2 signals A and B.
      */
-    static void cross_correlate(const T *signalA,
-                                const T *signalB,
-                                size_t valueNb,
-                                CrossCorrelationResult &result,
-                                ssize_t minDelay,
-                                ssize_t maxDelay);
+    static Result cross_correlate(const T *signalA,
+                                  const T *signalB,
+                                  size_t valueNb,
+                                  CrossCorrelationResult &result,
+                                  ssize_t minDelay,
+                                  ssize_t maxDelay);
 
     /** Calculate the mean (average) of a signal. */
     static double mean(const T *signal, size_t valueNb);
@@ -199,9 +202,8 @@ typename SignalProcessing<T>::Result SignalProcessing<T>::cross_correlate(
         goto unMapSignalA;
     }
 
-    status = Result::success();
     /* Cross correlate */
-    cross_correlate(signalA, signalB, sa.st_size / sizeof(T), result,  minDelay, maxDelay);
+    status = cross_correlate(signalA, signalB, sa.st_size / sizeof(T), result,  minDelay, maxDelay);
 
     /* Free */
     munmap(signalB, sb.st_size);
@@ -227,7 +229,7 @@ double SignalProcessing<T>::mean(const T *signal, size_t valueNb)
     for (size_t i = 0; i < valueNb; i++) {
         sum += signal[i];
     }
-    return sum / (valueNb + 1);
+    return sum / valueNb;
 }
 
 template <class T>
@@ -267,12 +269,13 @@ double SignalProcessing<T>::normalizedOffsetProduct(double meanA, double meanB,
 }
 
 template <class T>
-void SignalProcessing<T>::cross_correlate(const T *signalA,
-                                          const T *signalB,
-                                          size_t valueNb,
-                                          CrossCorrelationResult &result,
-                                          ssize_t minDelay,
-                                          ssize_t maxDelay)
+typename SignalProcessing<T>::Result SignalProcessing<T>::cross_correlate(
+    const T *signalA,
+    const T *signalB,
+    size_t valueNb,
+    CrossCorrelationResult &result,
+    ssize_t minDelay,
+    ssize_t maxDelay)
 {
     /* Check that processing with that type is allowed.
      * If this fails, this means that this template was not intended to be used
@@ -286,6 +289,13 @@ void SignalProcessing<T>::cross_correlate(const T *signalA,
     double varianceB = variance(meanB, signalB, valueNb);
 
     double denom = sqrt(varianceA * varianceB);
+
+    if (denom == 0) {
+        /** if denom is 0, the cross correlation can't work because at least one
+         *  signal is constant, so the variance is zero
+         */
+        return Result(ConstSignal);
+    }
 
     result.coefficient = 0;
     // Will be overwriten as for any x, x > maxCorrelationCoef (result.coefficient)
@@ -302,6 +312,8 @@ void SignalProcessing<T>::cross_correlate(const T *signalA,
             result.delay = delay;
         }
     }
+
+    return Result::success();
 
 }
 
