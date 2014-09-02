@@ -15,15 +15,10 @@
  */
 #pragma once
 
-#include "result/ErrnoResult.hpp"
 #include <result/Result.hpp>
+#include <utilities/FileMapper.hpp>
 #include <AudioCommsAssert.hpp>
 #include <cmath>
-#include <sys/mman.h>
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <unistd.h>
-#include <fcntl.h>
 #include <limits>
 
 
@@ -33,7 +28,29 @@ namespace utilities
 {
 namespace signal_processing
 {
+namespace details
+{
 
+/** Helper class to limit instantiation of templates */
+template <typename T>
+struct ProcessingAllowed;
+
+/** List of allowed types for audio processing*/
+template <>
+struct ProcessingAllowed<int8_t> {};
+template <>
+struct ProcessingAllowed<int16_t> {};
+template <>
+struct ProcessingAllowed<int32_t> {};
+
+}
+
+
+/** This class allows to cross-correlate two signals
+ *
+ *  @tparam T the type of the array used to carry the
+ *  signal.
+ */
 template <class T>
 class SignalProcessing
 {
@@ -44,10 +61,6 @@ public:
     {
         Success = 999,
         Unknown,
-        InvalidArg,
-        NoSuchFile,
-        InvalidFileLength,
-        MemoryError,
         ConstSignal
     };
 
@@ -72,14 +85,6 @@ public:
                 return "Success";
             case Unknown:
                 return "Unknown error";
-            case InvalidArg:
-                return "Invalid argument";
-            case NoSuchFile:
-                return "No such file";
-            case InvalidFileLength:
-                return "Invalid file length";
-            case MemoryError:
-                return "Memory error";
             case ConstSignal:
                 return "Cross Correlation of a const signal (silence)";
             }
@@ -91,12 +96,6 @@ public:
     /** The type of the method returns. */
     typedef utilities::result::Result<SignalProcStatus> Result;
 
-    static Result cross_correlate(const char *fileA,
-                                  const char *fileB,
-                                  CrossCorrelationResult &result,
-                                  ssize_t minDelay = 0,
-                                  ssize_t maxDelay = 500);
-
     /** Normalized cross corelation.
      *
      *  @return the normalized cross correlation between the 2 signals A and B.
@@ -105,8 +104,8 @@ public:
                                   const T *signalB,
                                   size_t valueNb,
                                   CrossCorrelationResult &result,
-                                  ssize_t minDelay,
-                                  ssize_t maxDelay);
+                                  ssize_t minDelay = 0,
+                                  ssize_t maxDelay = 500);
 
     /** Calculate the mean (average) of a signal. */
     static double mean(const T *signal, size_t valueNb);
@@ -132,98 +131,13 @@ public:
 };
 
 
-/** Helper class to limit instantiation of templates */
-template <typename T>
-struct ProcessingAllowed;
-
-/** List of allowed types for audio processing*/
-template <>
-struct ProcessingAllowed<int8_t> {};
-template <>
-struct ProcessingAllowed<int16_t> {};
-template <>
-struct ProcessingAllowed<int32_t> {};
-
-
-template <class T>
-typename SignalProcessing<T>::Result SignalProcessing<T>::cross_correlate(
-    const char *fileA, const char *fileB,
-    CrossCorrelationResult &result,
-    ssize_t minDelay, ssize_t maxDelay)
-{
-    /* Check that processing with that type is allowed.
-     * If this fails, this means that this template was not intended to be used
-     * with this type, thus that the result is undefined. */
-    ProcessingAllowed<T>();
-
-    int fa;
-    int fb;
-    struct stat sa;
-    struct stat sb;
-    T *signalA;
-    T *signalB;
-    Result status;
-    using utilities::result::ErrnoResult;
-
-    fa = open(fileA, O_RDONLY);
-    if (fa < 0) {
-        status = Result(NoSuchFile) << fileA << ErrnoResult(errno);
-        goto end;
-    }
-    fb = open(fileB, O_RDONLY);
-    if (fb < 0) {
-        status = Result(NoSuchFile) << fileB << ErrnoResult(errno);
-        goto closeFileA;
-    }
-
-    if ((fstat(fa, &sa) == -1) || (fstat(fb, &sb) == -1)) {
-        status = Result(Unknown) << "fstat fails" << ErrnoResult(errno);
-        goto closeFileB;
-    }
-
-    if (sa.st_size != sb.st_size) {
-        status = Result(InvalidFileLength)
-                 << "Both files should has the same length: "
-                 << sa.st_size << " (" << fileA << ")" << " vs "
-                 << sb.st_size << " (" << fileB << ")";
-        goto closeFileB;
-    }
-
-    /* Map file A */
-    signalA = static_cast<T *>(mmap(NULL, sa.st_size, PROT_READ, MAP_PRIVATE, fa, 0));
-    if (signalA == MAP_FAILED) {
-        status = Result(MemoryError) << "while mapping " << fileA << ErrnoResult(errno);
-        goto closeFileB;
-    }
-    /* Map file B */
-    signalB = static_cast<T *>(mmap(NULL, sb.st_size, PROT_READ, MAP_PRIVATE, fb, 0));
-    if (signalB == MAP_FAILED) {
-        status = Result(MemoryError) << "while mapping " << fileB << ErrnoResult(errno);
-        goto unMapSignalA;
-    }
-
-    /* Cross correlate */
-    status = cross_correlate(signalA, signalB, sa.st_size / sizeof(T), result,  minDelay, maxDelay);
-
-    /* Free */
-    munmap(signalB, sb.st_size);
-unMapSignalA:
-    munmap(signalA, sa.st_size);
-closeFileB:
-    close(fb);
-closeFileA:
-    close(fa);
-end:
-    return status;
-}
-
 template <class T>
 double SignalProcessing<T>::mean(const T *signal, size_t valueNb)
 {
     /* Check that processing with that type is allowed.
      * If this fails, this means that this template was not intended to be used
      * with this type, thus that the result is undefined. */
-    ProcessingAllowed<T>();
+    details::ProcessingAllowed<T>();
 
     double sum = 0;
     for (size_t i = 0; i < valueNb; i++) {
@@ -238,7 +152,7 @@ double SignalProcessing<T>::variance(double mean, const T *signal, size_t valueN
     /* Check that processing with that type is allowed.
      * If this fails, this means that this template was not intended to be used
      * with this type, thus that the result is undefined. */
-    ProcessingAllowed<T>();
+    details::ProcessingAllowed<T>();
 
     double variance = 0;
     for (size_t i = 0; i < valueNb; i++) {
@@ -255,7 +169,7 @@ double SignalProcessing<T>::normalizedOffsetProduct(double meanA, double meanB,
     /* Check that processing with that type is allowed.
      * If this fails, this means that this template was not intended to be used
      * with this type, thus that the result is undefined. */
-    ProcessingAllowed<T>();
+    details::ProcessingAllowed<T>();
 
     size_t startIndexA = std::max(0, offsetB);
     size_t stopIndexA = valueNb + std::min(0, offsetB);
@@ -280,7 +194,7 @@ typename SignalProcessing<T>::Result SignalProcessing<T>::cross_correlate(
     /* Check that processing with that type is allowed.
      * If this fails, this means that this template was not intended to be used
      * with this type, thus that the result is undefined. */
-    ProcessingAllowed<T>();
+    details::ProcessingAllowed<T>();
 
     double meanA = mean(signalA, valueNb);
     double meanB = mean(signalB, valueNb);
