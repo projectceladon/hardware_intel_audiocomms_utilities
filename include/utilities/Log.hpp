@@ -94,11 +94,11 @@ private:
 
         va_copy(argsCopy, args);
 
-        GenericLog<RemainingTraits>::template valog<l>(logTag, format, argsCopy);
+        GenericLog<RemainingTraits>().valog<l>(logTag, format, argsCopy);
 
         va_end(argsCopy);
 
-        FirstTrait::template valog<l>(logTag, format, args);
+        FirstTrait().valog<l>(logTag, format, args);
     }
 
     /**
@@ -177,7 +177,7 @@ class StdIoLogTrait
 {
 public:
     template <details::Level::Enum l>
-    static void valog(const char *logTag, const char *format, va_list args)
+    void valog(const char *logTag, const char *format, va_list args)
     {
         FILE *outputFile;
         const char *prefix;
@@ -220,11 +220,17 @@ public:
 };
 
 #ifdef __ANDROID__
+/**
+ * AndroidLogTrait defines the android specific log type.
+ * tparam debugEnabled  if set, all log messages (VERBOSE included) are active.
+ *                      if not set, VERBOSE messages are filtered.
+ */
+template <bool debugEnabled>
 class AndroidLogTrait
 {
 public:
     template <details::Level::Enum l>
-    static void valog(const char *logTag, const char *format, va_list args)
+    void valog(const char *logTag, const char *format, va_list args)
     {
         android_LogPriority aprio;
         switch (l) {
@@ -247,11 +253,14 @@ public:
             aprio = ANDROID_LOG_VERBOSE;
             break;
         }
-        __android_log_vprint(aprio, logTag, format, args);
+        if (debugEnabled || aprio != ANDROID_LOG_VERBOSE) {
+            __android_log_vprint(aprio, logTag, format, args);
+        }
     }
 };
-
-typedef TYPELIST2 (StdIoLogTrait, AndroidLogTrait) DefaultLogTraitList;
+/* Android strips VERBOSE message from release builds. This behavior can be modified
+ * by #define LOG_NDEBUG 0 at the top of each source file.*/
+typedef TYPELIST2 (StdIoLogTrait, AndroidLogTrait<!LOG_NDEBUG> ) DefaultLogTraitList;
 
 #else
 typedef TYPELIST1 (StdIoLogTrait) DefaultLogTraitList;
