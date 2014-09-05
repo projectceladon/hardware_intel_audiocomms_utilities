@@ -341,6 +341,25 @@ inline bool convertTo<std::string, bool>(const std::string &str, bool &result)
 }
 
 /**
+ * Specialization for boolean to string of convertTo template function.
+ *
+ * This function follows the same paradigm than it's generic version.
+ * This function arbitrarily decides to return "false/true".
+ * It is compatible with the specialization from string to boolean.
+ *
+ * @param[in]  isSet  boolean to convert to a string.
+ * @param[out] result reference to object where to store the result.
+ *
+ * @return true if conversion was successful, false otherwise.
+ */
+template <>
+inline bool convertTo<bool, std::string>(const bool &isSet, std::string &result)
+{
+    result = isSet ? "true" : "false";
+    return true;
+}
+
+/**
  * Specialization for string to string of convertTo template function.
  *
  * This function is a dummy conversion from string to string.
