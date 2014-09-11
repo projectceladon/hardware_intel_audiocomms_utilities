@@ -38,3 +38,9 @@
 #define AUDIO_PARAMETER_VALUE_CONTEXT_AWARENESS_ON "on"
 #define AUDIO_PARAMETER_VALUE_CONTEXT_AWARENESS_OFF "off"
 
+/**
+ * Stream flags key (e.g. for offload routing use case)
+ * The values that the parameter  with this keys can use are the stream flags
+ * enumeration found in @see audio_output_flags_t enum (system/audio.h)
+ */
+#define AUDIO_PARAMETER_KEY_STREAM_FLAGS "stream_flags"
