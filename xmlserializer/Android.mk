@@ -69,7 +69,6 @@ LOCAL_MODULE    := $(common_library_local_module)
 LOCAL_SRC_FILES := $(common_library_src_files)
 
 LOCAL_C_INCLUDES := \
-    $(call include-path-for, stlport) \
     bionic \
     $(common_library_c_includes) \
 
@@ -77,12 +76,14 @@ LOCAL_CFLAGS := $(common_c_flags)
 
 LOCAL_STATIC_LIBRARIES := $(common_static_libs)
 
+# libraries included for their headers
+LOCAL_STATIC_LIBRARIES += $(common_header_lib)
+
 LOCAL_SHARED_LIBRARIES := $(common_shared_libs)
 
 LOCAL_EXPORT_C_INCLUDE_DIRS := $(LOCAL_PATH)/include
 
-LOCAL_IMPORT_C_INCLUDE_DIRS_FROM_STATIC_LIBRARIES := $(common_header_lib)
-
+include external/stlport/libstlport.mk
 include $(BUILD_STATIC_LIBRARY)
 
 #======================================================================
@@ -98,9 +99,10 @@ LOCAL_CFLAGS := $(common_c_flags)
 
 LOCAL_STATIC_LIBRARIES := $(common_static_libs_host)
 
-LOCAL_SHARED_LIBRARIES := $(common_shared_libs_host)
+# libraries included for their headers
+LOCAL_STATIC_LIBRARIES += $(common_header_lib_host)
 
-LOCAL_IMPORT_C_INCLUDE_DIRS_FROM_STATIC_LIBRARIES := $(common_header_lib_host)
+LOCAL_SHARED_LIBRARIES := $(common_shared_libs_host)
 
 LOCAL_EXPORT_C_INCLUDE_DIRS := $(LOCAL_PATH)/include
 
@@ -132,10 +134,11 @@ LOCAL_STATIC_LIBRARIES := \
     $(common_library_local_module)_host \
     $(common_static_libs_host)
 
+# libraries included for their headers
+LOCAL_STATIC_LIBRARIES += $(common_header_lib_host)
+
 LOCAL_SHARED_LIBRARIES := \
     $(common_shared_libs_host) \
-
-LOCAL_IMPORT_C_INCLUDE_DIRS_FROM_STATIC_LIBRARIES := $(common_header_lib_host)
 
 include $(BUILD_HOST_NATIVE_TEST)
 
@@ -161,9 +164,10 @@ LOCAL_STATIC_LIBRARIES := \
     $(common_library_local_module) \
     $(common_static_libs)
 
+# libraries included for their headers
+LOCAL_STATIC_LIBRARIES += $(common_header_lib)
+
 LOCAL_SHARED_LIBRARIES := \
     $(common_shared_libs) \
-
-LOCAL_IMPORT_C_INCLUDE_DIRS_FROM_STATIC_LIBRARIES := $(common_header_lib)
 
 include $(BUILD_NATIVE_TEST)
