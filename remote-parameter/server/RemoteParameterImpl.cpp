@@ -128,7 +128,7 @@ void RemoteParameterImpl::handleNewConnection()
 
     /// Read command first
     // By protocol convention, get is 0, set is non null (size of the parameter to set in fact)
-    uint32_t size;
+    size_t size;
     if (!clientConnector.receive((void *)&size, sizeof(size))) {
 
         ALOGE("%s: recv size: %s", __FUNCTION__, strerror(errno));
