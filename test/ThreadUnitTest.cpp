@@ -1,7 +1,7 @@
 /*
  * INTEL CONFIDENTIAL
  *
- * Copyright 2013 Intel Corporation
+ * Copyright 2013-2014 Intel Corporation
  * All Rights Reserved.
  *
  * The source code contained or described herein and all documents related
@@ -32,7 +32,7 @@ TEST(Thread, startStop)
     class TestThread : public Thread
     {
     public:
-        TestThread(volatile bool &done) : Thread(), _done(done) {}
+        TestThread(volatile bool &done) : Thread(""), _done(done) {}
         void processing() { _done = true; }
         volatile bool &_done;
     };
@@ -51,7 +51,7 @@ TEST(Thread, stopRequested)
     class TestThread : public Thread
     {
     public:
-        TestThread() : Thread() { EXPECT_FALSE(isStopRequested()); }
+        TestThread() : Thread("") { EXPECT_FALSE(isStopRequested()); }
         void processing() { usleep(10); }
         /* Have isStopRequested to be public */
         bool isStopRequested() { return Thread::isStopRequested(); }
@@ -69,7 +69,7 @@ TEST(Thread, abort)
     class TestThread : public Thread
     {
     public:
-        TestThread() : Thread() { EXPECT_FALSE(isStopRequested()); }
+        TestThread() : Thread("") { EXPECT_FALSE(isStopRequested()); }
         void processing() { selfAbort(); }
         /* Have isStopRequested to be public */
         bool isStopRequested() { return Thread::isStopRequested(); }
@@ -89,7 +89,7 @@ TEST(Thread, isStarted)
     class TestThread : public Thread
     {
     public:
-        TestThread() : Thread() {}
+        TestThread() : Thread("") {}
         void processing() { usleep(10); }
     };
     TestThread thr;
@@ -107,7 +107,7 @@ TEST(Thread, startAlreadyStarted)
     class TestThread : public Thread
     {
     public:
-        TestThread() : Thread() {}
+        TestThread() : Thread("") {}
         void processing() { usleep(100); }
     };
 
@@ -122,7 +122,7 @@ TEST(Thread, respawnSameThread)
     class TestThread : public Thread
     {
     public:
-        TestThread() : Thread() {}
+        TestThread() : Thread("") {}
         void processing() { usleep(100); }
     };
 
