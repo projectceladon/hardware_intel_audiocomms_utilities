@@ -44,7 +44,19 @@ namespace common
 class Thread : private audio_comms::utilities::NonCopyable
 {
 public:
-    Thread() : _stopRequested(false), _thread(0) {}
+    /** Create a thread with a name.
+     * @param[in] name The name that the thread should give himself.
+     *                 "" for default (inherit parent name).
+     *                 If longer than MAX_TASK_COMM_LEN, will be truncated.
+     */
+    Thread(const std::string name)
+        : _stopRequested(false), _thread(0), mName(name)
+    {
+        if (mName.length() > MAX_TASK_COMM_LEN) {
+            mName.resize(MAX_TASK_COMM_LEN);
+        }
+    }
+
     virtual ~Thread()
     {
         AUDIOCOMMS_ASSERT(_thread == 0, "Can not destroy a running thread");
@@ -86,6 +98,13 @@ protected:
      */
     void selfAbort();
 
+    /** Max thread name length.
+     *
+     *  16 with the terminating null char.
+     *  @note: Not exposed by kernel headers
+     */
+    static const size_t MAX_TASK_COMM_LEN = 15;
+
 private:
     /** The processing function which will repeatedly be called by the thread.
      *
@@ -100,15 +119,24 @@ private:
 
     void loop()
     {
+        setDebugName();
         do {
             processing();
         } while (!_stopRequested);
     }
 
+    /** Set the current thread name to ease debug.
+     *
+     * Must not be longer than MAX_TASK_COMM_LEN characters or it will be
+     * truncated.
+     */
+    bool setDebugName();
+
     static void *threadMainHelper(void *);
 
     volatile bool _stopRequested; /**< Should the thread keep running? */
     pthread_t _thread;           /**< the thread handle */
+    std::string mName;
 };
 
 } // namespace audio_comms

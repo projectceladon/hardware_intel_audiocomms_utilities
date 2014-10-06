@@ -1,7 +1,7 @@
 /*
  ********************************************************************************
  *                              INTEL CONFIDENTIAL
- *   Copyright(C) 2013 Intel Corporation. All Rights Reserved.
+ *   Copyright(C) 2013-2014 Intel Corporation. All Rights Reserved.
  *   The source code contained  or  described herein and all documents related to
  *   the source code ("Material") are owned by Intel Corporation or its suppliers
  *   or licensors.  Title to the  Material remains with  Intel Corporation or its
@@ -21,7 +21,7 @@
  */
 
 #include "common/Thread.hpp"
-
+#include <sys/prctl.h>
 #include <AudioCommsAssert.hpp>
 
 namespace audio_comms
@@ -69,6 +69,18 @@ void Thread::stop()
 void Thread::selfAbort()
 {
     _stopRequested = true;
+}
+
+bool Thread::setDebugName()
+{
+    if (mName.empty()) {
+        // The thread name is inherited from is parent if it is not set
+        return true;
+    }
+
+    // pthread_setname_np should be used but is not available
+    // in android's pthread host version.
+    return prctl(PR_SET_NAME, mName.c_str()) == 0;
 }
 
 } // namespace audio_comms
