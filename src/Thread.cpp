@@ -23,6 +23,8 @@
 #include "common/Thread.hpp"
 #include <sys/prctl.h>
 #include <AudioCommsAssert.hpp>
+#include <sys/syscall.h>
+#include <sstream>
 
 namespace audio_comms
 {
@@ -81,6 +83,23 @@ bool Thread::setDebugName()
     // pthread_setname_np should be used but is not available
     // in android's pthread host version.
     return prctl(PR_SET_NAME, mName.c_str()) == 0;
+}
+
+std::string Thread::getCurrentThreadName()
+{
+    char name[MAX_TASK_COMM_LEN + 1];
+    // pthread_getname_np should be used but is not available
+    // in android's pthread host version.
+    prctl(PR_GET_NAME, name);
+    name[MAX_TASK_COMM_LEN] = '\0';
+    return name;
+}
+
+std::string Thread::getTid()
+{
+    std::ostringstream oss;
+    oss << syscall(__NR_gettid);
+    return oss.str();
 }
 
 } // namespace audio_comms
