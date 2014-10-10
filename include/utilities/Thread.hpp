@@ -82,6 +82,12 @@ public:
      */
     bool isStarted() const { return _thread != 0; }
 
+    /** @return the name of the tread in witch the function is called. */
+    static std::string getCurrentThreadName();
+
+    /** @return the kernel thread Id in which the function is called. */
+    static std::string getTid();
+
 protected:
     /** Tells if the thread is requested to stop
      * Note: This does NOT mean that the thread is stopped. The thread is

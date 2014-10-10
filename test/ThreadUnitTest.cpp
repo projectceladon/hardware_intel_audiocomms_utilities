@@ -132,3 +132,25 @@ TEST(Thread, respawnSameThread)
     EXPECT_TRUE(thr.start());
     thr.stop();
 }
+
+TEST(Thread, name)
+{
+    static const std::string mTestName = "TestThreadName";
+
+    class TestThread : public Thread
+    {
+    public:
+        TestThread() : Thread(mTestName) {}
+        void processing()
+        {
+            mRetrievedName = getCurrentThreadName();
+            selfAbort();
+        }
+        std::string mRetrievedName;
+    };
+
+    TestThread thr;
+    EXPECT_TRUE(thr.start());
+    thr.stop();
+    EXPECT_EQ(mTestName, thr.mRetrievedName);
+}
