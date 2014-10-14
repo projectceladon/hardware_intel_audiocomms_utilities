@@ -56,25 +56,23 @@ class ScopedTrace
 {
 public:
     ScopedTrace(const typename ScopeTrait::Event &event)
-        : mEventName(ScopeTrait::getEventName(event))
+        : mEventName(ScopeTrait::getEventName(event)),
+          mActive(active)
     {
-        mStartTime = gettime();
-        if (active) {
+        if (mActive) {
+            mStartTime = gettime();
             logger log;
             for (size_t i = 0; i < indentDepth * 2; i++) {
                 log << " ";
             }
             log << "Enters " << mEventName << " @" << mStartTime;
+            indentDepth++;
         }
-        // Avoid race by keeping counter outside of the active block as the activation may happen
-        // anytime.
-        indentDepth++;
     }
     ~ScopedTrace()
     {
-        indentDepth--;
-
-        if (active) {
+        if (mActive) {
+            indentDepth--;
             logger log;
             for (size_t i = 0; i < indentDepth * 2; i++) {
                 log << " ";
@@ -87,7 +85,7 @@ public:
     template <class T>
     void trace(const T &val)
     {
-        if (active) {
+        if (mActive) {
             logger log;
             for (size_t i = 0; i < indentDepth * 2; i++) {
                 log << " ";
@@ -132,6 +130,7 @@ private:
 
     const std::string mEventName;
     uint64_t mStartTime;
+    const bool mActive;
 };
 
 template <class ScopeTrait, bool activeAtStart, class logger>

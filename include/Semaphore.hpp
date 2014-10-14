@@ -119,7 +119,7 @@ public:
                           << static_cast<const void *>(&_sem)
                           << ": " << strerror(errno) << "(" << errno << ")");
 
-        return errno != ETIMEDOUT;
+        return err == 0;
     }
 
 private:
