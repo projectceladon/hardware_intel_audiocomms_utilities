@@ -6,10 +6,6 @@ interface_provider_src_files := \
         InterfaceProviderImpl.cpp \
         InterfaceProviderLib.cpp
 
-interface_provider_includes_target := \
-        $(call include-path-for, stlport) \
-        bionic/
-
 # Interface provider
 include $(CLEAR_VARS)
 
@@ -21,14 +17,12 @@ LOCAL_EXPORT_C_INCLUDE_DIRS := $(LOCAL_PATH)
 LOCAL_SRC_FILES := \
         $(interface_provider_src_files)
 
-LOCAL_C_INCLUDES += \
-        $(interface_provider_includes_target)
-
-LOCAL_SHARED_LIBRARIES := libstlport libcutils libdl
+LOCAL_SHARED_LIBRARIES := libcutils libdl
 
 LOCAL_MODULE := libinterface-provider
 LOCAL_MODULE_TAGS := optional
 
+include external/stlport/libstlport.mk
 include $(BUILD_SHARED_LIBRARY)
 
 # Interface provider library
@@ -42,14 +36,12 @@ LOCAL_EXPORT_C_INCLUDE_DIRS := $(LOCAL_PATH)
 LOCAL_SRC_FILES := \
         InterfaceProviderLib.cpp
 
-LOCAL_C_INCLUDES += \
-        $(interface_provider_includes_target)
-
-LOCAL_SHARED_LIBRARIES := libstlport libcutils libdl
+LOCAL_SHARED_LIBRARIES := libcutils libdl
 
 LOCAL_MODULE := libinterface-provider-lib
 LOCAL_MODULE_TAGS := optional
 
+include external/stlport/libstlport.mk
 include $(BUILD_SHARED_LIBRARY)
 
 # Build for host test
@@ -79,10 +71,9 @@ include $(CLEAR_VARS)
 LOCAL_EXPORT_C_INCLUDE_DIRS := $(LOCAL_PATH)
 LOCAL_SRC_FILES := \
         $(interface_provider_src_files)
-LOCAL_C_INCLUDES += \
-        $(interface_provider_includes_target)
 LOCAL_MODULE := libinterface-provider_static
 LOCAL_MODULE_TAGS := optional
+include external/stlport/libstlport.mk
 include $(BUILD_STATIC_LIBRARY)
 
 # Interface provider lib
@@ -90,9 +81,8 @@ include $(CLEAR_VARS)
 LOCAL_EXPORT_C_INCLUDE_DIRS := $(LOCAL_PATH)
 LOCAL_SRC_FILES := \
         InterfaceProviderLib.cpp
-LOCAL_C_INCLUDES += \
-        $(interface_provider_includes_target)
 LOCAL_MODULE := libinterface-provider-lib_static
 LOCAL_MODULE_TAGS := optional
+include external/stlport/libstlport.mk
 include $(BUILD_STATIC_LIBRARY)
 
