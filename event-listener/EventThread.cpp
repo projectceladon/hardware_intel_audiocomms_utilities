@@ -139,7 +139,13 @@ void CEventThread::stop()
     toWrite.context = NULL;
     toWrite.msg = EExit;
 
-    ::write(mInbandPipe[1], &toWrite, sizeof(toWrite));
+    ssize_t ret;
+    do {
+        ret = ::write(mInbandPipe[1], &toWrite, sizeof(toWrite));
+    } while (ret == -1 && errno == EINTR);
+    AUDIOCOMMS_ASSERT(ret == sizeof(toWrite),
+                      "Unable to write message in pipe: ret: "
+                      << ret << " status: " << strerror(errno));
 
     pthread_join(mThreadId, NULL);
     mIsStarted = false;
@@ -156,7 +162,13 @@ void CEventThread::trig(void *context, uint32_t eventId /* = -1 */)
     toWrite.context = context;
     toWrite.msg = EProcess;
 
-    ::write(mInbandPipe[1], &toWrite, sizeof(toWrite));
+    ssize_t ret;
+    do {
+        ret = ::write(mInbandPipe[1], &toWrite, sizeof(toWrite));
+    } while (ret == -1 && errno == EINTR);
+    AUDIOCOMMS_ASSERT(ret == sizeof(toWrite),
+                      "Unable to write message in pipe: ret: "
+                      << ret << " status: " << strerror(errno));
 
     ALOGD_IF(mLogsOn, "%s: out", __func__);
 }
@@ -212,7 +224,13 @@ void CEventThread::run()
         if (pollFds[0].revents & POLLIN) {
             // Consume request
             Message dataRead;
-            ::read(mInbandPipe[0], &dataRead, sizeof(dataRead));
+            ssize_t ret;
+            do {
+                ret = ::read(mInbandPipe[0], &dataRead, sizeof(dataRead));
+            } while (ret == -1 && errno == EINTR);
+            AUDIOCOMMS_ASSERT(ret == sizeof(dataRead),
+                              "Unable to write message in pipe: ret: "
+                              << ret << " status: " << strerror(errno));
             AUDIOCOMMS_ASSERT(dataRead.msg < ENbPipeMsg, "Invalid message in pipe");
 
             if (dataRead.msg == EProcess) {
