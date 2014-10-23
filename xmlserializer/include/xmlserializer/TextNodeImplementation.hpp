@@ -35,11 +35,18 @@ struct ChildAccess<serializer::TextTrait<TextType, Convertor> >
     static Result get(const TiXmlNode &xmlParent, const TiXmlNode * &xmlChild)
     {
         xmlChild = xmlParent.FirstChild();
-        if (xmlChild == NULL) {
-            return Result(childNotFound) << "Node \"" << xmlParent.Value()
-                                         << "\" is empy, expected a text node child";
+        // The node may have children (a comment node for instance): only the first text node child
+        // should be the one we want to deserialize.
+        while (xmlChild != NULL) {
+
+            if (xmlChild->Type() == TiXmlNode::TEXT) {
+
+                return Result::success();
+            }
+            xmlChild = xmlChild->NextSibling();
         }
-        return Result::success();
+        return Result(childNotFound) << "Node \"" << xmlParent.Value()
+                                     << "\" does not contain an expected text node child";
     }
 };
 

@@ -180,7 +180,7 @@ public:
             return Result(conversionFailed) << "No command tag found.";
         }
 
-        const TiXmlNode *xmlChild = rootTag->FirstChild();
+        const TiXmlNode *xmlChild = rootTag->FirstChildElement();
         if (xmlChild == NULL) {
             return Result(conversionFailed) << "No content under root element.";
         }
