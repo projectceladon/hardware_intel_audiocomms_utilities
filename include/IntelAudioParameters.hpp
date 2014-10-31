@@ -44,3 +44,14 @@
  * enumeration found in @see audio_output_flags_t enum (system/audio.h)
  */
 #define AUDIO_PARAMETER_KEY_STREAM_FLAGS "stream_flags"
+
+/* No Non-linear Post processing */
+#define AUDIO_PARAMETER_KEY_BYPASS_NON_LINEAR_POSTPROCESSING_SETTING "BypassNonLinearPp"
+#define AUDIO_PARAMETER_VALUE_BYPASS_NON_LINEAR_PP_ON "on"
+#define AUDIO_PARAMETER_VALUE_BYPASS_NON_LINEAR_PP_OFF "off"
+
+/* No Linear Post processing */
+#define AUDIO_PARAMETER_KEY_BYPASS_LINEAR_POSTPROCESSING_SETTING "BypassLinearPp"
+#define AUDIO_PARAMETER_VALUE_BYPASS_LINEAR_PP_ON "on"
+#define AUDIO_PARAMETER_VALUE_BYPASS_LINEAR_PP_OFF "off"
+
