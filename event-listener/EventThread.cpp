@@ -25,6 +25,7 @@
 #include <strings.h>
 #include <string.h>
 #include <time.h>
+#include <errno.h>
 
 const int64_t MILLISECONDS_IN_SECONDS = 1000;
 const int64_t NANOSECONDS_IN_MILLISECONDS = 1000 * 1000;
