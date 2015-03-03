@@ -62,6 +62,24 @@ TEST(Thread, stopRequested)
     thr.stop();
 }
 
+TEST(Thread, isRunning)
+{
+    class TestThread : public Thread
+    {
+    public:
+        TestThread() : Thread() {}
+        void processing() { usleep(10); }
+    };
+    TestThread thr;
+    EXPECT_FALSE(thr.isRunning());
+    EXPECT_TRUE(thr.start());
+    EXPECT_TRUE(thr.isRunning());
+    usleep(100);
+    EXPECT_TRUE(thr.isRunning());
+    thr.stop();
+    EXPECT_FALSE(thr.isRunning());
+}
+
 TEST(Thread, startAlreadyStarted)
 {
     class TestThread : public Thread

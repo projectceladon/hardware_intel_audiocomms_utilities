@@ -61,6 +61,11 @@ public:
      */
     virtual void stop();
 
+    /**
+     * @return true is the thread is running
+     */
+    bool isRunning() { return _thread != 0; }
+
 protected:
     /** Tells if the thread is requested to stop
      * Note: This does NOT mean that the thread is stopped. The thread is
