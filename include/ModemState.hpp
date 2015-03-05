@@ -1,7 +1,7 @@
 /*
  * INTEL CONFIDENTIAL
  *
- * Copyright (c) 2014 Intel Corporation All Rights Reserved.
+ * Copyright (c) 2014-2015 Intel Corporation All Rights Reserved.
  *
  * The source code contained or described herein and all documents related to
  * the source code ("Material") are owned by Intel Corporation or its suppliers
@@ -29,11 +29,12 @@
 /**
  * Modem state class wraps the modem state notifications from MAMGR
  * to a suitable state for audio HAL
-*/
+ */
 class ModemState
 {
 public:
-    typedef enum {
+    typedef enum
+    {
         Up,
         Down,
         Starting
@@ -47,7 +48,8 @@ public:
      * @param[in] modemState enum value to be converted to string
      * @return string containing the modem state
      */
-    static const std::string &toLiteral(State modemState) {
+    static const std::string &toLiteral(State modemState)
+    {
 
         static const std::string modemStateUp("Up");
         static const std::string modemStateDown("Down");
