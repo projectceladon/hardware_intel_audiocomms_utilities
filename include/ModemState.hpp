@@ -24,7 +24,7 @@
 
 #pragma once
 
-#include <string.h>
+#include <string>
 
 /**
  * Modem state class wraps the modem state notifications from MAMGR
