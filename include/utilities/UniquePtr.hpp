@@ -91,12 +91,6 @@ public:
         return tmp;
     }
 
-    /** @return true if pointer is NULL, false otherwise. */
-    bool isNull()
-    {
-        return _ptr == NULL;
-    }
-
 private:
     /** Pointer to the managed object. */
     Pointer _ptr;
@@ -109,6 +103,17 @@ private:
     bool operator oper(const UniquePtr<T, D1> &p1, const UniquePtr<T, D2> &p2) \
     {                                                                          \
         return p1.get() oper p2.get();                                         \
+    }                                                                          \
+    /** Implement comparison to void* for NULL handling. */                    \
+    template <class T, class D2>                                               \
+    bool operator oper(const void *p1, const UniquePtr<T, D2> &p2)             \
+    {                                                                          \
+        return p1 oper p2.get();                                               \
+    }                                                                          \
+    template <class T, class D1>                                               \
+    bool operator oper(const UniquePtr<T, D1> &p1, const void *p2)             \
+    {                                                                          \
+        return p1.get() oper p2;                                               \
     }
 
 UNIQUE_PTR_OPERATOR(==)
