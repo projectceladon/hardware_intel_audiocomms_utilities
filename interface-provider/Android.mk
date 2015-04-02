@@ -24,7 +24,6 @@ LOCAL_MODULE_OWNER := intel
 LOCAL_MODULE_TAGS := optional
 
 include external/stlport/libstlport.mk
-
 include $(BUILD_SHARED_LIBRARY)
 
 # Interface provider library
@@ -45,7 +44,6 @@ LOCAL_MODULE_OWNER := intel
 LOCAL_MODULE_TAGS := optional
 
 include external/stlport/libstlport.mk
-
 include $(BUILD_SHARED_LIBRARY)
 
 # Build for host test
