@@ -25,7 +25,6 @@ LOCAL_MODULE_OWNER := intel
 LOCAL_MODULE_TAGS := optional
 
 include external/stlport/libstlport.mk
-
 include $(BUILD_SHARED_LIBRARY)
 
 # build for target test
@@ -57,5 +56,5 @@ LOCAL_MODULE := libproperty_includes
 LOCAL_MODULE_OWNER := intel
 LOCAL_MODULE_TAGS := optional
 
+include external/stlport/libstlport.mk
 include $(BUILD_STATIC_LIBRARY)
-

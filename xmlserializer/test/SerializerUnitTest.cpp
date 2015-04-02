@@ -230,6 +230,24 @@ TEST_F(FromXml, Param)
     EXPECT_EQ(20, param.getValue());
 }
 
+TEST_F(FromXml, ParamAndComment)
+{
+    parseXml("<Param><!-- A comment! -->20</Param>");
+
+    Param param;
+    ASSERT_RESULT_SUCCESS(XmlTraitSerializer<ParamTrait<> >::fromXml(*_xmlNode, param));
+    EXPECT_EQ(20, param.getValue());
+}
+
+TEST_F(FromXml, ParamAndComments)
+{
+    parseXml("<Param><!-- A comment! -->20<!-- Another comment! --></Param>");
+
+    Param param;
+    ASSERT_RESULT_SUCCESS(XmlTraitSerializer<ParamTrait<> >::fromXml(*_xmlNode, param));
+    EXPECT_EQ(20, param.getValue());
+}
+
 // Tree (de)serialisation
 struct BigElem
 {
@@ -356,7 +374,7 @@ TEST_F(FromXml, Collection)
 {
     parseXml("<IntColl>"
              "<e1>10</e1>"
-             "<e2>20</e2>"
+             "<e2><!-- a comment -->20</e2>"
              "<e3>-13</e3>"
              "</IntColl>");
 
@@ -453,7 +471,7 @@ TEST_F(ToXml, PolyMorphTrait_base)
 
 TEST_F(FromXml, PolyMorphTrait_base)
 {
-    parseXml("<Poly><Param>10</Param></Poly>");
+    parseXml("<Poly><!-- a comment --><Param>10</Param></Poly>");
     Param *param;
     ASSERT_RESULT_SUCCESS(XmlTraitSerializer<PolyMorphTrait>::fromXml(*_xmlNode, param));
     ASSERT_TRUE(param->isParam());
@@ -474,7 +492,7 @@ TEST_F(ToXml, PolyMorphTrait_derived)
 
 TEST_F(FromXml, PolyMorphTrait_derived)
 {
-    parseXml("<Poly><Param2>11<bool>true</bool></Param2></Poly>");
+    parseXml("<Poly><Param2>11<bool>true</bool></Param2><!-- a comment --></Poly>");
     Param *param2;
     ASSERT_RESULT_SUCCESS(XmlTraitSerializer<PolyMorphTrait>::fromXml(*_xmlNode, param2));
     ASSERT_FALSE(param2->isParam());

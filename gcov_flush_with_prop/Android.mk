@@ -30,7 +30,6 @@ LOCAL_MODULE_TAGS := tests
 LOCAL_STATIC_LIBRARIES := libproperty_includes
 
 include external/stlport/libstlport.mk
-
 include $(BUILD_STATIC_LIBRARY)
 
 #######################################################################
@@ -49,7 +48,6 @@ LOCAL_MODULE_OWNER := intel
 LOCAL_MODULE_TAGS := optional
 
 include external/stlport/libstlport.mk
-
 include $(BUILD_STATIC_LIBRARY)
 
 #######################################################################
