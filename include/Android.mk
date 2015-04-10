@@ -6,5 +6,5 @@ LOCAL_COPY_HEADERS_TO := audiocomms-include
 LOCAL_COPY_HEADERS := \
     AudioBand.h \
     AudioThrottle.h \
-    ModemState.hpp
+
 include $(BUILD_COPY_HEADERS)
