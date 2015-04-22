@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 Intel Corporation
+ * Copyright 2014-2015 Intel Corporation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -171,8 +171,8 @@ double SignalProcessing<T>::normalizedOffsetProduct(double meanA, double meanB,
      * with this type, thus that the result is undefined. */
     details::ProcessingAllowed<T>();
 
-    size_t startIndexA = std::max(0, offsetB);
-    size_t stopIndexA = valueNb + std::min(0, offsetB);
+    size_t startIndexA = std::max<ssize_t>(0, offsetB);
+    size_t stopIndexA = valueNb + std::min<ssize_t>(0, offsetB);
 
     double normProd = 0;
     for (size_t indexA = startIndexA; indexA < stopIndexA; indexA++) {
