@@ -107,6 +107,5 @@ LOCAL_LDFLAGS :=
 LOCAL_STRIP_MODULE := false
 
 include external/stlport/libstlport.mk
-
 include $(BUILD_NATIVE_TEST)
 
