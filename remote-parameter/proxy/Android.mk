@@ -33,7 +33,6 @@ remote_param_proxy_includes_dir_host := \
 
 remote_param_proxy_includes_dir_target := \
     $(remote_param_proxy_includes_dir) \
-    external/stlport/stlport \
     bionic
 
 remote_param_proxy_shared_lib_target += \
@@ -73,6 +72,7 @@ LOCAL_MODULE_OWNER := intel
 $(call make_remote_param_proxy_lib,target)
 LOCAL_MODULE_TAGS := optional
 
+include external/stlport/libstlport.mk
 include $(OPTIONAL_QUALITY_COVERAGE_JUMPER)
 include $(BUILD_STATIC_LIBRARY)
 
