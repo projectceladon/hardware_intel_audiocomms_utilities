@@ -1,4 +1,4 @@
-# Copyright 2013 Intel Corporation
+# Copyright 2013-2015 Intel Corporation
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -19,17 +19,26 @@ LOCAL_PATH := $(call my-dir)
 
 include $(CLEAR_VARS)
 
+LOCAL_SRC_FILES := src/Thread.cpp
+
+LOCAL_C_INCLUDES := $(LOCAL_PATH)/include
+
 LOCAL_EXPORT_C_INCLUDE_DIRS := $(LOCAL_PATH)/include
 
 LOCAL_MODULE := libaudio_comms_utilities
 LOCAL_MODULE_OWNER := intel
 
+include external/stlport/libstlport.mk
 include $(BUILD_STATIC_LIBRARY)
 
 #########################
 # utilities static lib host
 
 include $(CLEAR_VARS)
+
+LOCAL_SRC_FILES := src/Thread.cpp
+
+LOCAL_C_INCLUDES := $(LOCAL_PATH)/include
 
 LOCAL_EXPORT_C_INCLUDE_DIRS := $(LOCAL_PATH)/include
 
