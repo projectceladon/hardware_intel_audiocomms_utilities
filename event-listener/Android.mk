@@ -33,7 +33,7 @@ LOCAL_MODULE := libevent-listener
 LOCAL_MODULE_OWNER := intel
 LOCAL_MODULE_TAGS := optional
 
-include external/stlport/libstlport.mk
+#include external/stlport/libstlport.mk
 
 include $(BUILD_SHARED_LIBRARY)
 
@@ -51,7 +51,7 @@ LOCAL_MODULE := libevent-listener_static
 LOCAL_MODULE_OWNER := intel
 LOCAL_MODULE_TAGS := optional
 
-include external/stlport/libstlport.mk
+#include external/stlport/libstlport.mk
 
 include $(BUILD_STATIC_LIBRARY)
 
