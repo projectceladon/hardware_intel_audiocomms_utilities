@@ -87,6 +87,6 @@ LOCAL_STATIC_LIBRARIES := \
     libacresult \
     libaudio_comms_utilities
 
-include external/stlport/libstlport.mk
+#include external/stlport/libstlport.mk
 include $(BUILD_NATIVE_TEST)
 

@@ -78,7 +78,7 @@ LOCAL_SHARED_LIBRARIES := $(common_shared_libs)
 
 LOCAL_EXPORT_C_INCLUDE_DIRS := $(LOCAL_PATH)/include
 
-include external/stlport/libstlport.mk
+#include external/stlport/libstlport.mk
 include $(BUILD_STATIC_LIBRARY)
 
 #======================================================================

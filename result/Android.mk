@@ -48,7 +48,7 @@ LOCAL_CFLAGS := $(common_c_flags)
 
 LOCAL_EXPORT_C_INCLUDE_DIRS := $(LOCAL_PATH)/include
 
-include external/stlport/libstlport.mk
+#include external/stlport/libstlport.mk
 
 include $(BUILD_STATIC_LIBRARY)
 
@@ -106,6 +106,6 @@ LOCAL_LDFLAGS :=
 
 LOCAL_STRIP_MODULE := false
 
-include external/stlport/libstlport.mk
+#include external/stlport/libstlport.mk
 include $(BUILD_NATIVE_TEST)
 
