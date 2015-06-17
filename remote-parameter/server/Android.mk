@@ -1,4 +1,4 @@
-# Copyright 2014 Intel Corporation
+# Copyright 2014-2015 Intel Corporation
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -87,7 +87,7 @@ $(eval LOCAL_LDFLAGS += -pthread)
 LOCAL_MODULE := libremote-parameter-server_host
 LOCAL_MODULE_OWNER := intel
 $(call make_remote_param_server_lib,host)
-LOCAL_MODULE_TAGS := tests
+LOCAL_MODULE_TAGS := optional
 
 include $(OPTIONAL_QUALITY_COVERAGE_JUMPER)
 include $(BUILD_HOST_STATIC_LIBRARY)

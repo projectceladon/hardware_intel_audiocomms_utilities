@@ -25,7 +25,7 @@ LOCAL_SRC_FILES := GcovFlushWithProp.cpp
 
 LOCAL_MODULE := gcov_flush_with_prop
 LOCAL_MODULE_OWNER := intel
-LOCAL_MODULE_TAGS := tests
+LOCAL_MODULE_TAGS := optional
 
 LOCAL_SHARED_LIBRARIES := libcutils
 LOCAL_STATIC_LIBRARIES := \
@@ -73,7 +73,7 @@ LOCAL_C_INCLUDES := \
 
 LOCAL_MODULE := gcov_flush
 LOCAL_MODULE_OWNER := intel
-LOCAL_MODULE_TAGS := tests
+LOCAL_MODULE_TAGS := optional
 
 
 include $(BUILD_HOST_STATIC_LIBRARY)

@@ -1,5 +1,5 @@
 #
-# Copyright 2014 Intel Corporation
+# Copyright 2014-2015 Intel Corporation
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -40,7 +40,7 @@ LOCAL_CFLAGS = -O0 --coverage
 
 LOCAL_LDFLAGS = --coverage
 
-LOCAL_MODULE_TAGS := tests
+LOCAL_MODULE_TAGS := optional
 
 include $(BUILD_HOST_STATIC_LIBRARY)
 
@@ -62,7 +62,7 @@ LOCAL_STATIC_LIBRARIES := \
 
 LOCAL_STRIP_MODULE := false
 
-LOCAL_MODULE_TAGS := tests
+LOCAL_MODULE_TAGS := optional
 
 include $(BUILD_HOST_NATIVE_TEST)
 
