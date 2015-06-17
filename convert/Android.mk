@@ -49,7 +49,7 @@ LOCAL_CFLAGS = -O0 --coverage
 
 LOCAL_LDFLAGS = --coverage
 
-LOCAL_MODULE_TAGS := tests
+LOCAL_MODULE_TAGS := optional
 
 include $(BUILD_HOST_STATIC_LIBRARY)
 
@@ -65,7 +65,7 @@ LOCAL_EXPORT_C_INCLUDE_DIRS := \
 LOCAL_MODULE := libaudio_comms_convert_includes
 LOCAL_MODULE_OWNER := intel
 
-LOCAL_MODULE_TAGS := tests
+LOCAL_MODULE_TAGS := optional
 
 include $(BUILD_STATIC_LIBRARY)
 
@@ -79,7 +79,7 @@ LOCAL_EXPORT_C_INCLUDE_DIRS := $(LOCAL_PATH)
 LOCAL_MODULE := libaudio_comms_convert_includes_host
 LOCAL_MODULE_OWNER := intel
 
-LOCAL_MODULE_TAGS := tests
+LOCAL_MODULE_TAGS := optional
 
 include $(BUILD_HOST_STATIC_LIBRARY)
 
