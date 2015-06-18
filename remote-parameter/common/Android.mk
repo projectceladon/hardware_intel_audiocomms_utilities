@@ -25,7 +25,6 @@ remote_param_common_includes_dir_host := \
     bionic/libc/kernel/common
 
 remote_param_common_includes_dir_target := \
-    external/stlport/stlport \
     bionic
 
 remote_param_common_shared_lib_target += \
