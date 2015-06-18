@@ -81,8 +81,6 @@ LOCAL_CFLAGS := -Wall -Werror -Wextra -ggdb3 -O0
 
 LOCAL_STRIP_MODULE := false
 
-LOCAL_SHARED_LIBRARIES := libstlport
-
 LOCAL_STATIC_LIBRARIES := \
     libacresult \
     libaudio_comms_utilities

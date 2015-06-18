@@ -72,7 +72,6 @@ LOCAL_MODULE_OWNER := intel
 $(call make_remote_param_proxy_lib,target)
 LOCAL_MODULE_TAGS := optional
 
-#include external/stlport/libstlport.mk
 include $(OPTIONAL_QUALITY_COVERAGE_JUMPER)
 include $(BUILD_STATIC_LIBRARY)
 

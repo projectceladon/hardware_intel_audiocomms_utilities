@@ -35,7 +35,6 @@ remote_param_server_includes_dir_host := \
 
 remote_param_server_includes_dir_target := \
     $(remote_param_server_includes_dir) \
-    external/stlport/stlport \
     bionic
 
 remote_param_server_shared_lib_target += \
