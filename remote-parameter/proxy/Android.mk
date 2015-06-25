@@ -78,6 +78,7 @@ include $(BUILD_STATIC_LIBRARY)
 
 # Build for host
 ##################################
+ifeq (0,1)
 include $(CLEAR_VARS)
 LOCAL_MODULE := libremote-parameter-proxy_host
 LOCAL_MODULE_OWNER := intel
@@ -86,5 +87,5 @@ LOCAL_MODULE_TAGS := tests
 
 include $(OPTIONAL_QUALITY_COVERAGE_JUMPER)
 include $(BUILD_HOST_STATIC_LIBRARY)
-
+endif
 include $(OPTIONAL_QUALITY_ENV_TEARDOWN)

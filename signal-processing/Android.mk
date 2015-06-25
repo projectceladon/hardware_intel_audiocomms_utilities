@@ -29,7 +29,7 @@ include $(BUILD_STATIC_LIBRARY)
 
 #########################
 # convert static lib host
-
+ifeq (0,1)
 include $(CLEAR_VARS)
 
 LOCAL_EXPORT_C_INCLUDE_DIRS := $(LOCAL_PATH)/include
@@ -43,10 +43,10 @@ LOCAL_LDFLAGS = --coverage
 LOCAL_MODULE_TAGS := tests
 
 include $(BUILD_HOST_STATIC_LIBRARY)
-
+endif
 #########################
 # host common test
-
+ifeq (0,1)
 include $(CLEAR_VARS)
 
 LOCAL_MODULE := libaudio_comms_signal_processing_unit_test_host
@@ -65,7 +65,7 @@ LOCAL_STRIP_MODULE := false
 LOCAL_MODULE_TAGS := tests
 
 include $(BUILD_HOST_NATIVE_TEST)
-
+endif
 #########################
 # target unit test
 

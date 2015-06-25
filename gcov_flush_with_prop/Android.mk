@@ -17,6 +17,7 @@ LOCAL_PATH := $(call my-dir)
 
 #######################################################################
 # Build for target with flush from property
+ifeq (0,1)
 include $(CLEAR_VARS)
 
 LOCAL_EXPORT_C_INCLUDE_DIRS := $(LOCAL_PATH)
@@ -31,7 +32,7 @@ LOCAL_STATIC_LIBRARIES := libproperty_includes
 
 #include external/stlport/libstlport.mk
 include $(BUILD_STATIC_LIBRARY)
-
+endif
 #######################################################################
 # Build for target
 
@@ -52,7 +53,7 @@ include $(BUILD_STATIC_LIBRARY)
 
 #######################################################################
 # Build for host
-
+ifeq (0,1)
 include $(CLEAR_VARS)
 
 LOCAL_EXPORT_C_INCLUDE_DIRS := $(LOCAL_PATH)/include
@@ -68,5 +69,5 @@ LOCAL_MODULE_TAGS := tests
 
 
 include $(BUILD_HOST_STATIC_LIBRARY)
-
+endif
 
