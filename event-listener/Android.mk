@@ -58,6 +58,7 @@ include $(BUILD_STATIC_LIBRARY)
 # Build for host test
 #####################
 
+ifeq (0,1)
 include $(CLEAR_VARS)
 
 LOCAL_EXPORT_C_INCLUDE_DIRS := $(LOCAL_PATH)
@@ -69,5 +70,5 @@ LOCAL_MODULE_OWNER := intel
 LOCAL_MODULE_TAGS := tests
 
 include $(BUILD_HOST_STATIC_LIBRARY)
-
+endif
 

@@ -14,6 +14,7 @@
 
 LOCAL_PATH := $(call my-dir)
 
+
 ###########################
 # utilities static lib target
 
@@ -50,4 +51,5 @@ include $(BUILD_HOST_STATIC_LIBRARY)
 # Recursive call sub-folder Android.mk
 #
 include $(call all-makefiles-under,$(LOCAL_PATH))
+
 

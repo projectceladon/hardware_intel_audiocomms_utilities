@@ -90,6 +90,7 @@ private:
     template <details::Level::Enum l>
     static void valog(const char *logTag, const char *format, va_list args)
     {
+      /*
         va_list argsCopy;
 
         va_copy(argsCopy, args);
@@ -99,6 +100,7 @@ private:
         va_end(argsCopy);
 
         FirstTrait().valog<l>(logTag, format, args);
+      */
     }
 
     /**
