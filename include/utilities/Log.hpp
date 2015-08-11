@@ -4,7 +4,7 @@
  *
  * @section License
  *
- * Copyright 2014 Intel Corporation
+ * Copyright 2015 Intel Corporation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -90,17 +90,15 @@ private:
     template <details::Level::Enum l>
     static void valog(const char *logTag, const char *format, va_list args)
     {
-      /*
         va_list argsCopy;
 
         va_copy(argsCopy, args);
 
-        GenericLog<RemainingTraits>().valog<l>(logTag, format, argsCopy);
+        GenericLog<RemainingTraits>().template valog<l>(logTag, format, argsCopy);
 
         va_end(argsCopy);
 
-        FirstTrait().valog<l>(logTag, format, args);
-      */
+        FirstTrait().template valog<l>(logTag, format, args);
     }
 
     /**
