@@ -1,6 +1,6 @@
 ################################################################################
 #
-# Copyright 2013-2014 Intel Corporation
+# Copyright 2013-2015 Intel Corporation
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -69,7 +69,6 @@ LOCAL_STATIC_LIBRARIES := $(common_static_libs)
 
 LOCAL_EXPORT_C_INCLUDE_DIRS := $(LOCAL_PATH)/include
 
-#include external/stlport/libstlport.mk
 include $(BUILD_STATIC_LIBRARY)
 
 #======================================================================
@@ -124,7 +123,6 @@ LOCAL_STATIC_LIBRARIES := \
 
 LOCAL_SHARED_LIBRARIES := libcompiler_rt
 
-#include external/stlport/libstlport.mk
 include $(BUILD_NATIVE_TEST)
 
 #=====================================================================

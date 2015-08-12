@@ -1,5 +1,5 @@
 #
-# Copyright 2013-2014 Intel Corporation
+# Copyright 2013-2015 Intel Corporation
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -28,9 +28,12 @@ LOCAL_MODULE := gcov_flush_with_prop
 LOCAL_MODULE_OWNER := intel
 LOCAL_MODULE_TAGS := tests
 
-LOCAL_STATIC_LIBRARIES := libproperty_includes
+LOCAL_SHARED_LIBRARIES := libcutils
+LOCAL_STATIC_LIBRARIES := \
+    libproperty \
+    libaudio_comms_convert \
+    libaudio_comms_utilities
 
-#include external/stlport/libstlport.mk
 include $(BUILD_STATIC_LIBRARY)
 endif
 #######################################################################
@@ -48,7 +51,11 @@ LOCAL_MODULE := gcov_flush
 LOCAL_MODULE_OWNER := intel
 LOCAL_MODULE_TAGS := optional
 
-#include external/stlport/libstlport.mk
+LOCAL_STATIC_LIBRARIES := \
+                     libproperty \
+                     libaudio_comms_convert \
+                     libaudio_comms_utilities
+
 include $(BUILD_STATIC_LIBRARY)
 
 #######################################################################
