@@ -29,7 +29,6 @@ LOCAL_EXPORT_C_INCLUDE_DIRS := $(LOCAL_PATH)/include
 LOCAL_MODULE := libaudio_comms_utilities
 LOCAL_MODULE_OWNER := intel
 
-#include external/stlport/libstlport.mk
 include $(BUILD_STATIC_LIBRARY)
 
 #########################

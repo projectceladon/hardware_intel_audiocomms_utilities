@@ -1,6 +1,6 @@
 ################################################################################
 #
-# Copyright 2013-2014 Intel Corporation
+# Copyright 2013-2015 Intel Corporation
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -47,8 +47,6 @@ LOCAL_MODULE_OWNER := intel
 LOCAL_CFLAGS := $(common_c_flags)
 
 LOCAL_EXPORT_C_INCLUDE_DIRS := $(LOCAL_PATH)/include
-
-#include external/stlport/libstlport.mk
 
 include $(BUILD_STATIC_LIBRARY)
 
@@ -106,6 +104,5 @@ LOCAL_LDFLAGS :=
 
 LOCAL_STRIP_MODULE := false
 
-#include external/stlport/libstlport.mk
 include $(BUILD_NATIVE_TEST)
 

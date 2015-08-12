@@ -33,8 +33,6 @@ LOCAL_MODULE := libevent-listener
 LOCAL_MODULE_OWNER := intel
 LOCAL_MODULE_TAGS := optional
 
-#include external/stlport/libstlport.mk
-
 include $(BUILD_SHARED_LIBRARY)
 
 # Build static lib
@@ -50,8 +48,6 @@ LOCAL_STATIC_LIBRARIES := libaudio_comms_utilities
 LOCAL_MODULE := libevent-listener_static
 LOCAL_MODULE_OWNER := intel
 LOCAL_MODULE_TAGS := optional
-
-#include external/stlport/libstlport.mk
 
 include $(BUILD_STATIC_LIBRARY)
 
