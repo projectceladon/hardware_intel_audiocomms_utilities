@@ -63,7 +63,7 @@ LOCAL_STATIC_LIBRARIES := libaudio_comms_utilities_host
 
 LOCAL_MODULE := libevent-listener_static_host
 LOCAL_MODULE_OWNER := intel
-LOCAL_MODULE_TAGS := tests
+LOCAL_MODULE_TAGS := optional
 
 include $(BUILD_HOST_STATIC_LIBRARY)
 endif
