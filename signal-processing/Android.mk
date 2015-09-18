@@ -40,7 +40,7 @@ LOCAL_CFLAGS = -O0 --coverage
 
 LOCAL_LDFLAGS = --coverage
 
-LOCAL_MODULE_TAGS := tests
+LOCAL_MODULE_TAGS := optional
 
 include $(BUILD_HOST_STATIC_LIBRARY)
 endif
@@ -62,7 +62,7 @@ LOCAL_STATIC_LIBRARIES := \
 
 LOCAL_STRIP_MODULE := false
 
-LOCAL_MODULE_TAGS := tests
+LOCAL_MODULE_TAGS := optional
 
 include $(BUILD_HOST_NATIVE_TEST)
 endif
