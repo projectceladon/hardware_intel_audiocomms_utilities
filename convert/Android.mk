@@ -34,7 +34,7 @@ include $(BUILD_STATIC_LIBRARY)
 
 #########################
 # convert static lib host
-ifeq (0,1)
+
 include $(CLEAR_VARS)
 
 LOCAL_EXPORT_C_INCLUDE_DIRS := \
@@ -52,10 +52,10 @@ LOCAL_LDFLAGS = --coverage
 LOCAL_MODULE_TAGS := optional
 
 include $(BUILD_HOST_STATIC_LIBRARY)
-endif
+
 ##############################
 # build hack for getting headers (target version)
-ifeq (0,1)
+
 include $(CLEAR_VARS)
 
 LOCAL_EXPORT_C_INCLUDE_DIRS := \
@@ -68,10 +68,10 @@ LOCAL_MODULE_OWNER := intel
 LOCAL_MODULE_TAGS := optional
 
 include $(BUILD_STATIC_LIBRARY)
-endif
+
 ##############################
 # build hack for getting headers (host version)
-ifeq (0,1)
+
 include $(CLEAR_VARS)
 
 LOCAL_EXPORT_C_INCLUDE_DIRS := $(LOCAL_PATH)
@@ -82,4 +82,4 @@ LOCAL_MODULE_OWNER := intel
 LOCAL_MODULE_TAGS := optional
 
 include $(BUILD_HOST_STATIC_LIBRARY)
-endif
+

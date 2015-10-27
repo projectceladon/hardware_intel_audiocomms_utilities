@@ -181,8 +181,9 @@ namespace property_details
  * Helper class to select is conversion is needed or not.
  */
 template <typename T>
-struct Converter
+class Converter
 {
+public:
     /**
      * Convert a string to a numerical value using \see { convertTo }
      *

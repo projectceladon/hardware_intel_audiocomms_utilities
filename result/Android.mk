@@ -35,7 +35,8 @@ common_c_includes := \
 common_c_flags := \
     -Wall \
     -Werror \
-    -Wextra
+    -Wextra \
+    -Wno-unsupported-friend
 
 #######################################################################
 # target result common library
