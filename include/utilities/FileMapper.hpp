@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 Intel Corporation
+ * Copyright 2014-2016 Intel Corporation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,7 +16,7 @@
 #pragma once
 
 #include "result/ErrnoResult.hpp"
-#include "NonCopyable.hpp"
+#include "AudioNonCopyable.hpp"
 #include <sys/mman.h>
 #include <sys/types.h>
 #include <sys/stat.h>
