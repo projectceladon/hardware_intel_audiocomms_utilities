@@ -1,7 +1,7 @@
 /**
  * @section License
  *
- * Copyright 2013-2014 Intel Corporation
+ * Copyright 2013-2016 Intel Corporation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -32,14 +32,14 @@ namespace detail
 template <class TextType, class Convertor>
 struct ChildAccess<serializer::TextTrait<TextType, Convertor> >
 {
-    static Result get(const TiXmlNode &xmlParent, const TiXmlNode * &xmlChild)
+    static Result get(const tinyxml2::XMLNode &xmlParent, const tinyxml2::XMLNode * &xmlChild)
     {
         xmlChild = xmlParent.FirstChild();
         // The node may have children (a comment node for instance): only the first text node child
         // should be the one we want to deserialize.
         while (xmlChild != NULL) {
 
-            if (xmlChild->Type() == TiXmlNode::TEXT) {
+            if (xmlChild->ToText()) {
 
                 return Result::success();
             }
@@ -57,20 +57,21 @@ template <class TextType, class Convertor>
 class XmlTraitSerializer<serializer::TextTrait<TextType, Convertor> >
 {
 public:
-    static Result toXml(const TextType &rawtext, TiXmlNode * &xmlText)
+    static Result toXml(const TextType &rawtext, tinyxml2::XMLNode * &xmlText)
     {
         std::string text;
         if (not Convertor::toString(rawtext, text)) {
             return Result(conversionFailed) << "Unable to convert \"" << &rawtext
                                             << "\" to string.";
         }
-        xmlText = new TiXmlText(text.c_str());
+        tinyxml2::XMLDocument doc;
+        xmlText = doc.NewText(text.c_str());
         return Result::success();
     }
 
-    static Result fromXml(const TiXmlNode &xmlText, TextType &rawText)
+    static Result fromXml(const tinyxml2::XMLNode &xmlText, TextType &rawText)
     {
-        const TiXmlText *textNode = xmlText.ToText();
+        const tinyxml2::XMLText *textNode = xmlText.ToText();
         if (textNode == NULL) {
             return Result(unexpectedNodeType) << "Expected an xml text node";
         }

@@ -1,7 +1,7 @@
 /**
  * @section License
  *
- * Copyright 2014 Intel Corporation
+ * Copyright 2014-2016 Intel Corporation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -40,7 +40,7 @@ template <const char *tag, class Base, class SuportedTypelist>
 class SerializerChildren<serializer::PolymorphismTrait<tag, Base, SuportedTypelist> >
 {
 public:
-    static Result toXml(const Base *const &element, TiXmlNode &xmlElement)
+    static Result toXml(const Base *const &element, tinyxml2::XMLNode &xmlElement)
     {
         if (element == NULL) {
             return Result(invalidArgument) << "NULL pointer are not supported";
@@ -49,9 +49,9 @@ public:
                << " (While serializing polymorphic pointer)";
     }
 
-    static Result fromXml(const TiXmlNode &xmlElement, Base * &element)
+    static Result fromXml(const tinyxml2::XMLNode &xmlElement, Base * &element)
     {
-        const TiXmlNode *xmlMorph = xmlElement.FirstChildElement();
+        const tinyxml2::XMLNode *xmlMorph = xmlElement.FirstChildElement();
         if (xmlMorph == NULL) {
             return Result(childNotFound) << "Expected a child node.";
         }
@@ -67,12 +67,12 @@ template <class Base>
 class Morph<Base, TYPELIST0>
 {
 public:
-    static Result toXml(const Base &, TiXmlNode &)
+    static Result toXml(const Base &, tinyxml2::XMLNode &)
     {
         return Result(invalidArgument) << "Unsupported morph";
     }
 
-    static Result fromXml(const TiXmlNode &xmlMorph, Base * &)
+    static Result fromXml(const tinyxml2::XMLNode &xmlMorph, Base * &)
     {
         return Result(invalidArgument)
                << "Tag \"" << xmlMorph.Value() << "\" is not a supported morph";
@@ -83,13 +83,13 @@ template <class Base, class H, class T>
 class Morph<Base, TypeList<H, T> >
 {
 public:
-    static Result toXml(const Base &element, TiXmlNode &xmlPolyMorph)
+    static Result toXml(const Base &element, tinyxml2::XMLNode &xmlPolyMorph)
     {
         if (not H::isOf(element)) {
             // Try the next supported type
             return Morph<Base, T>::toXml(element, xmlPolyMorph);
         }
-        TiXmlNode *xmlMorph = NULL;
+        tinyxml2::XMLNode *xmlMorph = NULL;
         // Now that the type is determined, continue serialisation
         // as a Derived
         Result res = XmlTraitSerializer<typename H::DerivedTrait>::toXml(
@@ -101,7 +101,7 @@ public:
         return Result::success();
     }
 
-    static Result fromXml(const TiXmlNode &xmlMorph, Base * &element)
+    static Result fromXml(const tinyxml2::XMLNode &xmlMorph, Base * &element)
     {
         if (strcmp(H::DerivedTrait::tag, xmlMorph.Value()) != 0) {
             // Try the next supported type

@@ -1,7 +1,7 @@
 /**
  * @section License
  *
- * Copyright 2013-2014 Intel Corporation
+ * Copyright 2013-2016 Intel Corporation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
 #include "xmlserializer/Result.hpp"
 #include "serializer/framework/Child.hpp"
 #include "utilities/TypeList.hpp"
-#include <tinyxml.h>
+#include <tinyxml2.h>
 
 namespace audio_comms
 {
@@ -50,19 +50,19 @@ public:
      *
      * @return toXml(element, xmlElement, Trait::tag)
      */
-    static Result toXml(const Element &element, TiXmlNode * &xmlElement)
+    static Result toXml(const Element &element, tinyxml2::XMLNode * &xmlElement)
     {
         return toXml(element, xmlElement, Trait::tag);
     }
 
     /** Serialize to xml the given element according to Trait. */
-    static Result toXml(const Element &element, TiXmlNode * &xmlElement, const char *tag)
+    static Result toXml(const Element &element, tinyxml2::XMLNode * &xmlElement, const char *tag)
     {
-        xmlElement = new TiXmlElement(tag);
+        tinyxml2::XMLDocument doc;
+        xmlElement = doc.NewElement(tag);
 
         Result res = detail::SerializerChildren<Trait>::toXml(element, *xmlElement);
         if (res.isFailure()) {
-            delete xmlElement;
             xmlElement = NULL;
             return res << " (While serializing \"" << tag << "\")";
         }
@@ -73,13 +73,13 @@ public:
      *
      * @return fromXml(xmlElement, element, Trait::tag)
      */
-    static Result fromXml(const TiXmlNode &xmlElement, Element &element)
+    static Result fromXml(const tinyxml2::XMLNode &xmlElement, Element &element)
     {
         return fromXml(xmlElement, element, Trait::tag);
     }
 
     /** Deserialize from xml the given element according to Trait. */
-    static Result fromXml(const TiXmlNode &xmlElement, Element &element, const char *tag)
+    static Result fromXml(const tinyxml2::XMLNode &xmlElement, Element &element, const char *tag)
     {
         if (strcmp(tag, xmlElement.Value()) != 0) {
             return Result(wrongXmlNode)
@@ -98,13 +98,13 @@ class SerializerChildren
 {
 public:
     static Result toXml(const typename Trait::Element &element,
-                        TiXmlNode &xmlElement)
+                        tinyxml2::XMLNode &xmlElement)
     {
         return detail::SerializerChildList<typename Trait::Element, typename Trait::Children>
                ::toXml(element, xmlElement);
     }
 
-    static Result fromXml(const TiXmlNode &xmlElement, typename Trait::Element &element)
+    static Result fromXml(const tinyxml2::XMLNode &xmlElement, typename Trait::Element &element)
     {
         return detail::SerializerChildList<typename Trait::Element, typename Trait::Children>::
                fromXml(xmlElement, element);
@@ -116,12 +116,12 @@ template <class Parent>
 class SerializerChildList<Parent, TYPELIST0>
 {
 public:
-    static Result toXml(const Parent &, TiXmlNode &)
+    static Result toXml(const Parent &, tinyxml2::XMLNode &)
     {
         return Result::success();
     }
 
-    static Result fromXml(const TiXmlNode &, const Parent &)
+    static Result fromXml(const tinyxml2::XMLNode &, const Parent &)
     {
         return Result::success();
     }
@@ -139,7 +139,7 @@ struct ChildAccess
      * @return Result(childNotFound) if the xml node child could not be found.
      *         success otherwise.
      */
-    static Result get(const TiXmlNode &xmlParent, const TiXmlNode * &xmlChild)
+    static Result get(const tinyxml2::XMLNode &xmlParent, const tinyxml2::XMLNode * &xmlChild)
     {
         xmlChild = xmlParent.FirstChildElement(ChildTrait::tag);
         if (xmlChild == NULL) {
@@ -166,9 +166,9 @@ template <class Parent, class H, class T>
 class SerializerChildList<Parent, TypeList<H, T> >
 {
 public:
-    static Result toXml(const Parent &parent, TiXmlNode &xmlParent)
+    static Result toXml(const Parent &parent, tinyxml2::XMLNode &xmlParent)
     {
-        TiXmlNode *xmlChild = NULL;
+        tinyxml2::XMLNode *xmlChild = NULL;
         const typename H::ChildTrait::Element &child = H::Getter::function(parent);
         Result res = XmlTraitSerializer<typename H::ChildTrait>::toXml(child, xmlChild);
         if (res.isFailure()) {
@@ -178,9 +178,9 @@ public:
         return SerializerChildList<Parent, T>::toXml(parent, xmlParent);
     }
 
-    static Result fromXml(const TiXmlNode &xmlParent, Parent &parent)
+    static Result fromXml(const tinyxml2::XMLNode &xmlParent, Parent &parent)
     {
-        const TiXmlNode *xmlChild;
+        const tinyxml2::XMLNode *xmlChild;
         bool optional = H::optional;
 
         // Get the corresponding xml child
@@ -203,7 +203,7 @@ public:
 
 private:
     /** Instanciate the head child, deserialize it, and set it in the parent. */
-    static Result setChild(const TiXmlNode *xmlChild, Parent &parent)
+    static Result setChild(const tinyxml2::XMLNode *xmlChild, Parent &parent)
     {
         typedef typename H::ChildTrait::Element ChildType;
         // Create a empty child
