@@ -1,7 +1,7 @@
 /**
  * @section License
  *
- * Copyright 2013-2014 Intel Corporation
+ * Copyright 2013-2016 Intel Corporation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -45,17 +45,18 @@ public:
         if (success) {
             ASSERT_RESULT_SUCCESS(res);
             _doc.LinkEndChild(_xmlNode);
-            _stream << _doc;
-            _xml = _stream.c_str();
+            tinyxml2::XMLPrinter printer;
+            _doc.Print(&printer);
+            _xml = printer.CStr();
         } else {
             ASSERT_RESULT_FAILURE(res);
         }
     }
 
 protected:
-    TiXmlNode *_xmlNode;
-    TiXmlDocument _doc;
-    TiXmlOutStream _stream;
+    tinyxml2::XMLNode *_xmlNode;
+    tinyxml2::XMLDocument _doc;
+    std::ostringstream _stream;
     std::string _xml;
 };
 class FromXml : public ToXml
@@ -67,7 +68,7 @@ public:
     void parseXml(const std::string xml)
     {
         _doc.Parse(xml.c_str());
-        EXPECT_FALSE(_doc.Error()) << _doc.ErrorDesc() << " While parsing: " << xml;
+        EXPECT_FALSE(_doc.Error()) << _doc.ErrorID() << " While parsing: " << xml;
         _xmlNode = _doc.RootElement();
         ASSERT_TRUE(_xmlNode != NULL);
     }
@@ -89,8 +90,8 @@ public:
     }
 
 protected:
-    TiXmlText *_textXml;
-    TiXmlHandle _handle;
+    tinyxml2::XMLText *_textXml;
+    tinyxml2::XMLHandle _handle;
 };
 
 // Empty node (de)serialisation
@@ -114,14 +115,16 @@ TEST_F(ToXml, EmptyElement)
 TEST_F(FromXml, EmptyElement)
 {
     EmptyElem emptyElem;
-    ASSERT_RESULT_SUCCESS(XmlTraitSerializer<EmptyElemTrait>::fromXml(TiXmlElement("Empty"),
+    tinyxml2::XMLDocument doc;
+    ASSERT_RESULT_SUCCESS(XmlTraitSerializer<EmptyElemTrait>::fromXml(*doc.NewElement("Empty"),
                                                                       emptyElem));
 }
 
 TEST_F(FromXml, WrongElement)
 {
     EmptyElem emptyElem;
-    ASSERT_RESULT_FAILURE(XmlTraitSerializer<EmptyElemTrait>::fromXml(TiXmlElement("WrongTag"),
+    tinyxml2::XMLDocument doc;
+    ASSERT_RESULT_FAILURE(XmlTraitSerializer<EmptyElemTrait>::fromXml(*doc.NewElement("WrongTag"),
                                                                       emptyElem));
 }
 
@@ -176,7 +179,8 @@ TEST_F(ToXml, textNode)
 TEST_F(FromXml, textNode)
 {
     int result;
-    ASSERT_RESULT_SUCCESS(XmlTraitSerializer<IntTrait>::fromXml(TiXmlText("10"), result));
+    tinyxml2::XMLDocument doc;
+    ASSERT_RESULT_SUCCESS(XmlTraitSerializer<IntTrait>::fromXml(*doc.NewText("10"), result));
     ASSERT_EQ(10, result);
 }
 
