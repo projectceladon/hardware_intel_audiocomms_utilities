@@ -1,7 +1,7 @@
 /**
  * @section License
  *
- * Copyright 2013-2014 Intel Corporation
+ * Copyright 2013-2016 Intel Corporation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -113,14 +113,13 @@ public:
     {
         typedef typename detail::Find<TypeList<H, T>, Class>::type SerializationTrait;
 
-        TiXmlOutStream stream;
-        TiXmlDocument doc;
-        doc.LinkEndChild(new TiXmlDeclaration("1.0", "", ""));
-        TiXmlElement root(mRootElementName.c_str());
+        tinyxml2::XMLDocument doc;
+        doc.LinkEndChild(doc.NewDeclaration("1.0"));
+        tinyxml2::XMLElement root(mRootElementName.c_str());
 
         root.SetAttribute("version", mVersion.c_str());
 
-        UniquePtr<TiXmlNode> xmlElement;
+        UniquePtr<tinyxml2::XMLNode> xmlElement;
         Result res = XmlTraitSerializer<SerializationTrait>
                      ::toXml(c, xmlElement.getRefToSet());
 
@@ -131,10 +130,9 @@ public:
 
         root.LinkEndChild(xmlElement.release());
 
-        doc.InsertEndChild(root);
-
-        stream << doc;
-        serializedCmd = stream.c_str();
+        tinyxml2::XMLPrinter printer;
+        doc.Print(&printer);
+        serializedCmd = printer.CStr();
         return Result::success();
     }
 
@@ -155,10 +153,10 @@ public:
     Result deserialize(const std::string &str, Class &c)
     {
         typedef typename detail::Find<TypeList<H, T>, Class>::type SerializationTrait;
-        TiXmlDocument doc;
-        doc.Parse(str.c_str(), NULL);
+        tinyxml2::XMLDocument doc;
+        doc.Parse(str.c_str());
 
-        const TiXmlElement *rootTag = doc.FirstChildElement(mRootElementName.c_str());
+        const tinyxml2::XMLElement *rootTag = doc.FirstChildElement(mRootElementName.c_str());
         if (rootTag == NULL) {
             return Result(conversionFailed) << "No '" << mRootElementName.c_str()
                                             << "' root element found in xml data.";
@@ -180,7 +178,7 @@ public:
             return Result(conversionFailed) << "No command tag found.";
         }
 
-        const TiXmlNode *xmlChild = rootTag->FirstChildElement();
+        const tinyxml2::XMLNode *xmlChild = rootTag->FirstChildElement();
         if (xmlChild == NULL) {
             return Result(conversionFailed) << "No content under root element.";
         }

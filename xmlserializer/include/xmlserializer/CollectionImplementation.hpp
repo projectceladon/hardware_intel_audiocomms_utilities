@@ -1,7 +1,7 @@
 /**
  * @section License
  *
- * Copyright 2013-2014 Intel Corporation
+ * Copyright 2013-2016 Intel Corporation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -53,7 +53,7 @@ public:
     typedef typename Collection::value_type Item;
 
     static Result toXml(const Collection &collection,
-                        TiXmlNode &xmlCollection)
+                        tinyxml2::XMLNode &xmlCollection)
     {
         size_t nb = 1;
         for (ConstIterator it = collection.begin(); it != collection.end(); it++) {
@@ -66,7 +66,7 @@ public:
             const ItemNb itemNb(const_cast<Item &>(*it));
 
             // Create the <nb>...</nb> xml node
-            TiXmlNode *xmlItemNb;
+            tinyxml2::XMLNode *xmlItemNb;
             // Serialize the ItemNb
             Result res = XmlTraitSerializer<ItemNbTrait>::toXml(itemNb, xmlItemNb,
                                                                 formatIndex(nb).c_str());
@@ -80,13 +80,13 @@ public:
         return Result::success();
     }
 
-    static Result fromXml(const TiXmlNode &xmlCollection, Collection &collection)
+    static Result fromXml(const tinyxml2::XMLNode &xmlCollection, Collection &collection)
     {
         size_t nb = 1;
         Iterator it = collection.begin();
 
         // For each <nb>...</nb> node
-        const TiXmlNode *xmlItemNb;
+        const tinyxml2::XMLNode *xmlItemNb;
         while ((xmlItemNb = xmlCollection.FirstChildElement(formatIndex(nb).c_str())) != NULL) {
             Item item;
             ItemNb itemNb(item);
@@ -130,9 +130,9 @@ private:
     {
         typedef ItemNb Element;
         typedef serializer::Child<ItemTrait,
-                           typename Element::Get, &Element::get,
-                           typename Element::Set, &Element::set, takeOwnership
-                           > ItemChildTrait;
+                                  typename Element::Get, &Element::get,
+                                  typename Element::Set, &Element::set, takeOwnership
+                                  > ItemChildTrait;
         typedef TYPELIST1 (ItemChildTrait) Children;
     };
 };
