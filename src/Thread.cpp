@@ -18,6 +18,7 @@
 #include "utilities/Thread.hpp"
 #include <sys/prctl.h>
 #include <AudioCommsAssert.hpp>
+#include <unistd.h>
 #include <sys/syscall.h>
 #include <sstream>
 
