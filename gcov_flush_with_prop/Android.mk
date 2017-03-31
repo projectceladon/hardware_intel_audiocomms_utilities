@@ -17,7 +17,7 @@ LOCAL_PATH := $(call my-dir)
 
 #######################################################################
 # Build for target with flush from property
-ifeq (0,1)
+ifeq (ENABLE_HOST_VERSION,1)
 include $(CLEAR_VARS)
 
 LOCAL_EXPORT_C_INCLUDE_DIRS := $(LOCAL_PATH)
@@ -60,7 +60,7 @@ include $(BUILD_STATIC_LIBRARY)
 
 #######################################################################
 # Build for host
-ifeq (0,1)
+ifeq (ENABLE_HOST_VERSION,1)
 include $(CLEAR_VARS)
 
 LOCAL_EXPORT_C_INCLUDE_DIRS := $(LOCAL_PATH)/include

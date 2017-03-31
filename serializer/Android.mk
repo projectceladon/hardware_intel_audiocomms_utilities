@@ -101,6 +101,7 @@ common_c_flags := $(common_c_flags) -O0 --coverage
 #=====================================================================
 # target cme api test
 
+ifeq (ENABLE_HOST_VERSION,1)
 include $(CLEAR_VARS)
 
 LOCAL_MODULE := $(common_base_name)_unit_test
@@ -155,4 +156,5 @@ LOCAL_SHARED_LIBRARIES := \
     $(common_shared_libs_host) \
 
 include $(BUILD_HOST_NATIVE_TEST)
+endif
 
