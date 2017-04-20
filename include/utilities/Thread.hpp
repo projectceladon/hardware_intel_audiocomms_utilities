@@ -17,7 +17,7 @@
 #pragma once
 
 #include <AudioNonCopyable.hpp>
-#include <AudioCommsAssert.hpp>
+#include <AudioUtilitiesAssert.hpp>
 
 #include <pthread.h>
 
@@ -51,7 +51,7 @@ public:
 
     virtual ~Thread()
     {
-        AUDIOCOMMS_ASSERT(_thread == 0, "Can not destroy a running thread");
+        AUDIOUTILITIES_ASSERT(_thread == 0, "Can not destroy a running thread");
     }
 
     /**

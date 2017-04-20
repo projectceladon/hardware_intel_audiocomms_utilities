@@ -25,7 +25,7 @@
  *  @param[in] myTest the test function functor.
  *  @param[in] typeList the TypeList used for tests.
  */
-#define AUDIOCOMMS_TYPED_TEST(myTest, typeList) \
+#define AUDIOUTILITIES_TYPED_TEST(myTest, typeList) \
     TEST(myTest, typeList)                      \
     {                                           \
         TypedTest<myTest, typeList>::run();     \

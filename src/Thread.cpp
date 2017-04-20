@@ -17,7 +17,7 @@
 
 #include "utilities/Thread.hpp"
 #include <sys/prctl.h>
-#include <AudioCommsAssert.hpp>
+#include <AudioUtilitiesAssert.hpp>
 #include <unistd.h>
 #include <sys/syscall.h>
 #include <sstream>
@@ -35,7 +35,7 @@ namespace utilities
  */
 void *Thread::threadMainHelper(void *arg)
 {
-    AUDIOCOMMS_ASSERT(arg != NULL, "argument is expected to be the thread object.");
+    AUDIOUTILITIES_ASSERT(arg != NULL, "argument is expected to be the thread object.");
     Thread *t = reinterpret_cast<typeof t>(arg);
     t->loop();
     return NULL;

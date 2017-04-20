@@ -21,7 +21,7 @@
 
 #pragma once
 
-#include "AudioCommsAssert.hpp"
+#include "AudioUtilitiesAssert.hpp"
 #include "Mutex.hpp"
 
 #include <pthread.h>
@@ -39,14 +39,14 @@ public:
     ConditionVariable()
     {
         int err = pthread_cond_init(&_cond, NULL);
-        AUDIOCOMMS_ASSERT(err == 0, "Unable to initialize condition variable @"
+        AUDIOUTILITIES_ASSERT(err == 0, "Unable to initialize condition variable @"
                           << ": " << strerror(err) << "(" << err << ")");
     }
 
     ~ConditionVariable()
     {
         int err = pthread_cond_destroy(&_cond);
-        AUDIOCOMMS_ASSERT(err == 0, "Unable to destroy condition variable @"
+        AUDIOUTILITIES_ASSERT(err == 0, "Unable to destroy condition variable @"
                           << static_cast<const void *>(&_cond)
                           << ": " << strerror(err) << "(" << err << ")");
     }
@@ -57,7 +57,7 @@ public:
     void signal()
     {
         int err = pthread_cond_signal(&_cond);
-        AUDIOCOMMS_ASSERT(err == 0, "Unable to signal condition variable @"
+        AUDIOUTILITIES_ASSERT(err == 0, "Unable to signal condition variable @"
                           << static_cast<const void *>(&_cond)
                           << ": " << strerror(err) << "(" << err << ")");
     }
@@ -68,7 +68,7 @@ public:
     void broadcast()
     {
         int err = pthread_cond_broadcast(&_cond);
-        AUDIOCOMMS_ASSERT(err == 0, "Unable to broadcast condition variable @"
+        AUDIOUTILITIES_ASSERT(err == 0, "Unable to broadcast condition variable @"
                           << static_cast<const void *>(&_cond)
                           << ": " << strerror(err) << "(" << err << ")");
     }
@@ -82,7 +82,7 @@ public:
     void wait(Mutex &mutex)
     {
         int err = pthread_cond_wait(&_cond, &mutex._mutex);
-        AUDIOCOMMS_ASSERT(err == 0, "Unable to wait for condition variable @"
+        AUDIOUTILITIES_ASSERT(err == 0, "Unable to wait for condition variable @"
                           << static_cast<const void *>(&_cond)
                           << ": " << strerror(err) << "(" << err << ")");
     }

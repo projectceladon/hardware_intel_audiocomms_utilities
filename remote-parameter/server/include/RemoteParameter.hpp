@@ -16,7 +16,7 @@
 
 #pragma once
 
-#include <AudioCommsAssert.hpp>
+#include <AudioUtilitiesAssert.hpp>
 #include <string>
 #include <stdint.h>
 #include <sys/types.h>

@@ -17,7 +17,7 @@
 #pragma once
 
 #include <AudioNonCopyable.hpp>
-#include <AudioCommsAssert.hpp>
+#include <AudioUtilitiesAssert.hpp>
 #include <convert/convert.hpp>
 #include <string>
 #include <cstdlib>
@@ -106,13 +106,13 @@ public:
     {
         /* As we cannot use exceptions, having an error here is just about
          * aborting execution in order to make sure that there is not silent fail. */
-        AUDIOCOMMS_ASSERT(_sysProp != NULL, "Cannot allocate memory for property.");
-        AUDIOCOMMS_ASSERT(_name.length() + sizeof('\0') <= SystemProperty::nameMaxSize,
+        AUDIOUTILITIES_ASSERT(_sysProp != NULL, "Cannot allocate memory for property.");
+        AUDIOUTILITIES_ASSERT(_name.length() + sizeof('\0') <= SystemProperty::nameMaxSize,
                           "property name '" << _name << "' is too long (max is "
                                             << SystemProperty::nameMaxSize << ").");
 
         std::string valAsStr;
-        AUDIOCOMMS_ASSERT(property_details::Converter<T>::valueToString(_default, valAsStr)
+        AUDIOUTILITIES_ASSERT(property_details::Converter<T>::valueToString(_default, valAsStr)
                           && valAsStr.length() + sizeof('\0') <= SystemProperty::valueMaxSize,
                           "default value " << _default << " is too long (max is "
                                            << SystemProperty::valueMaxSize << ").");
@@ -246,8 +246,8 @@ AndroidProperty()
     /** Next assertion are here for consistency checks, if they fail, this
      * means that android's properties sizes changed, which means the
      * modification MUST be done on the Linux size (bellow) */
-    AUDIOCOMMS_COMPILE_TIME_ASSERT(nameMaxSize == 32);
-    AUDIOCOMMS_COMPILE_TIME_ASSERT(valueMaxSize == 92);
+    AUDIOUTILITIES_COMPILE_TIME_ASSERT(nameMaxSize == 32);
+    AUDIOUTILITIES_COMPILE_TIME_ASSERT(valueMaxSize == 92);
 }
 
 public:
