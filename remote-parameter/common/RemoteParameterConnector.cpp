@@ -17,7 +17,7 @@
 #define LOG_TAG "RemoteParameterConnector"
 
 #include "RemoteParameterConnector.hpp"
-#include <AudioCommsAssert.hpp>
+#include <AudioUtilitiesAssert.hpp>
 #include <sys/socket.h>
 #include <sys/stat.h>
 #include <unistd.h>
@@ -116,7 +116,7 @@ void RemoteParameterConnector::setTimeoutMs(uint32_t timeoutMs)
 
 bool RemoteParameterConnector::send(const void *data, uint32_t size)
 {
-    AUDIOCOMMS_ASSERT(data != NULL, "NULL data pointer");
+    AUDIOUTILITIES_ASSERT(data != NULL, "NULL data pointer");
 
     uint32_t offset = 0;
     const uint8_t *pData = static_cast<const uint8_t *>(data);
@@ -137,7 +137,7 @@ bool RemoteParameterConnector::send(const void *data, uint32_t size)
 
 bool RemoteParameterConnector::receive(void *data, uint32_t size)
 {
-    AUDIOCOMMS_ASSERT(data != NULL, "NULL data pointer");
+    AUDIOUTILITIES_ASSERT(data != NULL, "NULL data pointer");
 
     uint8_t *pData = static_cast<uint8_t *>(data);
 

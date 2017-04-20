@@ -1,6 +1,6 @@
 /*
  * @file
- * Audiocomms log facility
+ * Audioutilities log facility
  *
  * @section License
  *
@@ -22,7 +22,7 @@
 #pragma once
 
 /** the default LOG_TAG to be used when no tag is specified */
-#define DEFAULT_LOG_TAG "AUDIOCOMMS"
+#define DEFAULT_LOG_TAG "AUDIOUTILITIES"
 
 #include <utilities/TypeList.hpp>
 #include <iostream>

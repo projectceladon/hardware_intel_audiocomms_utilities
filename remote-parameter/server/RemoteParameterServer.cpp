@@ -19,7 +19,7 @@
 #include "RemoteParameterServer.hpp"
 #include "RemoteParameter.hpp"
 #include "RemoteParameterImpl.hpp"
-#include <AudioCommsAssert.hpp>
+#include <AudioUtilitiesAssert.hpp>
 #include "EventThread.h"
 #include <utils/Log.h>
 
@@ -52,7 +52,7 @@ RemoteParameterServer::~RemoteParameterServer()
 
 bool RemoteParameterServer::addRemoteParameter(RemoteParameterBase *remoteParameter, string &error)
 {
-    AUDIOCOMMS_ASSERT(remoteParameter != NULL, "invalid remote parameter");
+    AUDIOUTILITIES_ASSERT(remoteParameter != NULL, "invalid remote parameter");
     if (mStarted) {
 
         error = "Parameter added in not permitted context";

@@ -19,7 +19,7 @@
 #include "RemoteParameterProxyImpl.hpp"
 
 #include <RemoteParameterConnector.hpp>
-#include <AudioCommsAssert.hpp>
+#include <AudioUtilitiesAssert.hpp>
 #include <sys/socket.h>
 #include <sys/stat.h>
 #include <unistd.h>
@@ -67,7 +67,7 @@ RemoteParameterProxyImpl::~RemoteParameterProxyImpl()
 
 bool RemoteParameterProxyImpl::write(const uint8_t *data, size_t size, string &error)
 {
-    AUDIOCOMMS_ASSERT(data != NULL, "NULL data pointer");
+    AUDIOUTILITIES_ASSERT(data != NULL, "NULL data pointer");
 
     int socketFd = RemoteParameterConnector::createClientSocket(mName, error);
     if (socketFd == -1) {
@@ -122,7 +122,7 @@ bool RemoteParameterProxyImpl::write(const uint8_t *data, size_t size, string &e
 
 bool RemoteParameterProxyImpl::read(uint8_t *data, size_t &size, string &error)
 {
-    AUDIOCOMMS_ASSERT(data != NULL, "NULL data pointer");
+    AUDIOUTILITIES_ASSERT(data != NULL, "NULL data pointer");
 
     int socketFd = RemoteParameterConnector::createClientSocket(mName, error);
     if (socketFd == -1) {

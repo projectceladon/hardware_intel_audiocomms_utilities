@@ -17,7 +17,7 @@
 
 #pragma once
 
-#include "AudioCommsAssert.hpp"
+#include "AudioUtilitiesAssert.hpp"
 #include "Observer.hpp"
 #include <utils/Log.h>
 #include <vector>
@@ -43,7 +43,7 @@ public:
      */
     void addObserver(Observer *o)
     {
-        AUDIOCOMMS_ASSERT(o != NULL, "Trying to add NULL observer");
+        AUDIOUTILITIES_ASSERT(o != NULL, "Trying to add NULL observer");
         observers.push_back(o);
     }
 
