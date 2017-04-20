@@ -20,7 +20,7 @@
 #include "EventListener.h"
 
 #include "EventThread.h"
-#include <AudioCommsAssert.hpp>
+#include <AudioUtilitiesAssert.hpp>
 #include <unistd.h>
 #include <strings.h>
 #include <string.h>
@@ -41,7 +41,7 @@ CEventThread::CEventThread(IEventListener *eventListener, bool logsOn)
       mAlarmMs(-1),
       mLogsOn(logsOn)
 {
-    AUDIOCOMMS_ASSERT(eventListener, "Invalid event listener");
+    AUDIOUTILITIES_ASSERT(eventListener, "Invalid event listener");
 
     // Create inband pipe
     pipe(mInbandPipe);
@@ -60,7 +60,7 @@ CEventThread::~CEventThread()
 
 void CEventThread::addOpenedFd(uint32_t fdClientId, int fd, bool toListenTo)
 {
-    AUDIOCOMMS_ASSERT(!mIsStarted || inThreadContext(), "Operation invalid within this context");
+    AUDIOUTILITIES_ASSERT(!mIsStarted || inThreadContext(), "Operation invalid within this context");
 
     mFdList.push_back(SFd(fdClientId, fd, toListenTo));
 
@@ -72,7 +72,7 @@ void CEventThread::addOpenedFd(uint32_t fdClientId, int fd, bool toListenTo)
 
 void CEventThread::closeAndRemoveFd(uint32_t ClientFdId)
 {
-    AUDIOCOMMS_ASSERT(!mIsStarted || inThreadContext(), "Operation invalid within this context");
+    AUDIOUTILITIES_ASSERT(!mIsStarted || inThreadContext(), "Operation invalid within this context");
 
     FdListIterator it;
     for (it = mFdList.begin(); it != mFdList.end(); ++it) {
@@ -121,7 +121,7 @@ void CEventThread::cancelAlarm()
 
 bool CEventThread::start()
 {
-    AUDIOCOMMS_ASSERT(!mIsStarted, "Event thread already started");
+    AUDIOUTILITIES_ASSERT(!mIsStarted, "Event thread already started");
 
     pthread_create(&mThreadId, NULL, thread_func, this);
     mIsStarted = true;
@@ -144,7 +144,7 @@ void CEventThread::stop()
     do {
         ret = ::write(mInbandPipe[1], &toWrite, sizeof(toWrite));
     } while (ret == -1 && errno == EINTR);
-    AUDIOCOMMS_ASSERT(ret == sizeof(toWrite),
+    AUDIOUTILITIES_ASSERT(ret == sizeof(toWrite),
                       "Unable to write message in pipe: ret: "
                       << ret << " status: " << strerror(errno));
 
@@ -156,7 +156,7 @@ void CEventThread::trig(void *context, uint32_t eventId /* = -1 */)
 {
     ALOGD_IF(mLogsOn, "%s: in", __func__);
 
-    AUDIOCOMMS_ASSERT(mIsStarted, "Event thread not started");
+    AUDIOUTILITIES_ASSERT(mIsStarted, "Event thread not started");
 
     Message toWrite;
     toWrite.eventId = eventId;
@@ -167,7 +167,7 @@ void CEventThread::trig(void *context, uint32_t eventId /* = -1 */)
     do {
         ret = ::write(mInbandPipe[1], &toWrite, sizeof(toWrite));
     } while (ret == -1 && errno == EINTR);
-    AUDIOCOMMS_ASSERT(ret == sizeof(toWrite),
+    AUDIOUTILITIES_ASSERT(ret == sizeof(toWrite),
                       "Unable to write message in pipe: ret: "
                       << ret << " status: " << strerror(errno));
 
@@ -229,10 +229,10 @@ void CEventThread::run()
             do {
                 ret = ::read(mInbandPipe[0], &dataRead, sizeof(dataRead));
             } while (ret == -1 && errno == EINTR);
-            AUDIOCOMMS_ASSERT(ret == sizeof(dataRead),
+            AUDIOUTILITIES_ASSERT(ret == sizeof(dataRead),
                               "Unable to write message in pipe: ret: "
                               << ret << " status: " << strerror(errno));
-            AUDIOCOMMS_ASSERT(dataRead.msg < ENbPipeMsg, "Invalid message in pipe");
+            AUDIOUTILITIES_ASSERT(dataRead.msg < ENbPipeMsg, "Invalid message in pipe");
 
             if (dataRead.msg == EProcess) {
                 if (mEventListener->onProcess(dataRead.context, dataRead.eventId)) {
@@ -295,7 +295,7 @@ void CEventThread::buildPollFds(struct pollfd *pollFds) const
             pollFds[fdIndex++].events = POLLIN;
         }
     }
-    AUDIOCOMMS_ASSERT(fdIndex == mNbPollFds, "Inconsistent list of file descriptor to poll");
+    AUDIOUTILITIES_ASSERT(fdIndex == mNbPollFds, "Inconsistent list of file descriptor to poll");
 }
 
 int64_t CEventThread::getCurrentDateMs()

@@ -18,7 +18,7 @@
 
 #pragma once
 
-#include "AudioCommsAssert.hpp"
+#include "AudioUtilitiesAssert.hpp"
 
 #include <semaphore.h>
 #include <cerrno>
@@ -41,14 +41,14 @@ public:
     Semaphore(unsigned int initialValue)
     {
         int err = sem_init(&_sem, 0, initialValue);
-        AUDIOCOMMS_ASSERT(err == 0, "Unable to create semaphore: "
+        AUDIOUTILITIES_ASSERT(err == 0, "Unable to create semaphore: "
                           << strerror(errno) << "(" << errno << ")");
     }
 
     ~Semaphore()
     {
         int err = sem_destroy(&_sem);
-        AUDIOCOMMS_ASSERT(err == 0, "Unable to destroy semaphore @"
+        AUDIOUTILITIES_ASSERT(err == 0, "Unable to destroy semaphore @"
                           << static_cast<const void *>(&_sem)
                           << ": " << strerror(errno) << "(" << errno << ")");
     }
@@ -62,7 +62,7 @@ public:
     void post()
     {
         int err = sem_post(&_sem);
-        AUDIOCOMMS_ASSERT(err == 0, "Unable to post semaphore @"
+        AUDIOUTILITIES_ASSERT(err == 0, "Unable to post semaphore @"
                           << static_cast<const void *>(&_sem)
                           << ": " << strerror(errno) << "(" << errno << ")");
     }
@@ -81,7 +81,7 @@ public:
             err = sem_wait(&_sem);
         } while ((err == -1) && (errno == EINTR));
 
-        AUDIOCOMMS_ASSERT(err == 0, "Unable to wait for semaphore @"
+        AUDIOUTILITIES_ASSERT(err == 0, "Unable to wait for semaphore @"
                           << static_cast<const void *>(&_sem)
                           << ": " << strerror(errno) << "(" << errno << ")");
     }
@@ -98,7 +98,7 @@ public:
 
         // get current timespec
         int err = clock_gettime(CLOCK_REALTIME, &timeoutSpec);
-        AUDIOCOMMS_ASSERT(err == 0, "Unable to get clock time: "
+        AUDIOUTILITIES_ASSERT(err == 0, "Unable to get clock time: "
                           << strerror(errno) << "(" << errno << ")");
 
 
@@ -115,7 +115,7 @@ public:
             err = sem_timedwait(&_sem, &timeoutSpec);
         } while ((err == -1) && (errno == EINTR));
 
-        AUDIOCOMMS_ASSERT(err == 0 || errno == ETIMEDOUT, "Unable to wait for semaphore @"
+        AUDIOUTILITIES_ASSERT(err == 0 || errno == ETIMEDOUT, "Unable to wait for semaphore @"
                           << static_cast<const void *>(&_sem)
                           << ": " << strerror(errno) << "(" << errno << ")");
 

@@ -15,7 +15,7 @@
  */
 
 #include "RemoteParameter.hpp"
-#include <AudioCommsAssert.hpp>
+#include <AudioUtilitiesAssert.hpp>
 #include <string>
 #include <stdint.h>
 #include <sys/types.h>
@@ -41,7 +41,7 @@ template <typename TypeParam>
 bool RemoteParameter<TypeParam>::set(const uint8_t *data, size_t size)
 {
     TypeParam typedData;
-    AUDIOCOMMS_ASSERT(size == sizeof(typedData), "Size to set must match parameter size");
+    AUDIOUTILITIES_ASSERT(size == sizeof(typedData), "Size to set must match parameter size");
     memcpy(static_cast<void *>(&typedData), static_cast<const void *>(data), sizeof(typedData));
     return set(typedData);
 }
@@ -50,7 +50,7 @@ template <typename TypeParam>
 void RemoteParameter<TypeParam>::get(uint8_t *data, size_t &size) const
 {
     TypeParam typedData;
-    AUDIOCOMMS_ASSERT(size == sizeof(typedData), "received size does not match");
+    AUDIOUTILITIES_ASSERT(size == sizeof(typedData), "received size does not match");
     get(typedData);
     memcpy(static_cast<void *>(data), static_cast<void *>(&typedData), sizeof(typedData));
 }

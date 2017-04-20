@@ -33,7 +33,7 @@ LOCAL_CFLAGS := $(naive_tokenizer_cflags)
 
 LOCAL_EXPORT_C_INCLUDE_DIRS := $(LOCAL_PATH)
 
-LOCAL_MODULE := libaudiocomms_naive_tokenizer
+LOCAL_MODULE := libaudioutilities_naive_tokenizer
 LOCAL_MODULE_OWNER := intel
 
 include $(BUILD_STATIC_LIBRARY)
@@ -47,6 +47,6 @@ LOCAL_CFLAGS := $(naive_tokenizer_cflags)
 
 LOCAL_EXPORT_C_INCLUDE_DIRS := $(LOCAL_PATH)
 
-LOCAL_MODULE := libaudiocomms_naive_tokenizer_host
+LOCAL_MODULE := libaudioutilities_naive_tokenizer_host
 LOCAL_MODULE_OWNER := intel
 include $(BUILD_HOST_STATIC_LIBRARY)

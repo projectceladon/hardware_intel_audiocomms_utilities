@@ -17,7 +17,7 @@
 
 #pragma once
 
-#include "AudioCommsAssert.hpp"
+#include "AudioUtilitiesAssert.hpp"
 #include <utils/Log.h>
 
 namespace audio_comms
@@ -38,7 +38,7 @@ public:
      */
     static inline uint32_t indexToMask(uint32_t index)
     {
-        AUDIOCOMMS_ASSERT(index < _wordSize, "Index outside range");
+        AUDIOUTILITIES_ASSERT(index < _wordSize, "Index outside range");
         return 1 << index;
     }
 private:

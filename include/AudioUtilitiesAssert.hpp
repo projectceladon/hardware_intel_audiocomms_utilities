@@ -27,15 +27,15 @@
 #define audio_comms_unlikely(cond) __builtin_expect((cond), 0)
 
 /**
- * This AUDIOCOMMS_COMPILE_TIME_ASSERT MACRO will fail to compile if the condition is false.
+ * This AUDIOUTILITIES_COMPILE_TIME_ASSERT MACRO will fail to compile if the condition is false.
  * Currently it only works in functions
  * Example:
- *     Put "AUDIOCOMMS_COMPILE_TIME_ASSERT(1==0)" your C++ source.
+ *     Put "AUDIOUTILITIES_COMPILE_TIME_ASSERT(1==0)" your C++ source.
  * On compilation you will get error that looks like:
  * error: 'compileTimeAssertFailure<false>::compileTimeAssertFailure()' is private
  *      YOUR_SOURCE_FILE.cpp:YOUR_ASSERT_LINE: error: within this context
  */
-#define AUDIOCOMMS_COMPILE_TIME_ASSERT(c) audio_comms::utilities::compileTimeAssertFailure<c>()
+#define AUDIOUTILITIES_COMPILE_TIME_ASSERT(c) audio_comms::utilities::compileTimeAssertFailure<c>()
 
 namespace audio_comms
 {
@@ -74,10 +74,10 @@ compileTimeAssertFailure();
  * @param[in] cond   the condition to check
  * @param[in] iostr  an iostream giving some details about the error
  */
-#define AUDIOCOMMS_ASSERT(cond, iostr)                                                           \
+#define AUDIOUTILITIES_ASSERT(cond, iostr)                                                           \
     do {                                                                                         \
         if (audio_comms_unlikely(!(cond))) {                                                     \
-            audio_comms::utilities::Log::Fatal("AUDIOCOMMS") << __BASE_FILE__ ":" << __LINE__    \
+            audio_comms::utilities::Log::Fatal("AUDIOUTILITIES") << __BASE_FILE__ ":" << __LINE__    \
                                                              << ": Assertion " #cond " failed: " \
                                                              << iostr;                           \
             abort();                                                                             \
