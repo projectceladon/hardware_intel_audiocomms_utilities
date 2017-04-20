@@ -15,7 +15,7 @@
  */
 
 #include "RemoteParameter.hpp"
-#include <AudioCommsAssert.hpp>
+#include <AudioUtilitiesAssert.hpp>
 #include <string>
 #include <stdint.h>
 #include <sys/types.h>
@@ -45,7 +45,7 @@ template <>
 bool RemoteParameter<std::string>::set(const uint8_t *data, size_t size)
 {
     char typedData[size];
-    AUDIOCOMMS_ASSERT(size <= MAX_SIZE, "Size to set must not exceed string max length");
+    AUDIOUTILITIES_ASSERT(size <= MAX_SIZE, "Size to set must not exceed string max length");
     memcpy(static_cast<void *>(&typedData), static_cast<const void *>(data), sizeof(typedData));
     return set(typedData);
 }
@@ -55,7 +55,7 @@ void RemoteParameter<std::string>::get(uint8_t *data, size_t &size) const
 {
     std::string typedData;
     get(typedData);
-    AUDIOCOMMS_ASSERT(size >= typedData.length() + 1,
+    AUDIOUTILITIES_ASSERT(size >= typedData.length() + 1,
                       "received size: " << typedData.length() + 1
                                         << " does not match requested size: " <<
                       size);

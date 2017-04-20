@@ -51,7 +51,7 @@ struct ConstMeanTest
     }
 };
 
-AUDIOCOMMS_TYPED_TEST(ConstMeanTest, SignalProcessingTestTypes);
+AUDIOUTILITIES_TYPED_TEST(ConstMeanTest, SignalProcessingTestTypes);
 
 template <class T>
 struct NullMeanTest
@@ -68,7 +68,7 @@ struct NullMeanTest
     }
 };
 
-AUDIOCOMMS_TYPED_TEST(NullMeanTest, SignalProcessingTestTypes);
+AUDIOUTILITIES_TYPED_TEST(NullMeanTest, SignalProcessingTestTypes);
 
 template <class T>
 struct MaxMeanTest
@@ -85,7 +85,7 @@ struct MaxMeanTest
     }
 };
 
-AUDIOCOMMS_TYPED_TEST(MaxMeanTest, SignalProcessingTestTypes);
+AUDIOUTILITIES_TYPED_TEST(MaxMeanTest, SignalProcessingTestTypes);
 
 template <class T>
 struct MaxNullMeanTest
@@ -103,7 +103,7 @@ struct MaxNullMeanTest
     }
 };
 
-AUDIOCOMMS_TYPED_TEST(MaxNullMeanTest, SignalProcessingTestTypes);
+AUDIOUTILITIES_TYPED_TEST(MaxNullMeanTest, SignalProcessingTestTypes);
 
 template <class T>
 struct ScaleMeanTest
@@ -121,7 +121,7 @@ struct ScaleMeanTest
     }
 };
 
-AUDIOCOMMS_TYPED_TEST(ScaleMeanTest, SignalProcessingTestTypes);
+AUDIOUTILITIES_TYPED_TEST(ScaleMeanTest, SignalProcessingTestTypes);
 
 /** Variance Tests */
 
@@ -142,7 +142,7 @@ struct VarianceTest
     }
 };
 
-AUDIOCOMMS_TYPED_TEST(VarianceTest, SignalProcessingTestTypes);
+AUDIOUTILITIES_TYPED_TEST(VarianceTest, SignalProcessingTestTypes);
 
 template <class T>
 struct NullVarianceTest
@@ -159,7 +159,7 @@ struct NullVarianceTest
     }
 };
 
-AUDIOCOMMS_TYPED_TEST(NullVarianceTest, SignalProcessingTestTypes);
+AUDIOUTILITIES_TYPED_TEST(NullVarianceTest, SignalProcessingTestTypes);
 
 /** Normalized Offset Product Tests */
 
@@ -189,7 +189,7 @@ struct SameNormalizedOffsetProductTest
     }
 };
 
-AUDIOCOMMS_TYPED_TEST(SameNormalizedOffsetProductTest, SignalProcessingTestTypes);
+AUDIOUTILITIES_TYPED_TEST(SameNormalizedOffsetProductTest, SignalProcessingTestTypes);
 
 template <class T>
 struct NullNormalizedOffsetProductTest
@@ -226,7 +226,7 @@ struct NullNormalizedOffsetProductTest
     }
 };
 
-AUDIOCOMMS_TYPED_TEST(NullNormalizedOffsetProductTest, SignalProcessingTestTypes);
+AUDIOUTILITIES_TYPED_TEST(NullNormalizedOffsetProductTest, SignalProcessingTestTypes);
 
 template <class T>
 struct MaxNormalizedOffsetProductTest
@@ -263,7 +263,7 @@ struct MaxNormalizedOffsetProductTest
     }
 };
 
-AUDIOCOMMS_TYPED_TEST(MaxNormalizedOffsetProductTest, SignalProcessingTestTypes);
+AUDIOUTILITIES_TYPED_TEST(MaxNormalizedOffsetProductTest, SignalProcessingTestTypes);
 
 /* Cross Correlation tests */
 
@@ -303,7 +303,7 @@ struct HalfEQCrossCorrelationTest
     }
 };
 
-AUDIOCOMMS_TYPED_TEST(HalfEQCrossCorrelationTest, SignalProcessingTestTypes);
+AUDIOUTILITIES_TYPED_TEST(HalfEQCrossCorrelationTest, SignalProcessingTestTypes);
 
 template <class T>
 struct EQCrossCorrelationTest
@@ -340,7 +340,7 @@ struct EQCrossCorrelationTest
     }
 };
 
-AUDIOCOMMS_TYPED_TEST(EQCrossCorrelationTest, SignalProcessingTestTypes);
+AUDIOUTILITIES_TYPED_TEST(EQCrossCorrelationTest, SignalProcessingTestTypes);
 
 template <class T>
 struct DiffCrossCorrelationTest
@@ -378,7 +378,7 @@ struct DiffCrossCorrelationTest
     }
 };
 
-AUDIOCOMMS_TYPED_TEST(DiffCrossCorrelationTest, SignalProcessingTestTypes);
+AUDIOUTILITIES_TYPED_TEST(DiffCrossCorrelationTest, SignalProcessingTestTypes);
 
 template <class T>
 struct ConstSignalCrossCorrelationTest
@@ -419,7 +419,7 @@ struct ConstSignalCrossCorrelationTest
     }
 };
 
-AUDIOCOMMS_TYPED_TEST(ConstSignalCrossCorrelationTest, SignalProcessingTestTypes);
+AUDIOUTILITIES_TYPED_TEST(ConstSignalCrossCorrelationTest, SignalProcessingTestTypes);
 
 } /* namespace signal_processing */
 } /* namespace utilities */

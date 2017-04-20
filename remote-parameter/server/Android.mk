@@ -81,7 +81,7 @@ include $(BUILD_STATIC_LIBRARY)
 
 # Build for host
 ##################################
-ifeq (0,1)
+ifeq (ENABLE_HOST_VERSION,1)
 include $(CLEAR_VARS)
 $(eval LOCAL_LDFLAGS += -pthread)
 LOCAL_MODULE := libremote-parameter-server_host

@@ -17,7 +17,7 @@
 
 #include <result/Result.hpp>
 #include <utilities/FileMapper.hpp>
-#include <AudioCommsAssert.hpp>
+#include <AudioUtilitiesAssert.hpp>
 #include <cmath>
 #include <limits>
 

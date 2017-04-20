@@ -19,7 +19,7 @@
 #include "RemoteParameterImpl.hpp"
 #include "RemoteParameter.hpp"
 #include <RemoteParameterConnector.hpp>
-#include <AudioCommsAssert.hpp>
+#include <AudioUtilitiesAssert.hpp>
 #include <sys/socket.h>
 #include <sys/stat.h>
 #include <unistd.h>
@@ -65,7 +65,7 @@ RemoteParameterImpl::RemoteParameterImpl(RemoteParameterBase *parameter,
 
 int RemoteParameterImpl::getPollFd() const
 {
-    AUDIOCOMMS_ASSERT(mServerConnector != NULL, "server connector invalid");
+    AUDIOUTILITIES_ASSERT(mServerConnector != NULL, "server connector invalid");
 
     return mServerConnector->getFd();
 }

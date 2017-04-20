@@ -26,21 +26,21 @@
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #
-# That scripts search for AudioComms checkfiles script and runs it
+# That scripts search for AudioUtilities checkfiles script and runs it
 #
 
 #set -x
 
-AUDIOCOMMS_TEST_GIT_PRJ="a/bsp/hardware/intel/PRIVATE/audiocomms_tests"
-AUDIOCOMMS_CHECKFILE="code_quality/checkfiles"
+AUDIOUTILITIES_TEST_GIT_PRJ="a/bsp/hardware/intel/PRIVATE/audioutilities_tests"
+AUDIOUTILITIES_CHECKFILE="code_quality/checkfiles"
 CUR_PATH="."
 REDIRECTION_FOUND=0
 
 # Get quality scripts git project path
-AUDIOCOMMS_TEST_GIT_PATH=$(repo list $AUDIOCOMMS_TEST_GIT_PRJ 2>/dev/null |
+AUDIOUTILITIES_TEST_GIT_PATH=$(repo list $AUDIOUTILITIES_TEST_GIT_PRJ 2>/dev/null |
                            cut --delimiter ' ' --field 1)
 
-if [ "$AUDIOCOMMS_TEST_GIT_PATH" ]
+if [ "$AUDIOUTILITIES_TEST_GIT_PATH" ]
 then
     # Search for the .repo directory
     while [ "$(readlink --canonicalize "$CUR_PATH")" != "/" ]
@@ -49,8 +49,8 @@ then
         if [ "$REPO_PATH" ]
         then
             REDIRECTION_FOUND=1
-            # Execute AudioComms FT generic checkfiles script
-            $REPO_PATH/../$AUDIOCOMMS_TEST_GIT_PATH/$AUDIOCOMMS_CHECKFILE
+            # Execute AudioUtilities FT generic checkfiles script
+            $REPO_PATH/../$AUDIOUTILITIES_TEST_GIT_PATH/$AUDIOUTILITIES_CHECKFILE
             break
         fi
 
