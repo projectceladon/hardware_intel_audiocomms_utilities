@@ -1,7 +1,7 @@
 /**
  * @section License
  *
- * Copyright 2013-2016 Intel Corporation
+ * Copyright 2013-2017 Intel Corporation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
 
 #include <sstream>
 
-namespace audio_comms
+namespace audio_utilities
 {
 namespace utilities
 {
@@ -283,4 +283,4 @@ bool operator!=(typename ErrorTrait::Code code, Result<ErrorTrait> result)
 
 } /* namespace result */
 } /* namespace utilities */
-} /* namespace audio_comms */
+} /* namespace audio_utilities */

@@ -1,5 +1,5 @@
 /*
- * Copyright 2013-2016 Intel Corporation
+ * Copyright 2013-2017 Intel Corporation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,7 +23,7 @@
 #include <cstdlib>
 
 
-namespace audio_comms
+namespace audio_utilities
 {
 
 namespace utilities
@@ -195,7 +195,7 @@ public:
      */
     static bool stringToValue(const std::string &str, T &result)
     {
-        return audio_comms::utilities::convertTo<std::string, T>(str, result);
+        return audio_utilities::utilities::convertTo<std::string, T>(str, result);
     }
 
     /**
@@ -209,7 +209,7 @@ public:
      */
     static bool valueToString(const T &val, std::string &result)
     {
-        return audio_comms::utilities::convertTo<T, std::string>(val, result);
+        return audio_utilities::utilities::convertTo<T, std::string>(val, result);
     }
 };
 
@@ -217,12 +217,12 @@ public:
 
 } // namespace utilities
 
-} // namespace audio_comms
+} // namespace audio_utilities
 
 #ifdef __ANDROID__
 
 #include <cutils/properties.h>
-namespace audio_comms
+namespace audio_utilities
 {
 
 namespace utilities
@@ -240,7 +240,7 @@ class AndroidProperty : public SystemProperty
 /** Constructor is made private to prevent the use of this class by any
  * other class than property */
 template <class T, class U>
-friend class audio_comms::utilities::Property;
+friend class audio_utilities::utilities::Property;
 AndroidProperty()
 {
     /** Next assertion are here for consistency checks, if they fail, this
@@ -274,14 +274,14 @@ public:
 
 } // namespace utilities
 
-} // namespace audio_comms
+} // namespace audio_utilities
 
 #else // __ANDROID__
 
 #include <map>
 #include <fstream>
 
-namespace audio_comms
+namespace audio_utilities
 {
 
 namespace utilities
@@ -308,7 +308,7 @@ LinuxProperty()
 }
 
 template <class T, class U>
-friend class audio_comms::utilities::Property;
+friend class audio_utilities::utilities::Property;
 
 public:
     /**
@@ -410,5 +410,5 @@ private:
 
 } // namespace utilities
 
-} // namespace audio_comms
+} // namespace audio_utilities
 #endif // __ANDROID__

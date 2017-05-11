@@ -1,7 +1,7 @@
 /**
  * @section License
  *
- * Copyright 2013-2016 Intel Corporation
+ * Copyright 2013-2017 Intel Corporation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,7 +22,7 @@
 #include "utilities/TypeList.hpp"
 #include <tinyxml2.h>
 
-namespace audio_comms
+namespace audio_utilities
 {
 namespace utilities
 {
@@ -228,7 +228,7 @@ private:
 } // namespace detail
 } // namespace serializer
 } // namespace utilities
-} // namespace audio_comms
+} // namespace audio_utilities
 
 #include "xmlserializer/TextNodeImplementation.hpp"
 #include "xmlserializer/CollectionImplementation.hpp"

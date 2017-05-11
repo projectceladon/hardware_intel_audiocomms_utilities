@@ -1,7 +1,7 @@
 /**
  * @section License
  *
- * Copyright 2013-2016 Intel Corporation
+ * Copyright 2013-2017 Intel Corporation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,8 +21,8 @@
 #include <string>
 #include <list>
 
-using namespace audio_comms::utilities::xmlserializer;
-using namespace audio_comms::utilities::serializer;
+using namespace audio_utilities::utilities::xmlserializer;
+using namespace audio_utilities::utilities::serializer;
 
 template <class Result>
 void ASSERT_RESULT_SUCCESS(Result res)

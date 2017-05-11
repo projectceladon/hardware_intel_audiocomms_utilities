@@ -1,4 +1,4 @@
-# Copyright 2013-2015 Intel Corporation
+# Copyright 2013-2017 Intel Corporation
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -26,7 +26,7 @@ LOCAL_C_INCLUDES := $(LOCAL_PATH)/include
 
 LOCAL_EXPORT_C_INCLUDE_DIRS := $(LOCAL_PATH)/include
 
-LOCAL_MODULE := libaudio_comms_utilities
+LOCAL_MODULE := libaudio_utilities
 LOCAL_MODULE_OWNER := intel
 
 include $(BUILD_STATIC_LIBRARY)
@@ -42,7 +42,7 @@ LOCAL_C_INCLUDES := $(LOCAL_PATH)/include
 
 LOCAL_EXPORT_C_INCLUDE_DIRS := $(LOCAL_PATH)/include
 
-LOCAL_MODULE := libaudio_comms_utilities_host
+LOCAL_MODULE := libaudio_utilities_host
 LOCAL_MODULE_OWNER := intel
 
 include $(BUILD_HOST_STATIC_LIBRARY)

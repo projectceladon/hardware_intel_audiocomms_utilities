@@ -4,7 +4,7 @@
  *
  * @section License
  *
- * Copyright 2015 Intel Corporation
+ * Copyright 2015-2017 Intel Corporation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -34,7 +34,7 @@
 #include <cutils/log.h>
 #endif
 
-namespace audio_comms
+namespace audio_utilities
 {
 
 namespace utilities
@@ -272,4 +272,4 @@ typedef GenericLog<DefaultLogTraitList> Log;
 
 } // namespace utilities
 
-} // namespace audio_comms
+} // namespace audio_utilities

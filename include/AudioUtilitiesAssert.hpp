@@ -1,10 +1,10 @@
 /*
  * @file
- * audio comms assert facilities for C++.
+ * audio utilities assert facilities for C++.
  *
  * @section License
  *
- * Copyright 2013-2014 Intel Corporation
+ * Copyright 2013-2017 Intel Corporation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,7 +24,7 @@
 /**
  * Macro to wrap gcc builtin function to specify that a condition is unlikely
  * to happen. */
-#define audio_comms_unlikely(cond) __builtin_expect((cond), 0)
+#define audio_utilities_unlikely(cond) __builtin_expect((cond), 0)
 
 /**
  * This AUDIOUTILITIES_COMPILE_TIME_ASSERT MACRO will fail to compile if the condition is false.
@@ -35,9 +35,9 @@
  * error: 'compileTimeAssertFailure<false>::compileTimeAssertFailure()' is private
  *      YOUR_SOURCE_FILE.cpp:YOUR_ASSERT_LINE: error: within this context
  */
-#define AUDIOUTILITIES_COMPILE_TIME_ASSERT(c) audio_comms::utilities::compileTimeAssertFailure<c>()
+#define AUDIOUTILITIES_COMPILE_TIME_ASSERT(c) audio_utilities::utilities::compileTimeAssertFailure<c>()
 
-namespace audio_comms
+namespace audio_utilities
 {
 
 namespace utilities
@@ -61,7 +61,7 @@ compileTimeAssertFailure();
 
 } // namespace utilities
 
-} // namespace audio_comms
+} // namespace audio_utilities
 
 #include <utilities/Log.hpp>
 #include <cstdlib> /* assert */
@@ -76,8 +76,8 @@ compileTimeAssertFailure();
  */
 #define AUDIOUTILITIES_ASSERT(cond, iostr)                                                           \
     do {                                                                                         \
-        if (audio_comms_unlikely(!(cond))) {                                                     \
-            audio_comms::utilities::Log::Fatal("AUDIOUTILITIES") << __BASE_FILE__ ":" << __LINE__    \
+        if (audio_utilities_unlikely(!(cond))) {                                                     \
+            audio_utilities::utilities::Log::Fatal("AUDIOUTILITIES") << __BASE_FILE__ ":" << __LINE__    \
                                                              << ": Assertion " #cond " failed: " \
                                                              << iostr;                           \
             abort();                                                                             \

@@ -1,7 +1,7 @@
 /**
  * @section License
  *
- * Copyright 2013-2014 Intel Corporation
+ * Copyright 2013-2017 Intel Corporation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -53,7 +53,7 @@ struct TestResult
 const TestResult::Code TestResult::success = A;
 const TestResult::Code TestResult::defaultError = B;
 
-typedef audio_comms::utilities::result::Result<TestResult> Result;
+typedef audio_utilities::utilities::result::Result<TestResult> Result;
 
 TEST(Result, defaultValueConstructor)
 {
