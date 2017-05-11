@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 Intel Corporation
+ * Copyright 2016-2017 Intel Corporation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,7 +26,7 @@ class CEventThread;
 class RemoteParameterBase;
 class RemoteParameterImpl;
 
-class RemoteParameterServer : public IEventListener, private audio_comms::utilities::NonCopyable
+class RemoteParameterServer : public IEventListener, private audio_utilities::utilities::NonCopyable
 {
 public:
     explicit RemoteParameterServer();

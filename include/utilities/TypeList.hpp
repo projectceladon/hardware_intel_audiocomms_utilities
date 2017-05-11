@@ -1,7 +1,7 @@
 /**
  * @section License
  *
- * Copyright 2013-2014 Intel Corporation
+ * Copyright 2013-2017 Intel Corporation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,7 +17,7 @@
  */
 #pragma once
 
-namespace audio_comms
+namespace audio_utilities
 {
 namespace utilities
 {
@@ -46,68 +46,68 @@ struct TypeNull;
 } // detail
 
 #define TYPELIST0 \
-    audio_comms::utilities::detail::TypeNull
+    audio_utilities::utilities::detail::TypeNull
 #define TYPELIST1(A) \
-    audio_comms::utilities::TypeList < A, TYPELIST0 >
+    audio_utilities::utilities::TypeList < A, TYPELIST0 >
 #define TYPELIST2(A, B) \
-    audio_comms::utilities::TypeList < A, TYPELIST1(B) >
+    audio_utilities::utilities::TypeList < A, TYPELIST1(B) >
 #define TYPELIST3(A, B, C) \
-    audio_comms::utilities::TypeList < A, TYPELIST2(B, C) >
+    audio_utilities::utilities::TypeList < A, TYPELIST2(B, C) >
 #define TYPELIST4(A, B, C, D) \
-    audio_comms::utilities::TypeList < A, TYPELIST3(B, C, D) >
+    audio_utilities::utilities::TypeList < A, TYPELIST3(B, C, D) >
 #define TYPELIST5(A, B, C, D, E) \
-    audio_comms::utilities::TypeList < A, TYPELIST4(B, C, D, E) >
+    audio_utilities::utilities::TypeList < A, TYPELIST4(B, C, D, E) >
 #define TYPELIST6(A, B, C, D, E, F) \
-    audio_comms::utilities::TypeList < A, TYPELIST5(B, C, D, E, F) >
+    audio_utilities::utilities::TypeList < A, TYPELIST5(B, C, D, E, F) >
 #define TYPELIST7(A, B, C, D, E, F, G) \
-    audio_comms::utilities::TypeList < A, TYPELIST6(B, C, D, E, F, G) >
+    audio_utilities::utilities::TypeList < A, TYPELIST6(B, C, D, E, F, G) >
 #define TYPELIST8(A, B, C, D, E, F, G, H) \
-    audio_comms::utilities::TypeList < A, TYPELIST7(B, C, D, E, F, G, H) >
+    audio_utilities::utilities::TypeList < A, TYPELIST7(B, C, D, E, F, G, H) >
 #define TYPELIST9(A, B, C, D, E, F, G, H, I) \
-    audio_comms::utilities::TypeList < A, TYPELIST8(B, C, D, E, F, G, H, I) >
+    audio_utilities::utilities::TypeList < A, TYPELIST8(B, C, D, E, F, G, H, I) >
 #define TYPELIST10(A, B, C, D, E, F, G, H, I, J) \
-    audio_comms::utilities::TypeList < A, TYPELIST9(B, C, D, E, F, G, H, I, J) >
+    audio_utilities::utilities::TypeList < A, TYPELIST9(B, C, D, E, F, G, H, I, J) >
 #define TYPELIST11(A, B, C, D, E, F, G, H, I, J, K) \
-    audio_comms::utilities::TypeList < A, TYPELIST10(B, C, D, E, F, G, H, I, J, K) >
+    audio_utilities::utilities::TypeList < A, TYPELIST10(B, C, D, E, F, G, H, I, J, K) >
 #define TYPELIST12(A, B, C, D, E, F, G, H, I, J, K, L) \
-    audio_comms::utilities::TypeList < A, TYPELIST11(B, C, D, E, F, G, H, I, J, K, L) >
+    audio_utilities::utilities::TypeList < A, TYPELIST11(B, C, D, E, F, G, H, I, J, K, L) >
 #define TYPELIST13(A, B, C, D, E, F, G, H, I, J, K, L, M) \
-    audio_comms::utilities::TypeList < A, TYPELIST12(B, C, D, E, F, G, H, I, J, K, L, M) >
+    audio_utilities::utilities::TypeList < A, TYPELIST12(B, C, D, E, F, G, H, I, J, K, L, M) >
 #define TYPELIST14(A, B, C, D, E, F, G, H, I, J, K, L, M, N) \
-    audio_comms::utilities::TypeList < A, TYPELIST13(B, C, D, E, F, G, H, I, J, K, L, M, N) >
+    audio_utilities::utilities::TypeList < A, TYPELIST13(B, C, D, E, F, G, H, I, J, K, L, M, N) >
 #define TYPELIST15(A, B, C, D, E, F, G, H, I, J, K, L, M, N, O) \
-    audio_comms::utilities::TypeList < A, TYPELIST14(B, C, D, E, F, G, H, I, J, K, L, M, N, O) >
+    audio_utilities::utilities::TypeList < A, TYPELIST14(B, C, D, E, F, G, H, I, J, K, L, M, N, O) >
 #define TYPELIST16(A, B, C, D, E, F, G, H, I, J, K, L, M, N, O, P) \
-    audio_comms::utilities::TypeList < A, TYPELIST15(B, C, D, E, F, G, H, I, J, K, L, M, N, O, P) >
+    audio_utilities::utilities::TypeList < A, TYPELIST15(B, C, D, E, F, G, H, I, J, K, L, M, N, O, P) >
 #define TYPELIST17(A, B, C, D, E, F, G, H, I, J, K, L, M, N, O, P, Q) \
-    audio_comms::utilities::TypeList < A, TYPELIST16(                 \
+    audio_utilities::utilities::TypeList < A, TYPELIST16(                 \
         B, C, D, E, F, G, H, I, J, K, L, M, N, O, P, Q) >
 #define TYPELIST18(A, B, C, D, E, F, G, H, I, J, K, L, M, N, O, P, Q, R) \
-    audio_comms::utilities::TypeList < A, TYPELIST17(                    \
+    audio_utilities::utilities::TypeList < A, TYPELIST17(                    \
         B, C, D, E, F, G, H, I, J, K, L, M, N, O, P, Q, R) >
 #define TYPELIST19(A, B, C, D, E, F, G, H, I, J, K, L, M, N, O, P, Q, R, S) \
-    audio_comms::utilities::TypeList < A, TYPELIST18(                       \
+    audio_utilities::utilities::TypeList < A, TYPELIST18(                       \
         B, C, D, E, F, G, H, I, J, K, L, M, N, O, P, Q, R, S) >
 #define TYPELIST20(A, B, C, D, E, F, G, H, I, J, K, L, M, N, O, P, Q, R, S, T) \
-    audio_comms::utilities::TypeList < A, TYPELIST19(                          \
+    audio_utilities::utilities::TypeList < A, TYPELIST19(                          \
         B, C, D, E, F, G, H, I, J, K, L, M, N, O, P, Q, R, S, T) >
 #define TYPELIST21(A, B, C, D, E, F, G, H, I, J, K, L, M, N, O, P, Q, R, S, T, U) \
-    audio_comms::utilities::TypeList < A, TYPELIST20(                             \
+    audio_utilities::utilities::TypeList < A, TYPELIST20(                             \
         B, C, D, E, F, G, H, I, J, K, L, M, N, O, P, Q, R, S, T, U) >
 #define TYPELIST22(A, B, C, D, E, F, G, H, I, J, K, L, M, N, O, P, Q, R, S, T, U, V) \
-    audio_comms::utilities::TypeList < A, TYPELIST21(                                \
+    audio_utilities::utilities::TypeList < A, TYPELIST21(                                \
         B, C, D, E, F, G, H, I, J, K, L, M, N, O, P, Q, R, S, T, U, V) >
 #define TYPELIST23(A, B, C, D, E, F, G, H, I, J, K, L, M, N, O, P, Q, R, S, T, U, V, W) \
-    audio_comms::utilities::TypeList < A, TYPELIST22(                                   \
+    audio_utilities::utilities::TypeList < A, TYPELIST22(                                   \
         B, C, D, E, F, G, H, I, J, K, L, M, N, O, P, Q, R, S, T, U, V, W) >
 #define TYPELIST24(A, B, C, D, E, F, G, H, I, J, K, L, M, N, O, P, Q, R, S, T, U, V, W, X) \
-    audio_comms::utilities::TypeList < A, TYPELIST23(                                      \
+    audio_utilities::utilities::TypeList < A, TYPELIST23(                                      \
         B, C, D, E, F, G, H, I, J, K, L, M, N, O, P, Q, R, S, T, U, V, W, X) >
 #define TYPELIST25(A, B, C, D, E, F, G, H, I, J, K, L, M, N, O, P, Q, R, S, T, U, V, W, X, Y) \
-    audio_comms::utilities::TypeList < A, TYPELIST24(                                         \
+    audio_utilities::utilities::TypeList < A, TYPELIST24(                                         \
         B, C, D, E, F, G, H, I, J, K, L, M, N, O, P, Q, R, S, T, U, V, W, X, Y) >
 #define TYPELIST26(A, B, C, D, E, F, G, H, I, J, K, L, M, N, O, P, Q, R, S, T, U, V, W, X, Y, Z) \
-    audio_comms::utilities::TypeList < A, TYPELIST25(                                            \
+    audio_utilities::utilities::TypeList < A, TYPELIST25(                                            \
         B, C, D, E, F, G, H, I, J, K, L, M, N, O, P, Q, R, S, T, U, V, W, X, Y, Z) >
 
 /**
@@ -133,4 +133,4 @@ struct Append<TYPELIST0, List>
 };
 
 } // namespace utilities
-} // namespace audio_comms
+} // namespace audio_utilities

@@ -1,5 +1,5 @@
 #
-# Copyright 2013-2015 Intel Corporation
+# Copyright 2013-2017 Intel Corporation
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -31,8 +31,8 @@ LOCAL_MODULE_TAGS := optional
 LOCAL_SHARED_LIBRARIES := libcutils
 LOCAL_STATIC_LIBRARIES := \
     libproperty \
-    libaudio_comms_convert \
-    libaudio_comms_utilities
+    libaudio_utilities_convert \
+    libaudio_utilities
 
 include $(BUILD_STATIC_LIBRARY)
 endif
@@ -53,8 +53,8 @@ LOCAL_MODULE_TAGS := optional
 
 LOCAL_STATIC_LIBRARIES := \
                      libproperty \
-                     libaudio_comms_convert \
-                     libaudio_comms_utilities
+                     libaudio_utilities_convert \
+                     libaudio_utilities
 
 include $(BUILD_STATIC_LIBRARY)
 

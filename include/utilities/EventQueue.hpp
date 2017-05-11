@@ -3,7 +3,7 @@
  *
  * @section License
  *
- * Copyright 2014-2015 Intel Corporation
+ * Copyright 2014-2017 Intel Corporation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,7 +24,7 @@
 #include <Semaphore.hpp>
 #include <queue>
 
-namespace audio_comms
+namespace audio_utilities
 {
 namespace utilities
 {
@@ -45,7 +45,7 @@ public:
      */
     void post(Event event)
     {
-        audio_comms::utilities::Mutex::Locker locker(mQueueMutex);
+        audio_utilities::utilities::Mutex::Locker locker(mQueueMutex);
         mEventQueue.push(event);
         mEventSemaphore.post();
     }
@@ -56,17 +56,17 @@ public:
     Event wait()
     {
         mEventSemaphore.wait();
-        audio_comms::utilities::Mutex::Locker locker(mQueueMutex);
+        audio_utilities::utilities::Mutex::Locker locker(mQueueMutex);
         Event event = mEventQueue.front();
         mEventQueue.pop();
         return event;
     }
 
 private:
-    audio_comms::utilities::Mutex mQueueMutex; /*< queue lock */
+    audio_utilities::utilities::Mutex mQueueMutex; /*< queue lock */
     std::queue<Event> mEventQueue; /*< queue itself */
-    audio_comms::utilities::Semaphore mEventSemaphore; /*< event semaphore */
+    audio_utilities::utilities::Semaphore mEventSemaphore; /*< event semaphore */
 };
 
 } // utilities
-} // audio_comms
+} // audio_utilities

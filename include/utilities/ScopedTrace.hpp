@@ -3,7 +3,7 @@
  *
  * @section License
  *
- * Copyright 2014 Intel Corporation
+ * Copyright 2014-2017 Intel Corporation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,7 +26,7 @@
 #include <pthread.h>
 #include <stdint.h>
 
-namespace audio_comms
+namespace audio_utilities
 {
 namespace utilities
 {
@@ -283,4 +283,4 @@ struct  Trace : ActivableLogger<StaticActivation<activateAtStart>,
 };
 
 } /* namespace utilities */
-} /* namespace audio_comms */
+} /* namespace audio_utilities */
