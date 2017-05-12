@@ -1,5 +1,5 @@
 /*
- * Copyright 2013-2016 Intel Corporation
+ * Copyright 2013-2017 Intel Corporation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,7 +21,7 @@
 
 #include <pthread.h>
 
-namespace audio_comms
+namespace audio_utilities
 {
 namespace utilities
 {
@@ -33,7 +33,7 @@ namespace utilities
  * The methods start, stop, isStarted and the destructor
  * MUST not be called simultaneously.
  */
-class Thread : private audio_comms::utilities::NonCopyable
+class Thread : private audio_utilities::utilities::NonCopyable
 {
 public:
     /** Create a thread with a name.
@@ -138,4 +138,4 @@ private:
 };
 
 } // namespace utilities
-} // namespace audio_comms
+} // namespace audio_utilities

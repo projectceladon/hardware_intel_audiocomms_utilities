@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 Intel Corporation
+ * Copyright 2016-2017 Intel Corporation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
 #include <stdint.h>
 #include <sys/types.h>
 
-class RemoteParameterConnector : private audio_comms::utilities::NonCopyable
+class RemoteParameterConnector : private audio_utilities::utilities::NonCopyable
 {
 public:
     static const uint32_t mCommunicationTimeoutMs = 5000; /**< Timeout. */

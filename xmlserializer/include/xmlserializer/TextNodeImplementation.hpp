@@ -1,7 +1,7 @@
 /**
  * @section License
  *
- * Copyright 2013-2016 Intel Corporation
+ * Copyright 2013-2017 Intel Corporation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,7 +19,7 @@
 
 #include "serializer/framework/TextNode.hpp"
 
-namespace audio_comms
+namespace audio_utilities
 {
 namespace utilities
 {
@@ -86,4 +86,4 @@ public:
 
 } // namespace xmlserializer
 } // namespace utilities
-} // namespace audio_comms
+} // namespace audio_utilities

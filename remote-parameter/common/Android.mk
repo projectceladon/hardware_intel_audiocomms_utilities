@@ -1,4 +1,4 @@
-# Copyright 2014-2015 Intel Corporation
+# Copyright 2014-2017 Intel Corporation
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -31,7 +31,7 @@ remote_param_common_shared_lib_target += \
     libcutils
 
 remote_param_common_static_lib += \
-    libaudio_comms_utilities
+    libaudio_utilities
 
 remote_param_common_static_lib_host += \
     $(foreach lib, $(remote_param_common_static_lib), $(lib)_host)

@@ -1,5 +1,5 @@
 /*
- * Copyright 2013-2015 Intel Corporation
+ * Copyright 2013-2017 Intel Corporation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -58,7 +58,7 @@ void GcovFlushWithProp::run()
 {
     // Use the property "gcov.flush.force" to communicate between the Android
     // shell and this thread.
-    audio_comms::utilities::Property<bool> gcovFlushForceProp("gcov.flush.force", false);
+    audio_utilities::utilities::Property<bool> gcovFlushForceProp("gcov.flush.force", false);
     bool hasFlush = true;
     while (!stopThread) {
         // Read the property value to take into account Android shell modification

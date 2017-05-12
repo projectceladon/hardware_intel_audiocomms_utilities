@@ -1,6 +1,6 @@
 ################################################################################
 #
-# Copyright 2013-2015 Intel Corporation
+# Copyright 2013-2017 Intel Corporation
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -33,13 +33,13 @@ common_library_local_module := lib$(common_base_name)
 
 common_static_libs := \
     libacresult \
-    libaudio_comms_convert_includes \
-    libaudio_comms_utilities
+    libaudio_utilities_convert_includes \
+    libaudio_utilities
 
 common_static_libs_host := \
     libacresult_host \
-    libaudio_comms_convert_includes_host \
-    libaudio_comms_utilities_host
+    libaudio_utilities_convert_includes_host \
+    libaudio_utilities_host
 
 common_shared_libs_host :=
 

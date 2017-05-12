@@ -1,6 +1,6 @@
 #
 #
-# Copyright (C) Intel 2013-2015
+# Copyright (C) Intel 2013-2017
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -27,7 +27,7 @@ LOCAL_EXPORT_C_INCLUDE_DIRS := \
     $(LOCAL_PATH)/ \
     $(LOCAL_PATH)/include/
 
-LOCAL_MODULE := libaudio_comms_convert
+LOCAL_MODULE := libaudio_utilities_convert
 LOCAL_MODULE_OWNER := intel
 
 include $(BUILD_STATIC_LIBRARY)
@@ -42,7 +42,7 @@ LOCAL_EXPORT_C_INCLUDE_DIRS := \
     $(LOCAL_PATH)/include/
 
 
-LOCAL_MODULE := libaudio_comms_convert_host
+LOCAL_MODULE := libaudio_utilities_convert_host
 LOCAL_MODULE_OWNER := intel
 
 LOCAL_CFLAGS = -O0 --coverage
@@ -62,7 +62,7 @@ LOCAL_EXPORT_C_INCLUDE_DIRS := \
     $(LOCAL_PATH)/ \
     $(LOCAL_PATH)/include/
 
-LOCAL_MODULE := libaudio_comms_convert_includes
+LOCAL_MODULE := libaudio_utilities_convert_includes
 LOCAL_MODULE_OWNER := intel
 
 LOCAL_MODULE_TAGS := optional
@@ -76,7 +76,7 @@ include $(CLEAR_VARS)
 
 LOCAL_EXPORT_C_INCLUDE_DIRS := $(LOCAL_PATH)
 
-LOCAL_MODULE := libaudio_comms_convert_includes_host
+LOCAL_MODULE := libaudio_utilities_convert_includes_host
 LOCAL_MODULE_OWNER := intel
 
 LOCAL_MODULE_TAGS := optional

@@ -1,7 +1,7 @@
 /**
  * @section License
  *
- * Copyright 2013-2014 Intel Corporation
+ * Copyright 2013-2017 Intel Corporation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,8 +20,8 @@
 #include <utilities/TypeTraits.hpp>
 #include <gtest/gtest.h>
 
-using namespace audio_comms::utilities;
-using namespace audio_comms::utilities::serializer;
+using namespace audio_utilities::utilities;
+using namespace audio_utilities::utilities::serializer;
 
 // An abstract containor with serveral accessors
 template <typename T>

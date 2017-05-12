@@ -1,5 +1,5 @@
 /*
- * Copyright 2013-2015 Intel Corporation
+ * Copyright 2013-2017 Intel Corporation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,7 +19,7 @@
 #ifndef __ANDROID__
 #include <unistd.h>
 
-namespace audio_comms
+namespace audio_utilities
 {
 
 namespace utilities
