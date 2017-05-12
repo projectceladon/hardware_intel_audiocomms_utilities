@@ -1,6 +1,6 @@
 /* Thread.cpp
 **
-** Copyright 2013-2015 Intel Corporation
+** Copyright 2013-2017 Intel Corporation
 **
 ** Licensed under the Apache License, Version 2.0 (the "License");
 ** you may not use this file except in compliance with the License.
@@ -22,7 +22,7 @@
 #include <sys/syscall.h>
 #include <sstream>
 
-namespace audio_comms
+namespace audio_utilities
 {
 namespace utilities
 {
@@ -97,4 +97,4 @@ std::string Thread::getTid()
 }
 
 } // namespace utilities
-} // namespace audio_comms
+} // namespace audio_utilities

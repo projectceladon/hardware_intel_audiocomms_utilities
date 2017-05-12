@@ -1,7 +1,7 @@
 /**
  * @section License
  *
- * Copyright 2013-2014 Intel Corporation
+ * Copyright 2013-2017 Intel Corporation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,7 +19,7 @@
 
 #include <result/Result.hpp>
 
-namespace audio_comms
+namespace audio_utilities
 {
 namespace utilities
 {
@@ -77,4 +77,4 @@ typedef result::Result<detail::ResultTrait> Result;
 
 } // namespace serializer
 } // namespace utilities
-} // namespace audio_comms
+} // namespace audio_utilities

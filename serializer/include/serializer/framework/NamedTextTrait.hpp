@@ -1,7 +1,7 @@
 /**
  * @section License
  *
- * Copyright 2013-2014 Intel Corporation
+ * Copyright 2013-2017 Intel Corporation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,7 +21,7 @@
 #include "serializer/framework/Child.hpp"
 #include "utilities/TypeList.hpp"
 
-namespace audio_comms
+namespace audio_utilities
 {
 namespace utilities
 {
@@ -59,4 +59,4 @@ const char *NamedTextTrait<T, _tag, o, C>::tag = _tag;
 
 } // namespace serializer
 } // namespace utilities
-} // namespace audio_comms
+} // namespace audio_utilities

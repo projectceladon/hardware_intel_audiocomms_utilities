@@ -1,7 +1,7 @@
 /**
  * @section License
  *
- * Copyright 2013-2014 Intel Corporation
+ * Copyright 2013-2017 Intel Corporation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,7 +22,7 @@
 #include <cstring>
 #include <string>
 
-namespace audio_comms
+namespace audio_utilities
 {
 namespace utilities
 {
@@ -50,4 +50,4 @@ typedef Result<ErrnoTrait> ErrnoResult;
 
 } /* namespace utilities */
 
-} /* namespace audio_comms */
+} /* namespace audio_utilities */

@@ -1,5 +1,5 @@
 #
-# Copyright 2014-2015 Intel Corporation
+# Copyright 2014-2017 Intel Corporation
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -23,7 +23,7 @@ include $(CLEAR_VARS)
 
 LOCAL_EXPORT_C_INCLUDE_DIRS := $(LOCAL_PATH)/include
 
-LOCAL_MODULE := libaudio_comms_signal_processing
+LOCAL_MODULE := libaudio_utilities_signal_processing
 
 include $(BUILD_STATIC_LIBRARY)
 
@@ -34,7 +34,7 @@ include $(CLEAR_VARS)
 
 LOCAL_EXPORT_C_INCLUDE_DIRS := $(LOCAL_PATH)/include
 
-LOCAL_MODULE := libaudio_comms_signal_processing_host
+LOCAL_MODULE := libaudio_utilities_signal_processing_host
 
 LOCAL_CFLAGS = -O0 --coverage
 
@@ -49,7 +49,7 @@ endif
 ifeq (ENABLE_HOST_VERSION,1)
 include $(CLEAR_VARS)
 
-LOCAL_MODULE := libaudio_comms_signal_processing_unit_test_host
+LOCAL_MODULE := libaudio_utilities_signal_processing_unit_test_host
 
 LOCAL_SRC_FILES := test/SignalProcessingUnitTest.cpp
 LOCAL_C_INCLUDES := $(LOCAL_PATH)/include
@@ -58,7 +58,7 @@ LOCAL_CFLAGS := -Wall -Werror -Wextra -ggdb3 -O0
 
 LOCAL_STATIC_LIBRARIES := \
     libacresult_host \
-    libaudio_comms_utilities_host
+    libaudio_utilities_host
 
 LOCAL_STRIP_MODULE := false
 
@@ -71,7 +71,7 @@ endif
 
 include $(CLEAR_VARS)
 
-LOCAL_MODULE := libaudio_comms_signal_processing_unit_test
+LOCAL_MODULE := libaudio_utilities_signal_processing_unit_test
 
 LOCAL_SRC_FILES := test/SignalProcessingUnitTest.cpp
 
@@ -83,7 +83,7 @@ LOCAL_STRIP_MODULE := false
 
 LOCAL_STATIC_LIBRARIES := \
     libacresult \
-    libaudio_comms_utilities
+    libaudio_utilities
 
 include $(BUILD_NATIVE_TEST)
 

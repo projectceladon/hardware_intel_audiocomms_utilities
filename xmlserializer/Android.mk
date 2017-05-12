@@ -1,6 +1,6 @@
 ################################################################################
 #
-# Copyright 2013-2016 Intel Corporation
+# Copyright 2013-2017 Intel Corporation
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -32,15 +32,15 @@ common_static_libs := \
     libacserializer \
     libacresult \
     libtinyxml2 \
-    libaudio_comms_convert_includes \
-    libaudio_comms_utilities
+    libaudio_utilities_convert_includes \
+    libaudio_utilities
 
 common_static_libs_host := \
     libacserializer_host \
     libacresult_host \
     libtinyxml2 \
-    libaudio_comms_convert_includes_host \
-    libaudio_comms_utilities_host
+    libaudio_utilities_convert_includes_host \
+    libaudio_utilities_host
 
 common_shared_libs :=
 
