@@ -7,4 +7,5 @@ LOCAL_COPY_HEADERS := \
     AudioBand.h \
     AudioThrottle.h \
 
+LOCAL_USE_VNDK := true
 include $(BUILD_COPY_HEADERS)

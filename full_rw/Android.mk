@@ -2,6 +2,7 @@ LOCAL_PATH:= $(call my-dir)
 
 # Build for target
 include $(CLEAR_VARS)
+LOCAL_USE_VNDK := true
 LOCAL_COPY_HEADERS_TO := full_rw
 LOCAL_COPY_HEADERS :=  full_rw.h
 LOCAL_SRC_FILES := full_rw.c
