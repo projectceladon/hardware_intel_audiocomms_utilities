@@ -7,4 +7,5 @@ LOCAL_COPY_HEADERS := \
     AudioBand.h \
     AudioThrottle.h \
 
+LOCAL_PROPRIETARY_MODULE := true
 include $(BUILD_COPY_HEADERS)

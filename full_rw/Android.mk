@@ -10,6 +10,7 @@ LOCAL_MODULE_OWNER := intel
 LOCAL_MODULE_TAGS := optional
 LOCAL_CFLAGS += -Werror -Wall
 LOCAL_C_INCLUDES += bionic
+LOCAL_PROPRIETARY_MODULE := true
 include $(BUILD_STATIC_LIBRARY)
 
 # Build for host
